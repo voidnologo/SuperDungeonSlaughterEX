@@ -57,7 +57,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Testing
 
-The project includes a comprehensive test suite with 113 tests covering all game mechanics.
+The project includes a comprehensive test suite covering all game mechanics.
 
 ### Run All Tests
 
@@ -89,15 +89,12 @@ mix test --cover
 
 ### Test Summary
 
-- **113 tests** covering all game mechanics
-- **Hero Module** (30 tests) - Combat, leveling, statistics
-- **Monster Module** (12 tests) - Spawning, Gaussian stats
-- **Score Module** (6 tests) - Serialization, sorting
-- **Repositories** (7 tests) - Monster and score persistence
-- **GameState** (38 tests) - Full game flow and integration
-- **LiveView** (20 tests) - UI rendering and event handling
-
-See [TEST_SUMMARY.md](TEST_SUMMARY.md) for detailed test coverage information.
+- **Hero Module**  - Combat, leveling, statistics
+- **Monster Module**  - Spawning, Gaussian stats
+- **Score Module** - Serialization, sorting
+- **Repositories** - Monster and score persistence
+- **GameState** - Full game flow and integration
+- **LiveView**  - UI rendering and event handling
 
 ## Project Structure
 
@@ -143,12 +140,6 @@ priv/
 - **Green** - HP > 66%
 - **Yellow** - 33% < HP ≤ 66%
 - **Red** - HP ≤ 33%
-
-## Documentation
-
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - Comprehensive implementation plan
-- [GAME_README.md](GAME_README.md) - Detailed game mechanics and architecture
-- [TEST_SUMMARY.md](TEST_SUMMARY.md) - Complete test coverage documentation
 
 ## Development
 
