@@ -1,0 +1,48 @@
+ I want to port the game I made, Super Dungeon Slaughter, from python to an Elixir phoenix/liveview app.
+
+ The original code for it is in ~/Prjects/games/SuperDungeonSlaughter.
+
+ Currently it is a CLI app.
+
+ I have included some rough draft design docs [basic_layout.png, basic_layour w markup.png] in this folder of what I am thinking of for the layout
+ of the web ui.  I am open for modifications, updates, or changes to it. We will use the standard tailwindcss that
+ comes with phoenix.  THe colorscheme should look retro video game, not necessarily what is in the design documents.
+
+ Since we have a full ui instead of just a single output, we can spread the information out and
+ make more of it available at one time.
+
+ I would like the central pane to scroll the game history state, similar to how the python CLI currently works.
+ I would like a UI element showing the details of the hero.
+ I would like another UI element showing the details of the monster currently being fought.
+
+ Since all this data is available to be constantly displayed, we don't need most of the commands availble
+ in the CLI.
+
+
+ The only interaction buttons would then be the 'Rest' action and the 'Fight' action buttons.
+
+
+ The hero and monster's Health Point (HP) values should dynamicaly stay current based on the game state (hence why we are using Live View).
+ They should be color coded (red, yellow, green) based upon the porportion of health remaining as is currently
+ defined in the python app.
+
+ Over all, this should be a fairly simple app.
+
+ I want to leave space for further development, such as potentially adding in:
+ - armor
+ - weapons
+ - potions
+ - spells
+ Which would require an inventory, item selection, etc, but those things are currently out of scope of this project.
+ I just want ot make a note so that in our design we don't exclude being able to add them later.
+
+
+ Make sure you follow current software engineering best practices, SOLID, DRY, etc.  The elixir
+ code should be clean and easily maintainable.
+
+ Please inspect the current python project, ask any clarifying questions that you may need,
+ and then create a detailed implementation plan [markdown file] for the elixir/phoenix/live view app.
+
+the new application should live in this folder.
+
+
