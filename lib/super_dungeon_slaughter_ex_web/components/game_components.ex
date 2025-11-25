@@ -13,7 +13,11 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def game_history(assigns) do
     ~H"""
-    <div class="border-2 border-gray-700 rounded bg-black h-[600px] overflow-y-auto p-4">
+    <div
+      id="game-history"
+      phx-hook="ScrollToBottom"
+      class="border-2 border-gray-700 rounded bg-black h-[600px] overflow-y-auto p-4"
+    >
       <div class="space-y-1 font-mono text-sm">
         <%= for message <- Enum.reverse(@history) do %>
           <div class="text-green-300"><%= message %></div>
