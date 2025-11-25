@@ -6,22 +6,25 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    form = to_form(%{"name" => ""}, as: :hero)
+
     socket =
       socket
       |> assign(:game_state, nil)
       |> assign(:show_name_prompt, true)
-      |> assign(:hero_name, "")
+      |> assign(:form, form)
 
     {:ok, socket}
   end
 
   @impl true
-  def handle_event("update_name", %{"name" => name}, socket) do
-    {:noreply, assign(socket, :hero_name, name)}
+  def handle_event("validate", %{"hero" => hero_params}, socket) do
+    form = to_form(hero_params, as: :hero)
+    {:noreply, assign(socket, :form, form)}
   end
 
   @impl true
-  def handle_event("create_hero", %{"name" => name}, socket) do
+  def handle_event("create_hero", %{"hero" => %{"name" => name}}, socket) do
     name = if String.trim(name) == "", do: "Hero", else: String.trim(name)
     game_state = GameState.new(name)
 
@@ -100,26 +103,28 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             <h2 class="text-3xl font-bold text-red-500 text-center mb-6">
               Super Dungeon Slaughter EX
             </h2>
-            <form phx-submit="create_hero" class="space-y-4">
-              <div>
-                <label class="block text-green-400 mb-2">What is your hero's name?</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={@hero_name}
-                  phx-change="update_name"
-                  placeholder="Enter your name..."
-                  autofocus
-                  class="w-full px-4 py-2 bg-black border-2 border-green-500 text-green-400 rounded focus:outline-none focus:border-green-300"
-                />
+            <.form for={@form} id="hero-name-form" phx-change="validate" phx-submit="create_hero">
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-green-400 mb-2">What is your hero's name?</label>
+                  <input
+                    type="text"
+                    name="hero[name]"
+                    id="hero_name"
+                    value={Phoenix.HTML.Form.input_value(@form, :name)}
+                    placeholder="Enter your name..."
+                    autofocus
+                    class="w-full px-4 py-2 bg-black border-2 border-green-500 text-green-400 rounded focus:outline-none focus:border-green-300"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full py-3 bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded transition-colors"
+                >
+                  Begin Adventure
+                </button>
               </div>
-              <button
-                type="submit"
-                class="w-full py-3 bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded transition-colors"
-              >
-                Begin Adventure
-              </button>
-            </form>
+            </.form>
           </div>
         </div>
       <% else %>
