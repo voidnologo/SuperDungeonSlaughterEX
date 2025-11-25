@@ -52,7 +52,7 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepoSimpleTest do
     score = Score.new("Persistent", 7, 35)
     GenServer.cast(repo_name, {:add, score})
 
-    Process.sleep(10)
+    Process.sleep(100)
 
     {:ok, content} = File.read(test_path)
     data = Jason.decode!(content)

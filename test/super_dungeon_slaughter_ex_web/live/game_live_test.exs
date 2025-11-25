@@ -67,7 +67,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
       html =
         view
-        |> form("form", %{name: "TestHero"})
+        |> form("#hero-name-form", %{hero: %{name: "TestHero"}})
         |> render_submit()
 
       assert html =~ "Player Stats"
@@ -82,7 +82,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
       html =
         view
-        |> form("form", %{name: ""})
+        |> form("#hero-name-form", %{hero: %{name: ""}})
         |> render_submit()
 
       assert html =~ "Hero"
@@ -93,7 +93,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
       html =
         view
-        |> form("form", %{name: "Adventurer"})
+        |> form("#hero-name-form", %{hero: %{name: "Adventurer"}})
         |> render_submit()
 
       assert html =~ "Welcome"
@@ -106,7 +106,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "Fighter"})
+      |> form("#hero-name-form", %{hero: %{name: "Fighter"}})
       |> render_submit()
 
       {:ok, view: view}
@@ -150,7 +150,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "Rester"})
+      |> form("#hero-name-form", %{hero: %{name: "Rester"}})
       |> render_submit()
 
       {:ok, view: view}
@@ -179,7 +179,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "Tester"})
+      |> form("#hero-name-form", %{hero: %{name: "Tester"}})
       |> render_submit()
 
       # Just verify the game loads properly
@@ -194,7 +194,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "Restarter"})
+      |> form("#hero-name-form", %{hero: %{name: "Restarter"}})
       |> render_submit()
 
       # Try to trigger a new game event (would need game over first)
@@ -211,7 +211,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "UITester"})
+      |> form("#hero-name-form", %{hero: %{name: "UITester"}})
       |> render_submit()
 
       {:ok, view: view}
@@ -253,7 +253,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       {:ok, view, _html} = live(conn, "/")
 
       view
-      |> form("form", %{name: "Tracker"})
+      |> form("#hero-name-form", %{hero: %{name: "Tracker"}})
       |> render_submit()
 
       {:ok, view: view}

@@ -283,9 +283,10 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
     test "tracks monsters killed by type" do
       state = GameState.new("Tracker")
 
-      # Kill a monster
+      # Kill a monster - ensure hero can deal damage
       weak_monster = %{state.monster | hp: 1, hp_max: 1}
-      state = %{state | monster: weak_monster}
+      strong_hero = %{state.hero | damage_min: 1, damage_max: 5}
+      state = %{state | monster: weak_monster, hero: strong_hero}
       updated_state = GameState.handle_fight(state)
 
       assert map_size(updated_state.hero.monsters_killed_by_type) > 0
