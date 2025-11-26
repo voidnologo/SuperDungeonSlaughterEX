@@ -7,6 +7,11 @@
   {
     "kills": 7,
     "level": 4,
+    "name": "Gina SUperWifey"
+  },
+  {
+    "kills": 7,
+    "level": 4,
     "name": "Henry Humperdink"
   },
   {
@@ -15,9 +20,19 @@
     "name": "Jummy Tingles"
   },
   {
+    "kills": 6,
+    "level": 4,
+    "name": "Huggers McHuggerface"
+  },
+  {
     "kills": 3,
     "level": 3,
     "name": "Henry Humperdink"
+  },
+  {
+    "kills": 2,
+    "level": 2,
+    "name": "Gina SUperWifey"
   },
   {
     "kills": 2,

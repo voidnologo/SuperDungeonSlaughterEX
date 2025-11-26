@@ -4,7 +4,10 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
   alias SuperDungeonSlaughterEx.Game.{GameState, Hero, Monster}
   alias SuperDungeonSlaughterEx.Repos.MonsterRepo
 
-  @test_json_path Path.join([System.tmp_dir!(), "test_monsters_gamestate_#{:rand.uniform(999999)}.json"])
+  @test_json_path Path.join([
+                    System.tmp_dir!(),
+                    "test_monsters_gamestate_#{:rand.uniform(999_999)}.json"
+                  ])
 
   setup do
     # Create test monsters JSON
@@ -45,16 +48,16 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       state = GameState.new("Adventurer")
 
       assert Enum.any?(state.history, fn msg ->
-        String.contains?(msg, "Welcome") && String.contains?(msg, "Adventurer")
-      end)
+               String.contains?(msg, "Welcome") && String.contains?(msg, "Adventurer")
+             end)
     end
 
     test "announces first monster in history" do
       state = GameState.new("Hero")
 
       assert Enum.any?(state.history, fn msg ->
-        String.contains?(msg, "appears")
-      end)
+               String.contains?(msg, "appears")
+             end)
     end
   end
 

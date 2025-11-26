@@ -141,8 +141,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             </.form>
           </div>
         </div>
-
-        <!-- High Scores Modal from Start Page -->
+        
+    <!-- High Scores Modal from Start Page -->
         <%= if @show_high_scores do %>
           <.start_page_high_scores all_scores={ScoreRepo.get_all_scores()} />
         <% end %>
@@ -160,8 +160,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             <div class="lg:col-span-2">
               <.game_history history={@game_state.history} />
             </div>
-
-            <!-- Right sidebar -->
+            
+    <!-- Right sidebar -->
             <div class="space-y-4">
               <!-- Player Stats -->
               <.hero_stats hero={@game_state.hero} />
@@ -169,8 +169,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
               <.monster_stats monster={@game_state.monster} />
             </div>
           </div>
-
-          <!-- Action Buttons -->
+          
+    <!-- Action Buttons -->
           <div class="flex gap-4 justify-center mt-8">
             <button
               phx-click="rest"
@@ -188,8 +188,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             </button>
           </div>
         </div>
-
-        <!-- Game Over Modal Overlay -->
+        
+    <!-- Game Over Modal Overlay -->
         <%= if @game_state.game_over do %>
           <%= if @show_high_scores do %>
             <.high_scores_display

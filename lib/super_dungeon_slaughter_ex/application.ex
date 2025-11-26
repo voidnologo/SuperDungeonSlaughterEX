@@ -9,7 +9,8 @@ defmodule SuperDungeonSlaughterEx.Application do
   def start(_type, _args) do
     children = [
       SuperDungeonSlaughterExWeb.Telemetry,
-      {DNSCluster, query: Application.get_env(:super_dungeon_slaughter_ex, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:super_dungeon_slaughter_ex, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: SuperDungeonSlaughterEx.PubSub},
       # Game repositories
       {SuperDungeonSlaughterEx.Repos.MonsterRepo, []},

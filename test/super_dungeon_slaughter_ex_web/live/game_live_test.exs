@@ -5,8 +5,14 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
   alias SuperDungeonSlaughterEx.Repos.{MonsterRepo, ScoreRepo}
 
-  @test_monsters_path Path.join([System.tmp_dir!(), "test_monsters_live_#{:rand.uniform(999999)}.json"])
-  @test_scores_path Path.join([System.tmp_dir!(), "test_scores_live_#{:rand.uniform(999999)}.json"])
+  @test_monsters_path Path.join([
+                        System.tmp_dir!(),
+                        "test_monsters_live_#{:rand.uniform(999_999)}.json"
+                      ])
+  @test_scores_path Path.join([
+                      System.tmp_dir!(),
+                      "test_scores_live_#{:rand.uniform(999_999)}.json"
+                    ])
 
   setup do
     # Create test data

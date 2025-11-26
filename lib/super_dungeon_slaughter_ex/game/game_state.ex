@@ -28,7 +28,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     %__MODULE__{
       hero: hero,
       monster: monster,
-      history: ["Welcome, #{hero_name}! A wild #{monster.name} appears!"]
+      history: ["Welcome, #{hero_name}! A wild #{monster.display_name} appears!"]
     }
   end
 
@@ -45,7 +45,9 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
       state
       |> Map.put(:hero, updated_hero)
       |> Map.put(:monster, updated_monster)
-      |> add_to_history("#{updated_hero.name} deals #{damage} damage to the #{updated_monster.name}!")
+      |> add_to_history(
+        "#{updated_hero.name} deals #{damage} damage to the #{updated_monster.display_name}!"
+      )
 
     # Check if monster defeated
     if Monster.defeated?(updated_monster) do
@@ -91,7 +93,9 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     state =
       state
       |> Map.put(:hero, updated_hero)
-      |> add_to_history("#{state.monster.name} deals #{damage} damage to #{updated_hero.name}!")
+      |> add_to_history(
+        "#{state.monster.display_name} deals #{damage} damage to #{updated_hero.name}!"
+      )
 
     # Check if hero defeated
     if Hero.defeated?(updated_hero) do
@@ -104,13 +108,13 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   end
 
   defp handle_monster_death(state) do
-    # Record the kill
+    # Record the kill (use base name for stats tracking)
     updated_hero = Hero.record_kill(state.hero, state.monster.name)
 
     state =
       state
       |> Map.put(:hero, updated_hero)
-      |> add_to_history("Congratulations! You killed the #{state.monster.name}!")
+      |> add_to_history("Congratulations! You killed the #{state.monster.display_name}!")
       |> add_to_history("You have killed #{updated_hero.total_kills} monsters.")
 
     # Check for level up
@@ -122,7 +126,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     state
     |> Map.put(:monster, new_monster)
     |> add_to_history("Prepare for your next fight!")
-    |> add_to_history("A wild #{new_monster.name} appears!")
+    |> add_to_history("A wild #{new_monster.display_name} appears!")
   end
 
   defp check_level_up(state) do
@@ -134,9 +138,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
       |> add_to_history("You gained a level!")
       |> add_to_history("You are now level #{updated_hero.level}!")
       |> add_to_history("Max HP: #{updated_hero.hp_max}")
-      |> add_to_history(
-        "Damage: #{updated_hero.damage_min}-#{updated_hero.damage_max}"
-      )
+      |> add_to_history("Damage: #{updated_hero.damage_min}-#{updated_hero.damage_max}")
       |> add_to_history("Heal: #{updated_hero.heal_min}-#{updated_hero.heal_max}")
     else
       state

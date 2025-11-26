@@ -169,7 +169,8 @@ defmodule SuperDungeonSlaughterEx.Game.HeroTest do
       leveled_hero = Hero.level_up(hero)
 
       assert leveled_hero.level == 2
-      assert leveled_hero.hp_max == 12  # 10 + 2
+      # 10 + 2
+      assert leveled_hero.hp_max == 12
       assert leveled_hero.level_kills == 0
       assert leveled_hero.damage_min >= hero.damage_min
       assert leveled_hero.damage_max >= hero.damage_max
@@ -190,8 +191,10 @@ defmodule SuperDungeonSlaughterEx.Game.HeroTest do
 
       leveled_hero = Hero.level_up(hero)
 
-      assert leveled_hero.damage_min == 11  # ceil(10 * 1.1) = 11
-      assert leveled_hero.damage_max == 22  # ceil(20 * 1.1) = 22
+      # ceil(10 * 1.1) = 11
+      assert leveled_hero.damage_min == 11
+      # ceil(20 * 1.1) = 22
+      assert leveled_hero.damage_max == 22
     end
 
     test "scales heal by 15%" do
@@ -199,8 +202,10 @@ defmodule SuperDungeonSlaughterEx.Game.HeroTest do
 
       leveled_hero = Hero.level_up(hero)
 
-      assert leveled_hero.heal_min == 12  # ceil(10 * 1.15) = 12
-      assert leveled_hero.heal_max == 23  # ceil(20 * 1.15) = 23
+      # ceil(10 * 1.15) = 12
+      assert leveled_hero.heal_min == 12
+      # ceil(20 * 1.15) = 23
+      assert leveled_hero.heal_max == 23
     end
 
     test "handles zero stats correctly" do
@@ -208,7 +213,8 @@ defmodule SuperDungeonSlaughterEx.Game.HeroTest do
 
       leveled_hero = Hero.level_up(hero)
 
-      assert leveled_hero.damage_min == 1  # 0 -> 1
+      # 0 -> 1
+      assert leveled_hero.damage_min == 1
     end
   end
 

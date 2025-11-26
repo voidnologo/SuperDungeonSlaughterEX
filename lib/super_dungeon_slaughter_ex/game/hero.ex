@@ -91,7 +91,8 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
       hero
       | total_kills: hero.total_kills + 1,
         level_kills: hero.level_kills + 1,
-        monsters_killed_by_type: Map.put(hero.monsters_killed_by_type, monster_name, current_count + 1)
+        monsters_killed_by_type:
+          Map.put(hero.monsters_killed_by_type, monster_name, current_count + 1)
     }
   end
 
@@ -156,7 +157,8 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
       kills: hero.total_kills,
       damage_dealt: hero.total_damage_dealt,
       health_healed: hero.total_health_healed,
-      monster_breakdown: hero.monsters_killed_by_type |> Enum.sort_by(fn {_, count} -> count end, :desc)
+      monster_breakdown:
+        hero.monsters_killed_by_type |> Enum.sort_by(fn {_, count} -> count end, :desc)
     }
   end
 

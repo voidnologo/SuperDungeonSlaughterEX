@@ -73,7 +73,11 @@ defmodule SuperDungeonSlaughterEx.MixProject do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["compile", "tailwind super_dungeon_slaughter_ex", "esbuild super_dungeon_slaughter_ex"],
+      "assets.build": [
+        "compile",
+        "tailwind super_dungeon_slaughter_ex",
+        "esbuild super_dungeon_slaughter_ex"
+      ],
       "assets.deploy": [
         "tailwind super_dungeon_slaughter_ex --minify",
         "esbuild super_dungeon_slaughter_ex --minify",

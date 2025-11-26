@@ -21,7 +21,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
     >
       <div class="space-y-1 font-mono text-sm">
         <%= for message <- Enum.reverse(@history) do %>
-          <div class="text-green-300"><%= message %></div>
+          <div class="text-green-300">{message}</div>
         <% end %>
       </div>
     </div>
@@ -40,30 +40,30 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       <div class="space-y-2">
         <div class="flex justify-between">
           <span>Name:</span>
-          <span class="text-yellow-400 font-bold"><%= @hero.name %></span>
+          <span class="text-yellow-400 font-bold">{@hero.name}</span>
         </div>
         <div class="flex justify-between">
           <span>Kill Count:</span>
-          <span class="text-yellow-400"><%= @hero.total_kills %></span>
+          <span class="text-yellow-400">{@hero.total_kills}</span>
         </div>
         <div class="flex justify-between">
           <span>Level:</span>
-          <span class="text-yellow-400"><%= @hero.level %></span>
+          <span class="text-yellow-400">{@hero.level}</span>
         </div>
         <div>
           <div class="flex justify-between mb-1">
             <span>HP:</span>
-            <span class={hp_color(@hero)}><%= @hero.hp %>/<%= @hero.hp_max %></span>
+            <span class={hp_color(@hero)}>{@hero.hp}/{@hero.hp_max}</span>
           </div>
           <.hp_bar percentage={Hero.hp_percentage(@hero)} />
         </div>
         <div class="flex justify-between text-sm">
           <span>Damage:</span>
-          <span class="text-gray-400"><%= @hero.damage_min %>-<%= @hero.damage_max %></span>
+          <span class="text-gray-400">{@hero.damage_min}-{@hero.damage_max}</span>
         </div>
         <div class="flex justify-between text-sm">
           <span>Heal:</span>
-          <span class="text-gray-400"><%= @hero.heal_min %>-<%= @hero.heal_max %></span>
+          <span class="text-gray-400">{@hero.heal_min}-{@hero.heal_max}</span>
         </div>
       </div>
     </div>
@@ -81,12 +81,12 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       <h2 class="text-xl font-bold text-orange-400 mb-3">Monster Stats</h2>
       <div class="space-y-2">
         <div class="text-lg font-semibold text-purple-400">
-          <%= @monster.name %>
+          {@monster.display_name}
         </div>
         <div>
           <div class="flex justify-between mb-1">
             <span>HP:</span>
-            <span class={hp_color(@monster)}><%= @monster.hp %>/<%= @monster.hp_max %></span>
+            <span class={hp_color(@monster)}>{@monster.hp}/{@monster.hp_max}</span>
           </div>
           <.hp_bar percentage={Monster.hp_percentage(@monster)} />
         </div>
@@ -130,22 +130,22 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
           <div class="flex justify-between text-green-400">
             <span>Level Achieved:</span>
-            <span class="text-yellow-300 font-bold"><%= @stats.level %></span>
+            <span class="text-yellow-300 font-bold">{@stats.level}</span>
           </div>
 
           <div class="flex justify-between text-green-400">
             <span>Monsters Killed:</span>
-            <span class="text-yellow-300 font-bold"><%= @stats.kills %></span>
+            <span class="text-yellow-300 font-bold">{@stats.kills}</span>
           </div>
 
           <div class="flex justify-between text-green-400">
             <span>Total Damage Dealt:</span>
-            <span class="text-yellow-300 font-bold"><%= @stats.damage_dealt %></span>
+            <span class="text-yellow-300 font-bold">{@stats.damage_dealt}</span>
           </div>
 
           <div class="flex justify-between text-green-400">
             <span>Total Health Healed:</span>
-            <span class="text-yellow-300 font-bold"><%= @stats.health_healed %></span>
+            <span class="text-yellow-300 font-bold">{@stats.health_healed}</span>
           </div>
 
           <%= if @stats.monster_breakdown != [] do %>
@@ -154,8 +154,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               <div class="space-y-1">
                 <%= for {monster_name, count} <- @stats.monster_breakdown do %>
                   <div class="flex justify-between text-green-300">
-                    <span><%= monster_name %>:</span>
-                    <span class="text-yellow-300"><%= count %></span>
+                    <span>{monster_name}:</span>
+                    <span class="text-yellow-300">{count}</span>
                   </div>
                 <% end %>
               </div>
@@ -168,7 +168,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
             phx-click="toggle_high_scores"
             class="flex-1 py-4 bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold rounded transition-colors"
           >
-            <%= if @show_high_scores, do: "Back to Stats", else: "View High Scores" %>
+            {if @show_high_scores, do: "Back to Stats", else: "View High Scores"}
           </button>
           <button
             phx-click="new_game"
@@ -206,12 +206,12 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
             <%= for {score, index} <- Enum.with_index(@top_10, 1) do %>
               <div class="flex justify-between p-2 rounded hover:bg-gray-700 transition-colors">
                 <div class="flex gap-4 flex-1">
-                  <span class={["w-8 text-right font-bold", rank_color(index)]}><%= index %>.</span>
-                  <span class="flex-1"><%= score.name %></span>
+                  <span class={["w-8 text-right font-bold", rank_color(index)]}>{index}.</span>
+                  <span class="flex-1">{score.name}</span>
                 </div>
                 <div class="flex gap-6">
-                  <span class="text-yellow-400">Lvl <%= score.level %></span>
-                  <span class="text-purple-400 w-16 text-right"><%= score.kills %> kills</span>
+                  <span class="text-yellow-400">Lvl {score.level}</span>
+                  <span class="text-purple-400 w-16 text-right">{score.kills} kills</span>
                 </div>
               </div>
             <% end %>
@@ -267,27 +267,37 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
           <%= for {score, index} <- Enum.with_index(@top_10, 1) do %>
             <div class={[
               "flex justify-between p-2 rounded",
-              is_player_score?(score, @player_score, @player_in_top_10) && "bg-green-900 border-2 border-green-400"
+              is_player_score?(score, @player_score, @player_in_top_10) &&
+                "bg-green-900 border-2 border-green-400"
             ]}>
               <div class="flex gap-4 flex-1">
                 <span class={[
                   "w-8 text-right font-bold",
                   rank_color(index)
-                ]}><%= index %>.</span>
+                ]}>
+                  {index}.
+                </span>
                 <span class={[
                   "flex-1",
-                  is_player_score?(score, @player_score, @player_in_top_10) && "text-green-300 font-bold"
-                ]}><%= score.name %></span>
+                  is_player_score?(score, @player_score, @player_in_top_10) &&
+                    "text-green-300 font-bold"
+                ]}>
+                  {score.name}
+                </span>
               </div>
               <div class="flex gap-6">
                 <span class={[
                   "text-yellow-400",
                   is_player_score?(score, @player_score, @player_in_top_10) && "font-bold"
-                ]}>Lvl <%= score.level %></span>
+                ]}>
+                  Lvl {score.level}
+                </span>
                 <span class={[
                   "text-purple-400 w-16 text-right",
                   is_player_score?(score, @player_score, @player_in_top_10) && "font-bold"
-                ]}><%= score.kills %> kills</span>
+                ]}>
+                  {score.kills} kills
+                </span>
               </div>
             </div>
           <% end %>
@@ -296,15 +306,15 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
             <div class="mt-6 pt-4 border-t-2 border-gray-600">
               <div class="flex justify-between p-2 rounded bg-blue-900 border-2 border-blue-400">
                 <div class="flex gap-4 flex-1">
-                  <span class="w-8 text-right font-bold text-blue-300"><%= @player_rank %>.</span>
+                  <span class="w-8 text-right font-bold text-blue-300">{@player_rank}.</span>
                   <span class="flex-1 text-blue-200 font-bold">
-                    <%= @player_score.name %> (Your Score)
+                    {@player_score.name} (Your Score)
                   </span>
                 </div>
                 <div class="flex gap-6">
-                  <span class="text-yellow-400 font-bold">Lvl <%= @player_score.level %></span>
+                  <span class="text-yellow-400 font-bold">Lvl {@player_score.level}</span>
                   <span class="text-purple-400 font-bold w-16 text-right">
-                    <%= @player_score.kills %> kills
+                    {@player_score.kills} kills
                   </span>
                 </div>
               </div>
