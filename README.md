@@ -1,17 +1,21 @@
-# Super Dungeon Slaughter EX 🐉⚔️
+# Super Dungeon Slaughter EX 🐉⚔️🧪
 
-A retro-styled dungeon crawler web game built with Elixir Phoenix LiveView. This is a modern port of the Python CLI game "Super Dungeon Slaughter" featuring real-time reactive UI, turn-based combat, character progression, and comprehensive statistics tracking.
+A retro-styled dungeon crawler web game built with Elixir Phoenix LiveView. This is a modern port of the Python CLI game "Super Dungeon Slaughter" featuring real-time reactive UI, turn-based combat, character progression, magical potions, and comprehensive statistics tracking.
 
 ## Features
 
 - **Real-time Gameplay** - LiveView provides instant feedback without page reloads
 - **Turn-based Combat** - Fight or rest to survive against increasingly powerful monsters
 - **Character Progression** - Level up system with stat scaling
+- **Inventory System** - Collect and manage potions with strategic 5-slot inventory
+- **Healing & Damage Potions** - Three quality tiers (Minor, Normal, Major) with percentage-based effects
+- **Potion Drops** - Randomly dropped potions from defeated monsters with varied flavors
 - **11 Monster Types** - From weak Kobolds to fearsome Greater Dragons
+- **Enhanced History** - Color-coded combat log with icons for different event types
 - **Statistics Tracking** - Total damage dealt, health healed, and kill count per monster type
 - **Game Over Screen** - Comprehensive statistics display on death
 - **High Score System** - Persistent leaderboard stored in JSON
-- **Retro Aesthetic** - Green terminal-style text with color-coded health indicators
+- **Retro Aesthetic** - Terminal-style text with color-coded events and health indicators
 
 ## Getting Started
 
@@ -52,8 +56,19 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 2. **Combat Actions**:
    - **FIGHT** - Attack the monster (monster will counter-attack if alive)
    - **REST** - Heal yourself (monster will attack you while resting)
-3. **Leveling Up** - Kill N monsters at level N to advance (e.g., 3 kills at level 3)
-4. **Game Over** - When your hero dies, view your final statistics and start a new game
+   - **USE POTION** - Click a potion in your inventory to use it
+3. **Inventory Management**:
+   - **5 Inventory Slots** - Limited space forces strategic decisions
+   - **Starting Potion** - Begin with 1 Normal Healing Potion
+   - **Potion Drops** - 10% chance to drop from defeated monsters
+   - **Full Inventory** - Swap potions when inventory is full
+4. **Potion Types**:
+   - **Healing Potions** - Restore health (25%, 50%, or 100% of max HP)
+   - **Damage Potions** - Throw at monsters (25%, 50%, or 100% of monster HP)
+   - **Quality Tiers** - Minor (test tube 🧪), Normal (flask ⚗️), Major (large container 🏺)
+   - **Flavors** - Damage potions come in Fire, Acid, Lightning, Poison, Frost, Arcane, Shadow, and Radiant
+5. **Leveling Up** - Kill N monsters at level N to advance (e.g., 3 kills at level 3)
+6. **Game Over** - When your hero dies, view your final statistics and compare your score on the leaderboard
 
 ## Testing
 
@@ -174,14 +189,41 @@ Edit `priv/data/monsters.json`:
 
 Ready to run in production? Please check the [Phoenix deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+## Game Mechanics
+
+### Combat System
+- **Hero Damage** - Random between damage_min and damage_max (scales with level)
+- **Monster Damage** - Gaussian distribution based on monster strength
+- **Healing** - Random between heal_min and heal_max (scales with level)
+- **Counter-attacks** - Monsters strike back after Fight action (if alive)
+
+### Potion System
+- **Drop Chance** - 10% total (5% Minor, 3% Normal, 2% Major)
+- **Healing Effect** - Restores percentage of max HP (capped at maximum)
+- **Damage Effect** - Deals percentage of monster's current HP
+- **Inventory Limit** - 5 slots encourages strategic use
+- **Monster Counter** - Using damage potion triggers monster counter-attack
+
+### Leveling System
+- **Threshold** - Kill N monsters at level N to advance
+- **HP Growth** - Max HP increases by new level value
+- **Damage Growth** - 10% increase per level (minimum +1)
+- **Heal Growth** - 15% increase per level (minimum +1)
+
+### Visual Feedback
+- **Health Colors** - Green (>66%), Yellow (33-66%), Red (≤33%)
+- **Event Icons** - Combat 🗡️, Healing ❤️, Victory ⭐, Items 🎁, Level Up 🎉, Death 💀
+- **Separator Lines** - Visual breaks for major events like level ups
+
 ## Future Enhancements
 
 The architecture supports easy addition of:
-- Inventory system (items, weapons, armor)
-- Consumables (potions, scrolls)
+- Equipment system (weapons, armor)
+- More consumables (scrolls, elixirs)
 - Spells and magic system
+- Special abilities
 - Multiplayer features
-- Achievements
+- Achievements and challenges
 
 ## Credits
 
