@@ -35,3 +35,6 @@ super_dungeon_slaughter_ex-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# score file
+priv/data/scores.json
+
