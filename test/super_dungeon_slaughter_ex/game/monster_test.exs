@@ -191,4 +191,151 @@ defmodule SuperDungeonSlaughterEx.Game.MonsterTest do
       assert Monster.defeated?(overkilled)
     end
   end
+
+  describe "monster descriptors" do
+    test "display_name includes two descriptors and base name" do
+      monster = Monster.from_template(@sample_template)
+
+      # Display name should have format: "HP_Descriptor Damage_Descriptor Base_Name"
+      parts = String.split(monster.display_name, " ")
+      assert length(parts) >= 3
+
+      # Last part(s) should be the base name
+      assert String.contains?(monster.display_name, @sample_template.name)
+    end
+
+    test "base name is preserved for statistics tracking" do
+      monster = Monster.from_template(@sample_template)
+      assert monster.name == @sample_template.name
+    end
+
+    test "display_name differs from base name" do
+      monster = Monster.from_template(@sample_template)
+      assert monster.display_name != monster.name
+    end
+
+    test "generates varied descriptors across multiple monsters" do
+      monsters = for _ <- 1..50, do: Monster.from_template(@sample_template)
+      display_names = Enum.map(monsters, & &1.display_name) |> Enum.uniq()
+
+      # Should have multiple unique display names due to randomization
+      assert length(display_names) > 10
+    end
+
+    test "HP descriptor reflects actual HP value" do
+      # Create template with specific HP values to test buckets
+      template_low_hp = %{@sample_template | avg_hp: 10.0, hp_sigma: 1.0}
+
+      # Generate many monsters and check distribution of descriptors
+      monsters = for _ <- 1..100, do: Monster.from_template(template_low_hp)
+
+      # Categorize by HP
+      low_hp = Enum.filter(monsters, fn m -> m.hp < 9 end)
+      mid_hp = Enum.filter(monsters, fn m -> m.hp >= 9 and m.hp <= 11 end)
+      high_hp = Enum.filter(monsters, fn m -> m.hp > 11 end)
+
+      # Check that low HP monsters tend to have "weak" descriptors
+      if length(low_hp) > 0 do
+        sample_low = Enum.random(low_hp)
+
+        assert String.contains?(sample_low.display_name, "Frail") or
+                 String.contains?(sample_low.display_name, "Weak") or
+                 String.contains?(sample_low.display_name, "Sickly") or
+                 String.contains?(sample_low.display_name, "Fragile") or
+                 String.contains?(sample_low.display_name, "Feeble") or
+                 String.contains?(sample_low.display_name, "Average") or
+                 String.contains?(sample_low.display_name, "Normal") or
+                 String.contains?(sample_low.display_name, "Typical") or
+                 String.contains?(sample_low.display_name, "Standard") or
+                 String.contains?(sample_low.display_name, "Ordinary")
+      end
+
+      # Verify all monsters have valid descriptors
+      Enum.each(monsters, fn monster ->
+        assert String.length(monster.display_name) > String.length(@sample_template.name)
+      end)
+    end
+
+    test "descriptor contains valid HP words" do
+      hp_words = [
+        "Frail",
+        "Weak",
+        "Sickly",
+        "Fragile",
+        "Feeble",
+        "Average",
+        "Normal",
+        "Typical",
+        "Standard",
+        "Ordinary",
+        "Robust",
+        "Sturdy",
+        "Hardy",
+        "Tough",
+        "Resilient"
+      ]
+
+      monster = Monster.from_template(@sample_template)
+      assert Enum.any?(hp_words, fn word -> String.contains?(monster.display_name, word) end)
+    end
+
+    test "descriptor contains valid damage words" do
+      damage_words = [
+        "Timid",
+        "Weak",
+        "Harmless",
+        "Gentle",
+        "Docile",
+        "Capable",
+        "Moderate",
+        "Competent",
+        "Trained",
+        "Skilled",
+        "Vicious",
+        "Fierce",
+        "Brutal",
+        "Savage",
+        "Deadly"
+      ]
+
+      monster = Monster.from_template(@sample_template)
+      assert Enum.any?(damage_words, fn word -> String.contains?(monster.display_name, word) end)
+    end
+
+    test "handles zero sigma for HP gracefully" do
+      template = %{@sample_template | hp_sigma: 0.0}
+      monster = Monster.from_template(template)
+
+      # Should still generate a valid display name with middle-tier descriptor
+      assert is_binary(monster.display_name)
+      assert String.length(monster.display_name) > 0
+      assert String.contains?(monster.display_name, template.name)
+    end
+
+    test "handles zero sigma for damage gracefully" do
+      template = %{@sample_template | damage_sigma: 0.0}
+      monster = Monster.from_template(template)
+
+      # Should still generate a valid display name with middle-tier descriptor
+      assert is_binary(monster.display_name)
+      assert String.length(monster.display_name) > 0
+      assert String.contains?(monster.display_name, template.name)
+    end
+
+    test "extreme HP values get appropriate descriptors" do
+      # Very high HP template
+      template_high = %{@sample_template | avg_hp: 100.0, hp_sigma: 5.0}
+      monsters_high = for _ <- 1..20, do: Monster.from_template(template_high)
+
+      # Should have some with high HP descriptors
+      high_descriptors = ["Robust", "Sturdy", "Hardy", "Tough", "Resilient"]
+
+      has_high_descriptor =
+        Enum.any?(monsters_high, fn m ->
+          Enum.any?(high_descriptors, fn desc -> String.contains?(m.display_name, desc) end)
+        end)
+
+      assert has_high_descriptor
+    end
+  end
 end

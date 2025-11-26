@@ -6,8 +6,8 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepoSimpleTest do
 
   setup do
     # Create unique paths and names for each test
-    test_path = Path.join([System.tmp_dir!(), "test_monsters_#{:rand.uniform(999999999)}.json"])
-    test_name = :"test_monster_repo_#{:rand.uniform(999999999)}"
+    test_path = Path.join([System.tmp_dir!(), "test_monsters_#{:rand.uniform(999_999_999)}.json"])
+    test_name = :"test_monster_repo_#{:rand.uniform(999_999_999)}"
 
     # Create test monsters JSON
     test_data = %{

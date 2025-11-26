@@ -6,8 +6,8 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepoSimpleTest do
 
   setup do
     # Create unique path and name for each test
-    test_path = Path.join([System.tmp_dir!(), "test_scores_#{:rand.uniform(999999999)}.json"])
-    test_name = :"test_score_repo_#{:rand.uniform(999999999)}"
+    test_path = Path.join([System.tmp_dir!(), "test_scores_#{:rand.uniform(999_999_999)}.json"])
+    test_name = :"test_score_repo_#{:rand.uniform(999_999_999)}"
 
     # Start with empty scores file
     File.write!(test_path, "[]")

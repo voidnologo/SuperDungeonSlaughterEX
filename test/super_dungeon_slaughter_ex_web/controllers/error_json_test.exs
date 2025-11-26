@@ -2,7 +2,9 @@ defmodule SuperDungeonSlaughterExWeb.ErrorJSONTest do
   use SuperDungeonSlaughterExWeb.ConnCase, async: true
 
   test "renders 404" do
-    assert SuperDungeonSlaughterExWeb.ErrorJSON.render("404.json", %{}) == %{errors: %{detail: "Not Found"}}
+    assert SuperDungeonSlaughterExWeb.ErrorJSON.render("404.json", %{}) == %{
+             errors: %{detail: "Not Found"}
+           }
   end
 
   test "renders 500" do
