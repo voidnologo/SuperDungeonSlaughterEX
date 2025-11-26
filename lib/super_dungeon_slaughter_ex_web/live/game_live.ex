@@ -12,6 +12,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       socket
       |> assign(:game_state, nil)
       |> assign(:show_name_prompt, true)
+      |> assign(:show_high_scores, false)
       |> assign(:form, form)
 
     {:ok, socket}
@@ -84,8 +85,14 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     socket =
       socket
       |> assign(:game_state, game_state)
+      |> assign(:show_high_scores, false)
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("toggle_high_scores", _params, socket) do
+    {:noreply, assign(socket, :show_high_scores, !socket.assigns.show_high_scores)}
   end
 
   defp save_score(hero) do
@@ -123,10 +130,22 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
                 >
                   Begin Adventure
                 </button>
+                <button
+                  type="button"
+                  phx-click="toggle_high_scores"
+                  class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white text-xl font-bold rounded transition-colors"
+                >
+                  View High Scores
+                </button>
               </div>
             </.form>
           </div>
         </div>
+
+        <!-- High Scores Modal from Start Page -->
+        <%= if @show_high_scores do %>
+          <.start_page_high_scores all_scores={ScoreRepo.get_all_scores()} />
+        <% end %>
       <% else %>
         <!-- Game UI -->
         <header class="text-center py-6">
@@ -172,7 +191,16 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
 
         <!-- Game Over Modal Overlay -->
         <%= if @game_state.game_over do %>
-          <.game_over_stats hero={@game_state.hero} />
+          <%= if @show_high_scores do %>
+            <.high_scores_display
+              all_scores={ScoreRepo.get_all_scores()}
+              player_name={@game_state.hero.name}
+              player_level={@game_state.hero.level}
+              player_kills={@game_state.hero.total_kills}
+            />
+          <% else %>
+            <.game_over_stats hero={@game_state.hero} show_high_scores={@show_high_scores} />
+          <% end %>
         <% end %>
       <% end %>
     </div>
