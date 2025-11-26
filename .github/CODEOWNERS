@@ -1,0 +1,5 @@
+# Code owners for this repository
+# These users have admin privileges and can bypass branch protection
+
+# Default owner for everything in the repo
+* @voidnologo
