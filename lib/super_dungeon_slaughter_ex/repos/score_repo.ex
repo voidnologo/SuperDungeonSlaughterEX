@@ -40,6 +40,14 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepo do
     GenServer.call(__MODULE__, {:get_top, limit})
   end
 
+  @doc """
+  Get all scores.
+  """
+  @spec get_all_scores() :: [Score.t()]
+  def get_all_scores do
+    GenServer.call(__MODULE__, :get_all)
+  end
+
   # Server Callbacks
 
   @impl true
@@ -59,6 +67,11 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepo do
   def handle_call({:get_top, limit}, _from, state) do
     top_scores = Enum.take(state.scores, limit)
     {:reply, top_scores, state}
+  end
+
+  @impl true
+  def handle_call(:get_all, _from, state) do
+    {:reply, state.scores, state}
   end
 
   # Private Functions
