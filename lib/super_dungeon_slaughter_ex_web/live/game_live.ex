@@ -95,6 +95,61 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     {:noreply, assign(socket, :show_high_scores, !socket.assigns.show_high_scores)}
   end
 
+  @impl true
+  def handle_event("show_use_potion_modal", %{"slot" => slot_str}, socket) do
+    if socket.assigns.game_state.game_over do
+      {:noreply, socket}
+    else
+      slot_index = String.to_integer(slot_str)
+      game_state = GameState.show_use_potion_modal(socket.assigns.game_state, slot_index)
+      {:noreply, assign(socket, :game_state, game_state)}
+    end
+  end
+
+  @impl true
+  def handle_event("use_potion", %{"slot" => slot_str}, socket) do
+    if socket.assigns.game_state.game_over do
+      {:noreply, socket}
+    else
+      slot_index = String.to_integer(slot_str)
+      game_state = GameState.handle_use_potion(socket.assigns.game_state, slot_index)
+
+      # Auto-save score if game over
+      socket =
+        if game_state.game_over do
+          save_score(game_state.hero)
+          assign(socket, :game_state, game_state)
+        else
+          assign(socket, :game_state, game_state)
+        end
+
+      {:noreply, socket}
+    end
+  end
+
+  @impl true
+  def handle_event("cancel_use_potion", _params, socket) do
+    game_state = GameState.close_use_modal(socket.assigns.game_state)
+    {:noreply, assign(socket, :game_state, game_state)}
+  end
+
+  @impl true
+  def handle_event("pickup_potion", %{"slot" => slot_str}, socket) do
+    if socket.assigns.game_state.game_over do
+      {:noreply, socket}
+    else
+      slot_index = String.to_integer(slot_str)
+      game_state = GameState.handle_pickup_potion(socket.assigns.game_state, slot_index)
+      {:noreply, assign(socket, :game_state, game_state)}
+    end
+  end
+
+  @impl true
+  def handle_event("decline_potion", _params, socket) do
+    game_state = GameState.handle_decline_potion(socket.assigns.game_state)
+    {:noreply, assign(socket, :game_state, game_state)}
+  end
+
   defp save_score(hero) do
     score = Score.new(hero.name, hero.level, hero.total_kills)
     ScoreRepo.add_score(score)
@@ -188,6 +243,23 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             </button>
           </div>
         </div>
+        
+    <!-- Potion Use Confirmation Modal -->
+        <%= if @game_state.show_potion_use_modal and @game_state.selected_potion do %>
+          <.potion_use_modal
+            potion={@game_state.selected_potion}
+            slot_index={@game_state.selected_potion_slot}
+            hero={@game_state.hero}
+          />
+        <% end %>
+        
+    <!-- Potion Pickup/Swap Modal -->
+        <%= if @game_state.show_potion_pickup_modal and @game_state.pending_potion_drop do %>
+          <.potion_pickup_modal
+            dropped_potion={@game_state.pending_potion_drop}
+            hero={@game_state.hero}
+          />
+        <% end %>
         
     <!-- Game Over Modal Overlay -->
         <%= if @game_state.game_over do %>

@@ -76,68 +76,114 @@ defmodule SuperDungeonSlaughterEx.Game.Potion do
   def get_icon_size_class(%{quality: :normal}), do: "text-base"
   def get_icon_size_class(%{quality: :major}), do: "text-xl"
 
+  # Color configuration for all potion types and flavors
+  @color_config %{
+    {:healing, :minor} => %{
+      text: "text-green-300",
+      bg: "bg-green-900",
+      border: "border-green-500"
+    },
+    {:healing, :normal} => %{
+      text: "text-green-400",
+      bg: "bg-green-800",
+      border: "border-green-500"
+    },
+    {:healing, :major} => %{
+      text: "text-green-500",
+      bg: "bg-green-700",
+      border: "border-green-500"
+    },
+    {:damage, :fire} => %{
+      text: "text-orange-500",
+      bg: "bg-orange-900",
+      border: "border-orange-500"
+    },
+    {:damage, :acid} => %{
+      text: "text-lime-400",
+      bg: "bg-lime-900",
+      border: "border-lime-500"
+    },
+    {:damage, :lightning} => %{
+      text: "text-blue-400",
+      bg: "bg-blue-900",
+      border: "border-blue-500"
+    },
+    {:damage, :poison} => %{
+      text: "text-purple-500",
+      bg: "bg-purple-900",
+      border: "border-purple-500"
+    },
+    {:damage, :frost} => %{
+      text: "text-cyan-400",
+      bg: "bg-cyan-900",
+      border: "border-cyan-500"
+    },
+    {:damage, :arcane} => %{
+      text: "text-pink-500",
+      bg: "bg-pink-900",
+      border: "border-pink-500"
+    },
+    {:damage, :shadow} => %{
+      text: "text-gray-400",
+      bg: "bg-gray-800",
+      border: "border-gray-500"
+    },
+    {:damage, :radiant} => %{
+      text: "text-yellow-300",
+      bg: "bg-yellow-900",
+      border: "border-yellow-500"
+    },
+    {:damage, :default} => %{
+      text: "text-red-500",
+      bg: "bg-red-900",
+      border: "border-red-500"
+    }
+  }
+
   @doc """
   Get the Tailwind CSS color class for the potion.
   Healing potions are green-toned, damage potions vary by flavor.
   """
   @spec get_color_class(t()) :: String.t()
-  def get_color_class(%{category: :healing, quality: :minor}), do: "text-green-300"
-  def get_color_class(%{category: :healing, quality: :normal}), do: "text-green-400"
-  def get_color_class(%{category: :healing, quality: :major}), do: "text-green-500"
-
-  def get_color_class(%{category: :damage, flavor: :fire}), do: "text-orange-500"
-  def get_color_class(%{category: :damage, flavor: :acid}), do: "text-lime-400"
-  def get_color_class(%{category: :damage, flavor: :lightning}), do: "text-blue-400"
-  def get_color_class(%{category: :damage, flavor: :poison}), do: "text-purple-500"
-  def get_color_class(%{category: :damage, flavor: :frost}), do: "text-cyan-400"
-  def get_color_class(%{category: :damage, flavor: :arcane}), do: "text-pink-500"
-  def get_color_class(%{category: :damage, flavor: :shadow}), do: "text-gray-400"
-  def get_color_class(%{category: :damage, flavor: :radiant}), do: "text-yellow-300"
-  def get_color_class(%{category: :damage}), do: "text-red-500"
+  def get_color_class(potion) do
+    @color_config[potion_key(potion)].text
+  end
 
   @doc """
   Get the background color class for potion slots.
   """
   @spec get_bg_color_class(t()) :: String.t()
-  def get_bg_color_class(%{category: :healing, quality: :minor}), do: "bg-green-900"
-  def get_bg_color_class(%{category: :healing, quality: :normal}), do: "bg-green-800"
-  def get_bg_color_class(%{category: :healing, quality: :major}), do: "bg-green-700"
-
-  def get_bg_color_class(%{category: :damage, flavor: :fire}), do: "bg-orange-900"
-  def get_bg_color_class(%{category: :damage, flavor: :acid}), do: "bg-lime-900"
-  def get_bg_color_class(%{category: :damage, flavor: :lightning}), do: "bg-blue-900"
-  def get_bg_color_class(%{category: :damage, flavor: :poison}), do: "bg-purple-900"
-  def get_bg_color_class(%{category: :damage, flavor: :frost}), do: "bg-cyan-900"
-  def get_bg_color_class(%{category: :damage, flavor: :arcane}), do: "bg-pink-900"
-  def get_bg_color_class(%{category: :damage, flavor: :shadow}), do: "bg-gray-800"
-  def get_bg_color_class(%{category: :damage, flavor: :radiant}), do: "bg-yellow-900"
-  def get_bg_color_class(%{category: :damage}), do: "bg-red-900"
+  def get_bg_color_class(potion) do
+    @color_config[potion_key(potion)].bg
+  end
 
   @doc """
   Get the border color class for potion slots.
   """
   @spec get_border_color_class(t()) :: String.t()
-  def get_border_color_class(%{category: :healing}), do: "border-green-500"
-
-  def get_border_color_class(%{category: :damage, flavor: :fire}), do: "border-orange-500"
-  def get_border_color_class(%{category: :damage, flavor: :acid}), do: "border-lime-500"
-  def get_border_color_class(%{category: :damage, flavor: :lightning}), do: "border-blue-500"
-  def get_border_color_class(%{category: :damage, flavor: :poison}), do: "border-purple-500"
-  def get_border_color_class(%{category: :damage, flavor: :frost}), do: "border-cyan-500"
-  def get_border_color_class(%{category: :damage, flavor: :arcane}), do: "border-pink-500"
-  def get_border_color_class(%{category: :damage, flavor: :shadow}), do: "border-gray-500"
-  def get_border_color_class(%{category: :damage, flavor: :radiant}), do: "border-yellow-500"
-  def get_border_color_class(%{category: :damage}), do: "border-red-500"
+  def get_border_color_class(potion) do
+    @color_config[potion_key(potion)].border
+  end
 
   # Private Functions
+
+  @id_random_range 1_000_000
 
   @spec generate_id() :: String.t()
   defp generate_id do
     # Generate a simple unique ID using timestamp + random number
     timestamp = System.system_time(:microsecond)
-    random = :rand.uniform(1_000_000)
+    random = :rand.uniform(@id_random_range)
     "potion_#{timestamp}_#{random}"
   end
+
+  @spec potion_key(t()) :: {category(), quality() | flavor()}
+  defp potion_key(%{category: :healing, quality: quality}), do: {:healing, quality}
+
+  defp potion_key(%{category: :damage, flavor: flavor}) when not is_nil(flavor),
+    do: {:damage, flavor}
+
+  defp potion_key(%{category: :damage}), do: {:damage, :default}
 
   @spec generate_display_name(quality(), category(), flavor() | nil) :: String.t()
   defp generate_display_name(quality, :healing, _flavor) do
