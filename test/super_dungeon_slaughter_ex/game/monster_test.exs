@@ -231,8 +231,8 @@ defmodule SuperDungeonSlaughterEx.Game.MonsterTest do
 
       # Categorize by HP
       low_hp = Enum.filter(monsters, fn m -> m.hp < 9 end)
-      mid_hp = Enum.filter(monsters, fn m -> m.hp >= 9 and m.hp <= 11 end)
-      high_hp = Enum.filter(monsters, fn m -> m.hp > 11 end)
+      _mid_hp = Enum.filter(monsters, fn m -> m.hp >= 9 and m.hp <= 11 end)
+      _high_hp = Enum.filter(monsters, fn m -> m.hp > 11 end)
 
       # Check that low HP monsters tend to have "weak" descriptors
       if length(low_hp) > 0 do

@@ -4,11 +4,11 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   """
 
   use Phoenix.Component
-  alias SuperDungeonSlaughterEx.Game.{Hero, Monster}
+  alias SuperDungeonSlaughterEx.Game.{Hero, Monster, Potion}
   alias SuperDungeonSlaughterEx.Score
 
   @doc """
-  Game history display component showing scrollable combat log.
+  Game history display component showing scrollable combat log with icons and colors.
   """
   attr :history, :list, required: true
 
@@ -20,8 +20,15 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       class="border-2 border-gray-700 rounded bg-black h-[600px] overflow-y-auto p-4"
     >
       <div class="space-y-1 font-mono text-sm">
-        <%= for message <- Enum.reverse(@history) do %>
-          <div class="text-green-300">{message}</div>
+        <%= for entry <- Enum.reverse(@history) do %>
+          <div class={[
+            "flex items-start gap-2 py-0.5",
+            SuperDungeonSlaughterEx.Game.HistoryEntry.get_color_class(entry.type),
+            entry.type == :level_up && "font-bold"
+          ]}>
+            <span class="text-base flex-shrink-0">{entry.icon}</span>
+            <span class="flex-1">{entry.message}</span>
+          </div>
         <% end %>
       </div>
     </div>
@@ -29,7 +36,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   end
 
   @doc """
-  Hero stats panel component.
+  Hero stats panel component with integrated inventory display.
   """
   attr :hero, :map, required: true
 
@@ -66,6 +73,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
           <span class="text-gray-400">{@hero.heal_min}-{@hero.heal_max}</span>
         </div>
       </div>
+      <.inventory_display inventory={@hero.inventory} />
     </div>
     """
   end
@@ -107,6 +115,175 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
         class={"h-full rounded transition-all duration-300 #{hp_bar_color(@percentage)}"}
         style={"width: #{@percentage * 100}%"}
       />
+    </div>
+    """
+  end
+
+  @doc """
+  Inventory display component showing 5 potion slots.
+  Empty slots are grayed out, filled slots are clickable with hover effects.
+  """
+  attr :inventory, :map, required: true
+
+  def inventory_display(assigns) do
+    ~H"""
+    <div class="mt-4 pt-4 border-t-2 border-gray-700">
+      <h3 class="text-lg font-bold text-orange-400 mb-2">Inventory</h3>
+      <div class="grid grid-cols-5 gap-2">
+        <%= for {slot, index} <- Enum.with_index(@inventory.slots) do %>
+          <%= if slot do %>
+            <button
+              phx-click="show_use_potion_modal"
+              phx-value-slot={index}
+              class={[
+                "aspect-square rounded border-2 flex items-center justify-center transition-all",
+                "hover:scale-105 hover:shadow-lg cursor-pointer",
+                Potion.get_bg_color_class(slot),
+                Potion.get_border_color_class(slot)
+              ]}
+              title={slot.display_name}
+            >
+              <span class={[Potion.get_color_class(slot), Potion.get_icon_size_class(slot)]}>
+                {Potion.get_icon(slot)}
+              </span>
+            </button>
+          <% else %>
+            <div class="aspect-square rounded border-2 border-gray-600 bg-gray-700 flex items-center justify-center opacity-50">
+              <span class="text-gray-500 text-sm">Empty</span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Potion use confirmation modal.
+  Shows potion details and asks for confirmation before use.
+  """
+  attr :potion, :map, required: true
+  attr :slot_index, :integer, required: true
+  attr :hero, :map, required: true
+
+  def potion_use_modal(assigns) do
+    effect_description =
+      case assigns.potion.category do
+        :healing ->
+          heal_amount = Potion.calculate_healing(assigns.potion, assigns.hero.hp_max)
+          "Restore #{heal_amount} HP (#{get_percentage_text(assigns.potion.quality)} of max HP)"
+
+        :damage ->
+          "Throw at monster (deals #{get_percentage_text(assigns.potion.quality)} of monster's current HP)"
+      end
+
+    assigns = assign(assigns, :effect_description, effect_description)
+
+    ~H"""
+    <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-gray-800 border-4 border-purple-500 rounded-lg p-6 max-w-md w-full mx-4">
+        <h2 class="text-2xl font-bold text-purple-400 text-center mb-4">Use Potion?</h2>
+
+        <div class={[
+          "rounded-lg p-6 mb-4 flex flex-col items-center border-2",
+          Potion.get_bg_color_class(@potion),
+          Potion.get_border_color_class(@potion)
+        ]}>
+          <span class={[Potion.get_color_class(@potion), "text-5xl mb-2"]}>
+            {Potion.get_icon(@potion)}
+          </span>
+          <div class={["text-xl font-bold mb-2", Potion.get_color_class(@potion)]}>
+            {@potion.display_name}
+          </div>
+          <div class="text-gray-300 text-center text-sm">
+            {@effect_description}
+          </div>
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            phx-click="cancel_use_potion"
+            class="flex-1 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            phx-click="use_potion"
+            phx-value-slot={@slot_index}
+            class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded transition-colors"
+          >
+            Use It!
+          </button>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Potion pickup/swap modal.
+  Shows when inventory is full and offers to swap potions.
+  """
+  attr :dropped_potion, :map, required: true
+  attr :hero, :map, required: true
+
+  def potion_pickup_modal(assigns) do
+    ~H"""
+    <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-gray-800 border-4 border-yellow-500 rounded-lg p-6 max-w-lg w-full mx-4">
+        <h2 class="text-2xl font-bold text-yellow-400 text-center mb-4">
+          Inventory Full!
+        </h2>
+
+        <div class="mb-4">
+          <p class="text-center text-gray-300 mb-4">
+            A potion dropped, but your inventory is full. Swap with an existing potion?
+          </p>
+
+          <div class={[
+            "rounded-lg p-4 flex flex-col items-center border-2 mb-4",
+            Potion.get_bg_color_class(@dropped_potion),
+            Potion.get_border_color_class(@dropped_potion)
+          ]}>
+            <span class={[Potion.get_color_class(@dropped_potion), "text-4xl mb-1"]}>
+              {Potion.get_icon(@dropped_potion)}
+            </span>
+            <div class={["font-bold", Potion.get_color_class(@dropped_potion)]}>
+              {@dropped_potion.display_name}
+            </div>
+          </div>
+
+          <h3 class="text-lg font-bold text-orange-400 mb-2">Your Inventory:</h3>
+          <div class="grid grid-cols-5 gap-2">
+            <%= for {slot, index} <- Enum.with_index(@hero.inventory.slots) do %>
+              <%= if slot do %>
+                <button
+                  phx-click="pickup_potion"
+                  phx-value-slot={index}
+                  class={[
+                    "aspect-square rounded border-2 flex items-center justify-center transition-all",
+                    "hover:scale-105 hover:shadow-lg cursor-pointer hover:border-yellow-400",
+                    Potion.get_bg_color_class(slot),
+                    Potion.get_border_color_class(slot)
+                  ]}
+                  title={"Replace with #{slot.display_name}"}
+                >
+                  <span class={[Potion.get_color_class(slot), Potion.get_icon_size_class(slot)]}>
+                    {Potion.get_icon(slot)}
+                  </span>
+                </button>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+
+        <button
+          phx-click="decline_potion"
+          class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded transition-colors"
+        >
+          Leave It Behind
+        </button>
+      </div>
     </div>
     """
   end
@@ -378,4 +555,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       end
     end) || length(all_scores) + 1
   end
+
+  defp get_percentage_text(:minor), do: "25%"
+  defp get_percentage_text(:normal), do: "50%"
+  defp get_percentage_text(:major), do: "100%"
 end
