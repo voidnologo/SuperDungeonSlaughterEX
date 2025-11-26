@@ -245,21 +245,25 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
         close_pickup_modal(state)
 
       new_potion ->
-        {:ok, updated_hero, old_potion} =
-          Hero.replace_potion_in_inventory(state.hero, replace_slot_index, new_potion)
+        case Hero.replace_potion_in_inventory(state.hero, replace_slot_index, new_potion) do
+          {:ok, updated_hero, old_potion} ->
+            message =
+              if old_potion do
+                "Swapped #{old_potion.display_name} for #{new_potion.display_name}!"
+              else
+                "Picked up #{new_potion.display_name}!"
+              end
 
-        message =
-          if old_potion do
-            "Swapped #{old_potion.display_name} for #{new_potion.display_name}!"
-          else
-            "Picked up #{new_potion.display_name}!"
-          end
+            state
+            |> Map.put(:hero, updated_hero)
+            |> Map.put(:pending_potion_drop, nil)
+            |> Map.put(:show_potion_pickup_modal, false)
+            |> add_to_history(message, :item)
 
-        state
-        |> Map.put(:hero, updated_hero)
-        |> Map.put(:pending_potion_drop, nil)
-        |> Map.put(:show_potion_pickup_modal, false)
-        |> add_to_history(message, :item)
+          {:error, _reason} ->
+            # Handle invalid slot gracefully by closing modal
+            close_pickup_modal(state)
+        end
     end
   end
 
