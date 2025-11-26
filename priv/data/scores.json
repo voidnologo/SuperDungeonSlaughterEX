@@ -1,7 +1,32 @@
 [
   {
+    "kills": 8,
+    "level": 4,
+    "name": "Jummy Tingles"
+  },
+  {
+    "kills": 7,
+    "level": 4,
+    "name": "Henry Humperdink"
+  },
+  {
     "kills": 7,
     "level": 4,
     "name": "Jummy Tingles"
+  },
+  {
+    "kills": 3,
+    "level": 3,
+    "name": "Henry Humperdink"
+  },
+  {
+    "kills": 2,
+    "level": 2,
+    "name": "Henry Humperdink"
+  },
+  {
+    "kills": 1,
+    "level": 2,
+    "name": "Henry Humperdink"
   }
 ]
