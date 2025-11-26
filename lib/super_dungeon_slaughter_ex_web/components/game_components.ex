@@ -8,7 +8,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   alias SuperDungeonSlaughterEx.Score
 
   @doc """
-  Game history display component showing scrollable combat log.
+  Game history display component showing scrollable combat log with icons and colors.
   """
   attr :history, :list, required: true
 
@@ -20,8 +20,15 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       class="border-2 border-gray-700 rounded bg-black h-[600px] overflow-y-auto p-4"
     >
       <div class="space-y-1 font-mono text-sm">
-        <%= for message <- Enum.reverse(@history) do %>
-          <div class="text-green-300">{message}</div>
+        <%= for entry <- Enum.reverse(@history) do %>
+          <div class={[
+            "flex items-start gap-2 py-0.5",
+            SuperDungeonSlaughterEx.Game.HistoryEntry.get_color_class(entry.type),
+            entry.type == :level_up && "font-bold"
+          ]}>
+            <span class="text-base flex-shrink-0">{entry.icon}</span>
+            <span class="flex-1">{entry.message}</span>
+          </div>
         <% end %>
       </div>
     </div>

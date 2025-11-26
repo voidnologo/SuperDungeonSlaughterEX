@@ -47,16 +47,17 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
     test "includes welcome message in history" do
       state = GameState.new("Adventurer")
 
-      assert Enum.any?(state.history, fn msg ->
-               String.contains?(msg, "Welcome") && String.contains?(msg, "Adventurer")
+      assert Enum.any?(state.history, fn entry ->
+               String.contains?(entry.message, "Welcome") &&
+                 String.contains?(entry.message, "Adventurer")
              end)
     end
 
     test "announces first monster in history" do
       state = GameState.new("Hero")
 
-      assert Enum.any?(state.history, fn msg ->
-               String.contains?(msg, "appears")
+      assert Enum.any?(state.history, fn entry ->
+               String.contains?(entry.message, "appears")
              end)
     end
   end
@@ -140,7 +141,6 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       # Damage the hero first
       damaged_hero = Hero.take_damage(state.hero, 5)
       state = %{state | hero: damaged_hero}
-      initial_hp = state.hero.hp
 
       updated_state = GameState.handle_rest(state)
 
@@ -152,7 +152,6 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
 
     test "monster attacks during rest" do
       state = GameState.new("Rester")
-      initial_hp = state.hero.hp
 
       updated_state = GameState.handle_rest(state)
 
@@ -197,25 +196,27 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
     end
   end
 
-  describe "add_to_history/2" do
+  describe "add_to_history/3" do
     test "adds message to history" do
       state = GameState.new("Hero")
       initial_length = length(state.history)
 
-      updated_state = GameState.add_to_history(state, "Test message")
+      updated_state = GameState.add_to_history(state, "Test message", :system)
 
       assert length(updated_state.history) == initial_length + 1
-      assert hd(updated_state.history) == "Test message"
+      assert hd(updated_state.history).message == "Test message"
+      assert hd(updated_state.history).type == :system
     end
 
     test "new messages appear first" do
       state = GameState.new("Hero")
 
-      state = GameState.add_to_history(state, "First")
-      state = GameState.add_to_history(state, "Second")
+      state = GameState.add_to_history(state, "First", :system)
+      state = GameState.add_to_history(state, "Second", :combat)
 
-      assert hd(state.history) == "Second"
-      assert Enum.at(state.history, 1) == "First"
+      assert hd(state.history).message == "Second"
+      assert hd(state.history).type == :combat
+      assert Enum.at(state.history, 1).message == "First"
     end
 
     test "limits history to max size" do

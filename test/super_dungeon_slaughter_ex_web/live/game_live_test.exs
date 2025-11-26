@@ -51,14 +51,14 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
   describe "mount" do
     test "shows name prompt on initial load", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/")
 
       assert html =~ "What is your hero&#39;s name?"
       assert html =~ "Begin Adventure"
     end
 
     test "does not show game UI initially", %{conn: conn} do
-      {:ok, view, html} = live(conn, "/")
+      {:ok, _view, html} = live(conn, "/")
 
       refute html =~ "Player Stats"
       refute html =~ "Monster Stats"
