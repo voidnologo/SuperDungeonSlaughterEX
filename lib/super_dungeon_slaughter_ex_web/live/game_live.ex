@@ -162,6 +162,16 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     {:noreply, assign(socket, :game_state, game_state)}
   end
 
+  @impl true
+  def handle_event("claim_boss_reward", %{"type" => potion_type}, socket) do
+    if socket.assigns.game_state.game_over do
+      {:noreply, socket}
+    else
+      game_state = GameState.handle_claim_boss_reward(socket.assigns.game_state, potion_type)
+      {:noreply, assign(socket, :game_state, game_state)}
+    end
+  end
+
   defp save_score(hero, difficulty) do
     score = Score.new(hero.name, hero.level, hero.total_kills, difficulty)
     ScoreRepo.add_score(score)
@@ -327,6 +337,11 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             dropped_potion={@game_state.pending_potion_drop}
             hero={@game_state.hero}
           />
+        <% end %>
+        
+    <!-- Boss Reward Modal -->
+        <%= if @game_state.pending_boss_reward do %>
+          <.boss_reward_modal current_floor={@game_state.hero.current_floor} />
         <% end %>
         
     <!-- Game Over Modal Overlay -->

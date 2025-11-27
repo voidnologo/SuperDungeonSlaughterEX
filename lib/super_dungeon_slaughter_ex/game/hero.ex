@@ -21,7 +21,10 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
           total_health_healed: non_neg_integer(),
           monsters_killed_by_type: %{String.t() => non_neg_integer()},
           # Inventory
-          inventory: Inventory.t()
+          inventory: Inventory.t(),
+          # Floor progression
+          bosses_defeated: non_neg_integer(),
+          current_floor: non_neg_integer()
         }
 
   defstruct name: "",
@@ -37,7 +40,9 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
             total_damage_dealt: 0,
             total_health_healed: 0,
             monsters_killed_by_type: %{},
-            inventory: nil
+            inventory: nil,
+            bosses_defeated: 0,
+            current_floor: 0
 
   @doc """
   Create a new level 1 hero with starting stats and inventory with starter potion.

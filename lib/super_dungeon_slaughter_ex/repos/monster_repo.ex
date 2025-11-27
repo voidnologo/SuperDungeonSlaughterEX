@@ -26,11 +26,21 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   end
 
   @doc """
-  Get a random monster appropriate for the given level.
+  Get a random monster appropriate for the given level (excludes bosses).
   """
   @spec get_monster_for_level(integer(), Types.difficulty()) :: Monster.t()
   def get_monster_for_level(level, difficulty \\ :normal) do
     GenServer.call(__MODULE__, {:get_monster, level, difficulty})
+  end
+
+  @doc """
+  Get the boss monster for a specific level, if one exists.
+  Returns {:ok, boss} or {:error, :no_boss_found}.
+  """
+  @spec get_boss_for_level(integer(), Types.difficulty()) ::
+          {:ok, Monster.t()} | {:error, :no_boss_found}
+  def get_boss_for_level(level, difficulty \\ :normal) do
+    GenServer.call(__MODULE__, {:get_boss, level, difficulty})
   end
 
   @doc """
@@ -54,14 +64,38 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   @impl true
   def handle_call({:get_monster, level, difficulty}, _from, state) do
     available = find_monsters_for_level(level, state.level_index)
+    # Filter out boss monsters from regular spawns
+    regular_monsters =
+      Enum.filter(available, fn name ->
+        template = Map.get(state.templates, name)
+        not Map.get(template, :is_boss, false)
+      end)
 
-    if Enum.empty?(available) do
+    if Enum.empty?(regular_monsters) do
       {:reply, {:error, :no_monsters_available}, state}
     else
-      monster_name = Enum.random(available)
+      monster_name = Enum.random(regular_monsters)
       template = Map.get(state.templates, monster_name)
       monster = Monster.from_template(template, difficulty)
       {:reply, monster, state}
+    end
+  end
+
+  @impl true
+  def handle_call({:get_boss, level, difficulty}, _from, state) do
+    # Find boss monster for this exact level
+    boss_template =
+      Enum.find(state.templates, fn {_name, template} ->
+        Map.get(template, :is_boss, false) and template.min_level == level
+      end)
+
+    case boss_template do
+      {_name, template} ->
+        boss = Monster.from_template(template, difficulty)
+        {:reply, {:ok, boss}, state}
+
+      nil ->
+        {:reply, {:error, :no_boss_found}, state}
     end
   end
 
@@ -91,6 +125,10 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
         damage_sigma: data["damage_sigma"]
       }
 
+      # Add optional boss fields if present
+      template = if data["is_boss"], do: Map.put(template, :is_boss, true), else: template
+      template = if data["floor"], do: Map.put(template, :floor, data["floor"]), else: template
+
       {name, template}
     end)
     |> Map.new()
@@ -98,9 +136,14 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
 
   defp build_level_index(templates) do
     Enum.reduce(templates, %{}, fn {name, template}, acc ->
-      Enum.reduce(template.min_level..(template.max_level - 1), acc, fn level, level_acc ->
-        Map.update(level_acc, level, [name], fn existing -> [name | existing] end)
-      end)
+      # Only index if max_level > min_level (skip bosses with min_level == max_level)
+      if template.max_level > template.min_level do
+        Enum.reduce(template.min_level..(template.max_level - 1), acc, fn level, level_acc ->
+          Map.update(level_acc, level, [name], fn existing -> [name | existing] end)
+        end)
+      else
+        acc
+      end
     end)
   end
 
