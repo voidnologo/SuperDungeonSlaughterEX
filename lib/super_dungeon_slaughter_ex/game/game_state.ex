@@ -19,7 +19,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
           show_potion_pickup_modal: boolean(),
           show_potion_use_modal: boolean(),
           selected_potion_slot: non_neg_integer() | nil,
-          selected_potion: Potion.t() | nil
+          selected_potion: Potion.t() | nil,
+          pending_boss_reward: boolean()
         }
 
   defstruct [
@@ -32,7 +33,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     show_potion_pickup_modal: false,
     show_potion_use_modal: false,
     selected_potion_slot: nil,
-    selected_potion: nil
+    selected_potion: nil,
+    pending_boss_reward: false
   ]
 
   @doc """
@@ -136,8 +138,17 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   end
 
   defp handle_monster_death(state) do
+    is_boss = Monster.is_boss?(state.monster)
+
     # Record the kill (use base name for stats tracking)
     updated_hero = Hero.record_kill(state.hero, state.monster.name)
+
+    # If boss was defeated, also increment boss counter
+    updated_hero = if is_boss do
+      %{updated_hero | bosses_defeated: updated_hero.bosses_defeated + 1}
+    else
+      updated_hero
+    end
 
     state =
       state
@@ -148,18 +159,63 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
       )
       |> add_to_history("You have killed #{updated_hero.total_kills} monsters.", :victory)
 
-    # Check for potion drop
-    state = handle_potion_drop(state)
+    if is_boss do
+      # Boss defeated - heal to full, update floor, set pending reward
+      floor = state.monster.floor
+      healed_hero = %{updated_hero | hp: updated_hero.hp_max, current_floor: floor}
 
-    # Check for level up
-    state = check_level_up(state)
+      state
+      |> Map.put(:hero, healed_hero)
+      |> Map.put(:pending_boss_reward, true)
+      |> add_separator(:boss_victory)
+      |> add_to_history("🏆 FLOOR #{floor} BOSS DEFEATED! 🏆", :boss_victory)
+      |> add_to_history("Your wounds heal as you rest.", :healing)
+      |> add_to_history("HP fully restored!", :healing)
+      |> add_separator(:boss_victory)
+    else
+      # Regular monster - check for potion drop, level up, spawn next monster
+      state = handle_potion_drop(state)
+      state = check_level_up(state)
+      spawn_next_monster(state)
+    end
+  end
 
-    # Spawn new monster
+  defp spawn_next_monster(state) do
+    # Check if we should spawn a boss at the current level
+    case should_spawn_boss?(state.hero.level) do
+      true ->
+        case MonsterRepo.get_boss_for_level(state.hero.level, state.difficulty) do
+          {:ok, boss} ->
+            floor = boss.floor
+
+            state
+            |> Map.put(:monster, boss)
+            |> add_separator(:boss_encounter)
+            |> add_to_history("=== ENTERING FLOOR #{floor} ===", :boss_encounter)
+            |> add_to_history("💀 #{boss.name} blocks your path! 💀", :boss_encounter)
+            |> add_separator(:boss_encounter)
+
+          {:error, :no_boss_found} ->
+            # Fallback to regular monster if boss not found
+            spawn_regular_monster(state)
+        end
+
+      false ->
+        spawn_regular_monster(state)
+    end
+  end
+
+  defp spawn_regular_monster(state) do
     new_monster = MonsterRepo.get_monster_for_level(state.hero.level, state.difficulty)
 
     state
     |> Map.put(:monster, new_monster)
     |> add_to_history("A wild #{new_monster.display_name} appears!", :system)
+  end
+
+  defp should_spawn_boss?(level) do
+    # Boss appears every 10 levels (10, 20, 30, etc.)
+    rem(level, 10) == 0 and level > 0
   end
 
   defp check_level_up(state) do
@@ -285,6 +341,43 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
         |> Map.put(:pending_potion_drop, nil)
         |> Map.put(:show_potion_pickup_modal, false)
         |> add_to_history("Left #{potion.display_name} behind.", :item)
+    end
+  end
+
+  @doc """
+  Handle claiming boss reward (Major potion of chosen type).
+  Spawns next monster after reward is claimed.
+  """
+  @spec handle_claim_boss_reward(t(), String.t()) :: t()
+  def handle_claim_boss_reward(state, potion_type) when potion_type in ["healing", "damage"] do
+    # Create a Major potion of the chosen type
+    potion = case potion_type do
+      "healing" -> Potion.new(:major, :healing, nil)
+      "damage" ->
+        # Generate a random damage flavor from available flavors
+        flavors = [:fire, :acid, :lightning, :poison, :frost, :arcane, :shadow, :radiant]
+        flavor = Enum.random(flavors)
+        Potion.new(:major, :damage, flavor)
+    end
+
+    # Try to add to inventory
+    case Hero.add_potion_to_inventory(state.hero, potion) do
+      {:ok, updated_hero} ->
+        # Success! Added to inventory, clear reward flag, spawn next monster
+        state
+        |> Map.put(:hero, updated_hero)
+        |> Map.put(:pending_boss_reward, false)
+        |> add_to_history("Received #{potion.display_name} as boss reward!", :item)
+        |> spawn_next_monster()
+
+      {:full, hero} ->
+        # Inventory still full (shouldn't happen if UI is correct, but handle gracefully)
+        # For now, just clear the reward and spawn next monster without giving potion
+        state
+        |> Map.put(:hero, hero)
+        |> Map.put(:pending_boss_reward, false)
+        |> add_to_history("Inventory full! Boss reward lost.", :item)
+        |> spawn_next_monster()
     end
   end
 

@@ -12,7 +12,9 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
           avg_hp: float(),
           hp_sigma: float(),
           damage_base: float(),
-          damage_sigma: float()
+          damage_sigma: float(),
+          is_boss: boolean(),
+          floor: pos_integer() | nil
         }
 
   @type t :: %__MODULE__{
@@ -21,47 +23,70 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
           hp: non_neg_integer(),
           hp_max: pos_integer(),
           damage_base: float(),
-          damage_sigma: float()
+          damage_sigma: float(),
+          is_boss: boolean(),
+          floor: pos_integer() | nil
         }
 
-  defstruct [:name, :display_name, :hp, :hp_max, :damage_base, :damage_sigma]
+  defstruct [:name, :display_name, :hp, :hp_max, :damage_base, :damage_sigma, is_boss: false, floor: nil]
 
   @doc """
   Create a monster instance from a template with randomized HP.
   Difficulty scaling: easy (90-95%), normal (100%), hard (105-110%).
+  Boss monsters ignore difficulty scaling and use fixed stats (no randomization).
   """
   @spec from_template(template(), Types.difficulty()) :: t()
   def from_template(template, difficulty \\ :normal) do
-    # Calculate difficulty multiplier
-    multiplier =
-      case difficulty do
-        :easy -> 0.90 + :rand.uniform() * 0.05
-        :hard -> 1.05 + :rand.uniform() * 0.05
-        _ -> 1.0
-      end
+    is_boss = Map.get(template, :is_boss, false)
+    floor = Map.get(template, :floor)
 
-    # Generate Gaussian-distributed HP with difficulty scaling
-    hp = :rand.normal(template.avg_hp, template.hp_sigma) * multiplier
-    hp = max(1, round(hp))
+    if is_boss do
+      # Boss monsters have fixed stats (no randomization or scaling)
+      %__MODULE__{
+        name: template.name,
+        display_name: template.name,
+        hp: round(template.avg_hp),
+        hp_max: round(template.avg_hp),
+        damage_base: template.damage_base,
+        damage_sigma: template.damage_sigma,
+        is_boss: true,
+        floor: floor
+      }
+    else
+      # Regular monsters with difficulty scaling and descriptors
+      # Calculate difficulty multiplier
+      multiplier =
+        case difficulty do
+          :easy -> 0.90 + :rand.uniform() * 0.05
+          :hard -> 1.05 + :rand.uniform() * 0.05
+          _ -> 1.0
+        end
 
-    # Scale damage with difficulty
-    damage_base = template.damage_base * multiplier
+      # Generate Gaussian-distributed HP with difficulty scaling
+      hp = :rand.normal(template.avg_hp, template.hp_sigma) * multiplier
+      hp = max(1, round(hp))
 
-    # Calculate descriptors based on z-scores (using original unscaled values)
-    hp_descriptor = get_hp_descriptor(hp / multiplier, template.avg_hp, template.hp_sigma)
-    damage_descriptor = get_damage_descriptor(template.damage_base, template.damage_sigma)
+      # Scale damage with difficulty
+      damage_base = template.damage_base * multiplier
 
-    # Build display name with descriptors
-    display_name = "#{hp_descriptor} #{damage_descriptor} #{template.name}"
+      # Calculate descriptors based on z-scores (using original unscaled values)
+      hp_descriptor = get_hp_descriptor(hp / multiplier, template.avg_hp, template.hp_sigma)
+      damage_descriptor = get_damage_descriptor(template.damage_base, template.damage_sigma)
 
-    %__MODULE__{
-      name: template.name,
-      display_name: display_name,
-      hp: hp,
-      hp_max: hp,
-      damage_base: damage_base,
-      damage_sigma: template.damage_sigma
-    }
+      # Build display name with descriptors
+      display_name = "#{hp_descriptor} #{damage_descriptor} #{template.name}"
+
+      %__MODULE__{
+        name: template.name,
+        display_name: display_name,
+        hp: hp,
+        hp_max: hp,
+        damage_base: damage_base,
+        damage_sigma: template.damage_sigma,
+        is_boss: false,
+        floor: nil
+      }
+    end
   end
 
   @doc """
@@ -97,6 +122,12 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
   """
   @spec defeated?(t()) :: boolean()
   def defeated?(%{hp: hp}), do: hp <= 0
+
+  @doc """
+  Check if this monster is a boss.
+  """
+  @spec is_boss?(t()) :: boolean()
+  def is_boss?(%{is_boss: is_boss}), do: is_boss
 
   # Private helper functions for descriptors
 

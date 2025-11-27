@@ -338,4 +338,99 @@ defmodule SuperDungeonSlaughterEx.Game.MonsterTest do
       assert has_high_descriptor
     end
   end
+
+  describe "boss monsters" do
+    @boss_template %{
+      name: "Test Boss",
+      min_level: 10,
+      max_level: 10,
+      avg_hp: 100.0,
+      hp_sigma: 0.0,
+      damage_base: 20.0,
+      damage_sigma: 0.0,
+      is_boss: true,
+      floor: 1
+    }
+
+    test "creates boss with fixed stats (no randomization)" do
+      boss1 = Monster.from_template(@boss_template)
+      boss2 = Monster.from_template(@boss_template)
+      boss3 = Monster.from_template(@boss_template)
+
+      # All bosses should have identical stats
+      assert boss1.hp == boss2.hp
+      assert boss2.hp == boss3.hp
+      assert boss1.hp == 100
+    end
+
+    test "boss display_name is same as base name (no descriptors)" do
+      boss = Monster.from_template(@boss_template)
+      assert boss.display_name == boss.name
+      assert boss.display_name == "Test Boss"
+    end
+
+    test "boss has is_boss flag set to true" do
+      boss = Monster.from_template(@boss_template)
+      assert boss.is_boss == true
+    end
+
+    test "boss has floor number" do
+      boss = Monster.from_template(@boss_template)
+      assert boss.floor == 1
+    end
+
+    test "is_boss?/1 returns true for boss monsters" do
+      boss = Monster.from_template(@boss_template)
+      assert Monster.is_boss?(boss) == true
+    end
+
+    test "is_boss?/1 returns false for regular monsters" do
+      regular = Monster.from_template(@sample_template)
+      assert Monster.is_boss?(regular) == false
+    end
+
+    test "boss ignores difficulty scaling" do
+      boss_easy = Monster.from_template(@boss_template, :easy)
+      boss_normal = Monster.from_template(@boss_template, :normal)
+      boss_hard = Monster.from_template(@boss_template, :hard)
+
+      # All should have same stats regardless of difficulty
+      assert boss_easy.hp == boss_normal.hp
+      assert boss_normal.hp == boss_hard.hp
+      assert boss_easy.damage_base == boss_normal.damage_base
+    end
+
+    test "regular monster respects difficulty scaling" do
+      regular_easy = Monster.from_template(@sample_template, :easy)
+      regular_hard = Monster.from_template(@sample_template, :hard)
+
+      # Generate multiple to account for randomness
+      easy_monsters = for _ <- 1..10, do: Monster.from_template(@sample_template, :easy)
+      hard_monsters = for _ <- 1..10, do: Monster.from_template(@sample_template, :hard)
+
+      avg_easy_hp = Enum.sum(Enum.map(easy_monsters, & &1.hp)) / 10
+      avg_hard_hp = Enum.sum(Enum.map(hard_monsters, & &1.hp)) / 10
+
+      # Hard should have higher HP on average
+      assert avg_hard_hp > avg_easy_hp
+    end
+
+    test "boss with missing optional fields defaults correctly" do
+      template_no_boss = %{
+        name: "Regular",
+        min_level: 1,
+        max_level: 5,
+        avg_hp: 10.0,
+        hp_sigma: 1.0,
+        damage_base: 5.0,
+        damage_sigma: 1.0,
+        is_boss: false,
+        floor: nil
+      }
+
+      monster = Monster.from_template(template_no_boss)
+      assert monster.is_boss == false
+      assert monster.floor == nil
+    end
+  end
 end

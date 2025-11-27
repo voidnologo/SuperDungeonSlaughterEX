@@ -10,7 +10,7 @@ defmodule SuperDungeonSlaughterEx.Game.HistoryEntry do
           icon: String.t()
         }
 
-  @type type :: :combat | :healing | :victory | :item | :level_up | :death | :system
+  @type type :: :combat | :healing | :victory | :item | :level_up | :death | :system | :boss_encounter | :boss_victory
 
   defstruct [:message, :type, :icon]
 
@@ -37,6 +37,8 @@ defmodule SuperDungeonSlaughterEx.Game.HistoryEntry do
   def get_icon(:level_up), do: "🎉"
   def get_icon(:death), do: "💀"
   def get_icon(:system), do: "📢"
+  def get_icon(:boss_encounter), do: "⚔️"
+  def get_icon(:boss_victory), do: "🏆"
 
   @doc """
   Get the Tailwind CSS color class for a given event type.
@@ -49,6 +51,8 @@ defmodule SuperDungeonSlaughterEx.Game.HistoryEntry do
   def get_color_class(:level_up), do: "text-cyan-400"
   def get_color_class(:death), do: "text-red-400"
   def get_color_class(:system), do: "text-gray-400"
+  def get_color_class(:boss_encounter), do: "text-red-500"
+  def get_color_class(:boss_victory), do: "text-yellow-400"
 
   @doc """
   Create a visual separator line for major events like level ups.

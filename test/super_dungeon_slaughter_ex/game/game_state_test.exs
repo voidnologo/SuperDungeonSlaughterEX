@@ -296,4 +296,200 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       assert updated_state.hero.total_kills == 1
     end
   end
+
+  describe "boss encounters" do
+    test "boss defeat heals hero to full HP" do
+      state = GameState.new("Hero")
+
+      # Level up hero to 10 and damage them
+      hero = %{state.hero | level: 10, hp: 5, hp_max: 50}
+
+      # Create a weak boss that can be defeated
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 1
+      }
+
+      state = %{state | hero: hero, monster: boss}
+      updated_state = GameState.handle_fight(state)
+
+      # Hero should be fully healed after boss victory
+      assert updated_state.hero.hp == updated_state.hero.hp_max
+    end
+
+    test "boss defeat sets pending_boss_reward flag" do
+      state = GameState.new("Hero")
+
+      # Create a weak boss
+      hero = %{state.hero | level: 10, damage_min: 100, damage_max: 150}
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 1
+      }
+
+      state = %{state | hero: hero, monster: boss}
+      updated_state = GameState.handle_fight(state)
+
+      assert updated_state.pending_boss_reward == true
+    end
+
+    test "boss defeat increments bosses_defeated counter" do
+      state = GameState.new("Hero")
+
+      hero = %{state.hero | level: 10, bosses_defeated: 0, damage_min: 100, damage_max: 150}
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 1
+      }
+
+      state = %{state | hero: hero, monster: boss}
+      updated_state = GameState.handle_fight(state)
+
+      assert updated_state.hero.bosses_defeated == 1
+    end
+
+    test "boss defeat updates current_floor" do
+      state = GameState.new("Hero")
+
+      hero = %{state.hero | level: 10, current_floor: 1, damage_min: 100, damage_max: 150}
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 2
+      }
+
+      state = %{state | hero: hero, monster: boss}
+      updated_state = GameState.handle_fight(state)
+
+      assert updated_state.hero.current_floor == 2
+    end
+
+    test "boss defeat adds victory messages to history" do
+      state = GameState.new("Hero")
+
+      hero = %{state.hero | level: 10, damage_min: 100, damage_max: 150}
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 1
+      }
+
+      state = %{state | hero: hero, monster: boss}
+      updated_state = GameState.handle_fight(state)
+
+      # Check for boss victory message in history
+      history_text = Enum.map(updated_state.history, & &1.message) |> Enum.join(" ")
+      assert String.contains?(history_text, "BOSS DEFEATED")
+    end
+
+    test "regular monster defeat does not set pending_boss_reward" do
+      state = GameState.new("Hero")
+
+      hero = %{state.hero | damage_min: 100, damage_max: 150}
+      regular = %{
+        name: "RegularMonster",
+        display_name: "Regular Monster",
+        hp: 1,
+        hp_max: 10,
+        damage_base: 3.0,
+        damage_sigma: 1.0,
+        is_boss: false,
+        floor: nil
+      }
+
+      state = %{state | hero: hero, monster: regular}
+      updated_state = GameState.handle_fight(state)
+
+      assert updated_state.pending_boss_reward == false
+    end
+  end
+
+  describe "boss rewards" do
+    test "handle_claim_boss_reward with healing creates Major healing potion" do
+      state = GameState.new("Hero")
+      state = %{state | pending_boss_reward: true}
+
+      updated_state = GameState.handle_claim_boss_reward(state, "healing")
+
+      # Should clear pending reward flag
+      assert updated_state.pending_boss_reward == false
+
+      # Should have added potion to inventory
+      assert length(updated_state.hero.inventory.slots) > 0
+
+      # Check that a healing potion was added
+      healing_potions = Enum.filter(updated_state.hero.inventory.slots, fn slot ->
+        slot != nil && slot.category == :healing && slot.quality == :major
+      end)
+
+      assert length(healing_potions) > 0
+    end
+
+    test "handle_claim_boss_reward with damage creates Major damage potion" do
+      state = GameState.new("Hero")
+      state = %{state | pending_boss_reward: true}
+
+      updated_state = GameState.handle_claim_boss_reward(state, "damage")
+
+      # Should clear pending reward flag
+      assert updated_state.pending_boss_reward == false
+
+      # Check that a damage potion was added
+      damage_potions = Enum.filter(updated_state.hero.inventory.slots, fn slot ->
+        slot != nil && slot.category == :damage && slot.quality == :major
+      end)
+
+      assert length(damage_potions) > 0
+    end
+
+    test "boss reward adds message to history" do
+      state = GameState.new("Hero")
+      state = %{state | pending_boss_reward: true}
+
+      updated_state = GameState.handle_claim_boss_reward(state, "healing")
+
+      # Check for reward message in history
+      history_text = Enum.map(updated_state.history, & &1.message) |> Enum.join(" ")
+      assert String.contains?(history_text, "boss reward")
+    end
+
+    test "boss reward spawns next monster after claiming" do
+      state = GameState.new("Hero")
+      state = %{state | pending_boss_reward: true}
+
+      initial_monster = state.monster
+      updated_state = GameState.handle_claim_boss_reward(state, "healing")
+
+      # Should have a new monster (different reference)
+      refute updated_state.monster == initial_monster
+    end
+  end
 end

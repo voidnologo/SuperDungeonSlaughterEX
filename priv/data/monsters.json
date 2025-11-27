@@ -798,5 +798,105 @@
         "hp_sigma": 313636.9,
         "damage_base": 945.3,
         "damage_sigma": 189.1
+    },
+    "Goblin King": {
+        "min_level": 10,
+        "max_level": 10,
+        "avg_hp": 255,
+        "hp_sigma": 0,
+        "damage_base": 10,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 1
+    },
+    "Ancient Lich": {
+        "min_level": 20,
+        "max_level": 20,
+        "avg_hp": 1655,
+        "hp_sigma": 0,
+        "damage_base": 30,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 2
+    },
+    "Dragon Lord": {
+        "min_level": 30,
+        "max_level": 30,
+        "avg_hp": 5775,
+        "hp_sigma": 0,
+        "damage_base": 79,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 3
+    },
+    "Vampire Count": {
+        "min_level": 40,
+        "max_level": 40,
+        "avg_hp": 20850,
+        "hp_sigma": 0,
+        "damage_base": 137,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 4
+    },
+    "Demon Prince": {
+        "min_level": 50,
+        "max_level": 50,
+        "avg_hp": 53470,
+        "hp_sigma": 0,
+        "damage_base": 229,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 5
+    },
+    "Frost Titan": {
+        "min_level": 60,
+        "max_level": 60,
+        "avg_hp": 182900,
+        "hp_sigma": 0,
+        "damage_base": 242,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 6
+    },
+    "Shadow Archon": {
+        "min_level": 70,
+        "max_level": 70,
+        "avg_hp": 359400,
+        "hp_sigma": 0,
+        "damage_base": 732,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 7
+    },
+    "Void Titan": {
+        "min_level": 80,
+        "max_level": 80,
+        "avg_hp": 770000,
+        "hp_sigma": 0,
+        "damage_base": 1312,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 8
+    },
+    "Void Sovereign": {
+        "min_level": 90,
+        "max_level": 90,
+        "avg_hp": 1440700,
+        "hp_sigma": 0,
+        "damage_base": 1787,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 9
+    },
+    "Eternal Tyrant": {
+        "min_level": 100,
+        "max_level": 100,
+        "avg_hp": 3850000,
+        "hp_sigma": 0,
+        "damage_base": 1750,
+        "damage_sigma": 0,
+        "is_boss": true,
+        "floor": 10
     }
 }

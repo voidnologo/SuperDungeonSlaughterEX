@@ -50,6 +50,10 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
           <span class="text-yellow-400 font-bold">{@hero.name}</span>
         </div>
         <div class="flex justify-between">
+          <span>Floor:</span>
+          <span class="text-cyan-400">{@hero.current_floor}</span>
+        </div>
+        <div class="flex justify-between">
           <span>Kill Count:</span>
           <span class="text-yellow-400">{@hero.total_kills}</span>
         </div>
@@ -85,10 +89,28 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def monster_stats(assigns) do
     ~H"""
-    <div class="border-2 border-orange-500 p-4 rounded bg-gray-800">
-      <h2 class="text-xl font-bold text-orange-400 mb-3">Monster Stats</h2>
+    <div class={[
+      "border-2 p-4 rounded bg-gray-800",
+      @monster.is_boss && "border-red-500 animate-pulse",
+      !@monster.is_boss && "border-orange-500"
+    ]}>
+      <h2 class={[
+        "text-xl font-bold mb-3",
+        @monster.is_boss && "text-red-400 text-2xl",
+        !@monster.is_boss && "text-orange-400"
+      ]}>
+        <%= if @monster.is_boss do %>
+          ⚔️ BOSS FIGHT ⚔️
+        <% else %>
+          Monster Stats
+        <% end %>
+      </h2>
       <div class="space-y-2">
-        <div class="text-lg font-semibold text-purple-400">
+        <div class={[
+          "text-lg font-semibold",
+          @monster.is_boss && "text-red-300 text-xl",
+          !@monster.is_boss && "text-purple-400"
+        ]}>
           {@monster.display_name}
         </div>
         <div>
@@ -283,6 +305,55 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
         >
           Leave It Behind
         </button>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Boss reward modal - shown after defeating a boss.
+  Allows player to choose between Major Healing or Major Damage potion.
+  """
+  attr :current_floor, :integer, required: true
+
+  def boss_reward_modal(assigns) do
+    ~H"""
+    <div class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
+      <div class="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-md w-full mx-4">
+        <h2 class="text-3xl font-bold text-yellow-400 text-center mb-4">
+          🏆 BOSS DEFEATED! 🏆
+        </h2>
+
+        <p class="text-green-400 text-center mb-6">
+          You have conquered Floor {@current_floor}!<br />
+          Your wounds heal as you rest.
+        </p>
+
+        <div class="bg-black p-4 rounded mb-6">
+          <h3 class="text-xl text-purple-400 mb-3 text-center">Choose Your Reward:</h3>
+          <div class="flex gap-4 justify-center">
+            <button
+              phx-click="claim_boss_reward"
+              phx-value-type="healing"
+              class="flex-1 px-6 py-4 bg-green-600 hover:bg-green-700 rounded transition-colors flex flex-col items-center gap-2 border-2 border-green-500 hover:border-green-300"
+            >
+              <span class="text-4xl">🏺</span>
+              <span class="font-bold text-white">Major Healing<br/>Potion</span>
+            </button>
+            <button
+              phx-click="claim_boss_reward"
+              phx-value-type="damage"
+              class="flex-1 px-6 py-4 bg-red-600 hover:bg-red-700 rounded transition-colors flex flex-col items-center gap-2 border-2 border-red-500 hover:border-red-300"
+            >
+              <span class="text-4xl">🏺</span>
+              <span class="font-bold text-white">Major Damage<br/>Potion</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-gray-400 text-sm text-center italic">
+          The path ahead grows darker...
+        </p>
       </div>
     </div>
     """
