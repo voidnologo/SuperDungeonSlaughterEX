@@ -325,8 +325,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
         </h2>
 
         <p class="text-green-400 text-center mb-6">
-          You have conquered Floor {@current_floor}!<br />
-          Your wounds heal as you rest.
+          You have conquered Floor {@current_floor}!<br /> Your wounds heal as you rest.
         </p>
 
         <div class="bg-black p-4 rounded mb-6">
@@ -338,7 +337,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               class="flex-1 px-6 py-4 bg-green-600 hover:bg-green-700 rounded transition-colors flex flex-col items-center gap-2 border-2 border-green-500 hover:border-green-300"
             >
               <span class="text-4xl">🏺</span>
-              <span class="font-bold text-white">Major Healing<br/>Potion</span>
+              <span class="font-bold text-white">Major Healing<br />Potion</span>
             </button>
             <button
               phx-click="claim_boss_reward"
@@ -346,7 +345,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               class="flex-1 px-6 py-4 bg-red-600 hover:bg-red-700 rounded transition-colors flex flex-col items-center gap-2 border-2 border-red-500 hover:border-red-300"
             >
               <span class="text-4xl">🏺</span>
-              <span class="font-bold text-white">Major Damage<br/>Potion</span>
+              <span class="font-bold text-white">Major Damage<br />Potion</span>
             </button>
           </div>
         </div>

@@ -328,6 +328,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
 
       # Create a weak boss
       hero = %{state.hero | level: 10, damage_min: 100, damage_max: 150}
+
       boss = %{
         name: "Test Boss",
         display_name: "Test Boss",
@@ -349,6 +350,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       state = GameState.new("Hero")
 
       hero = %{state.hero | level: 10, bosses_defeated: 0, damage_min: 100, damage_max: 150}
+
       boss = %{
         name: "Test Boss",
         display_name: "Test Boss",
@@ -370,6 +372,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       state = GameState.new("Hero")
 
       hero = %{state.hero | level: 10, current_floor: 1, damage_min: 100, damage_max: 150}
+
       boss = %{
         name: "Test Boss",
         display_name: "Test Boss",
@@ -391,6 +394,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       state = GameState.new("Hero")
 
       hero = %{state.hero | level: 10, damage_min: 100, damage_max: 150}
+
       boss = %{
         name: "Test Boss",
         display_name: "Test Boss",
@@ -414,6 +418,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       state = GameState.new("Hero")
 
       hero = %{state.hero | damage_min: 100, damage_max: 150}
+
       regular = %{
         name: "RegularMonster",
         display_name: "Regular Monster",
@@ -446,9 +451,10 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       assert length(updated_state.hero.inventory.slots) > 0
 
       # Check that a healing potion was added
-      healing_potions = Enum.filter(updated_state.hero.inventory.slots, fn slot ->
-        slot != nil && slot.category == :healing && slot.quality == :major
-      end)
+      healing_potions =
+        Enum.filter(updated_state.hero.inventory.slots, fn slot ->
+          slot != nil && slot.category == :healing && slot.quality == :major
+        end)
 
       assert length(healing_potions) > 0
     end
@@ -463,9 +469,10 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       assert updated_state.pending_boss_reward == false
 
       # Check that a damage potion was added
-      damage_potions = Enum.filter(updated_state.hero.inventory.slots, fn slot ->
-        slot != nil && slot.category == :damage && slot.quality == :major
-      end)
+      damage_potions =
+        Enum.filter(updated_state.hero.inventory.slots, fn slot ->
+          slot != nil && slot.category == :damage && slot.quality == :major
+        end)
 
       assert length(damage_potions) > 0
     end

@@ -10,7 +10,16 @@ defmodule SuperDungeonSlaughterEx.Game.HistoryEntry do
           icon: String.t()
         }
 
-  @type type :: :combat | :healing | :victory | :item | :level_up | :death | :system | :boss_encounter | :boss_victory
+  @type type ::
+          :combat
+          | :healing
+          | :victory
+          | :item
+          | :level_up
+          | :death
+          | :system
+          | :boss_encounter
+          | :boss_victory
 
   defstruct [:message, :type, :icon]
 

@@ -28,7 +28,16 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
           floor: pos_integer() | nil
         }
 
-  defstruct [:name, :display_name, :hp, :hp_max, :damage_base, :damage_sigma, is_boss: false, floor: nil]
+  defstruct [
+    :name,
+    :display_name,
+    :hp,
+    :hp_max,
+    :damage_base,
+    :damage_sigma,
+    is_boss: false,
+    floor: nil
+  ]
 
   @doc """
   Create a monster instance from a template with randomized HP.

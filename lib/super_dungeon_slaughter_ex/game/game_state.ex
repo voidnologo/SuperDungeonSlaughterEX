@@ -144,11 +144,12 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     updated_hero = Hero.record_kill(state.hero, state.monster.name)
 
     # If boss was defeated, also increment boss counter
-    updated_hero = if is_boss do
-      %{updated_hero | bosses_defeated: updated_hero.bosses_defeated + 1}
-    else
-      updated_hero
-    end
+    updated_hero =
+      if is_boss do
+        %{updated_hero | bosses_defeated: updated_hero.bosses_defeated + 1}
+      else
+        updated_hero
+      end
 
     state =
       state
@@ -351,14 +352,17 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   @spec handle_claim_boss_reward(t(), String.t()) :: t()
   def handle_claim_boss_reward(state, potion_type) when potion_type in ["healing", "damage"] do
     # Create a Major potion of the chosen type
-    potion = case potion_type do
-      "healing" -> Potion.new(:major, :healing, nil)
-      "damage" ->
-        # Generate a random damage flavor from available flavors
-        flavors = [:fire, :acid, :lightning, :poison, :frost, :arcane, :shadow, :radiant]
-        flavor = Enum.random(flavors)
-        Potion.new(:major, :damage, flavor)
-    end
+    potion =
+      case potion_type do
+        "healing" ->
+          Potion.new(:major, :healing, nil)
+
+        "damage" ->
+          # Generate a random damage flavor from available flavors
+          flavors = [:fire, :acid, :lightning, :poison, :frost, :arcane, :shadow, :radiant]
+          flavor = Enum.random(flavors)
+          Potion.new(:major, :damage, flavor)
+      end
 
     # Try to add to inventory
     case Hero.add_potion_to_inventory(state.hero, potion) do

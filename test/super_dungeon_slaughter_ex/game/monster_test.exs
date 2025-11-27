@@ -401,9 +401,6 @@ defmodule SuperDungeonSlaughterEx.Game.MonsterTest do
     end
 
     test "regular monster respects difficulty scaling" do
-      regular_easy = Monster.from_template(@sample_template, :easy)
-      regular_hard = Monster.from_template(@sample_template, :hard)
-
       # Generate multiple to account for randomness
       easy_monsters = for _ <- 1..10, do: Monster.from_template(@sample_template, :easy)
       hard_monsters = for _ <- 1..10, do: Monster.from_template(@sample_template, :hard)

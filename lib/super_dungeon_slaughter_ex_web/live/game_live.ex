@@ -338,12 +338,12 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             hero={@game_state.hero}
           />
         <% end %>
-
+        
     <!-- Boss Reward Modal -->
         <%= if @game_state.pending_boss_reward do %>
           <.boss_reward_modal current_floor={@game_state.hero.current_floor} />
         <% end %>
-
+        
     <!-- Game Over Modal Overlay -->
         <%= if @game_state.game_over do %>
           <%= if @show_high_scores do %>

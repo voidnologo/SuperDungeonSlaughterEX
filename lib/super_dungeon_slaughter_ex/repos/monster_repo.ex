@@ -65,10 +65,11 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   def handle_call({:get_monster, level, difficulty}, _from, state) do
     available = find_monsters_for_level(level, state.level_index)
     # Filter out boss monsters from regular spawns
-    regular_monsters = Enum.filter(available, fn name ->
-      template = Map.get(state.templates, name)
-      not Map.get(template, :is_boss, false)
-    end)
+    regular_monsters =
+      Enum.filter(available, fn name ->
+        template = Map.get(state.templates, name)
+        not Map.get(template, :is_boss, false)
+      end)
 
     if Enum.empty?(regular_monsters) do
       {:reply, {:error, :no_monsters_available}, state}
@@ -83,14 +84,16 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   @impl true
   def handle_call({:get_boss, level, difficulty}, _from, state) do
     # Find boss monster for this exact level
-    boss_template = Enum.find(state.templates, fn {_name, template} ->
-      Map.get(template, :is_boss, false) and template.min_level == level
-    end)
+    boss_template =
+      Enum.find(state.templates, fn {_name, template} ->
+        Map.get(template, :is_boss, false) and template.min_level == level
+      end)
 
     case boss_template do
       {_name, template} ->
         boss = Monster.from_template(template, difficulty)
         {:reply, {:ok, boss}, state}
+
       nil ->
         {:reply, {:error, :no_boss_found}, state}
     end
@@ -133,9 +136,14 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
 
   defp build_level_index(templates) do
     Enum.reduce(templates, %{}, fn {name, template}, acc ->
-      Enum.reduce(template.min_level..(template.max_level - 1), acc, fn level, level_acc ->
-        Map.update(level_acc, level, [name], fn existing -> [name | existing] end)
-      end)
+      # Only index if max_level > min_level (skip bosses with min_level == max_level)
+      if template.max_level > template.min_level do
+        Enum.reduce(template.min_level..(template.max_level - 1), acc, fn level, level_acc ->
+          Map.update(level_acc, level, [name], fn existing -> [name | existing] end)
+        end)
+      else
+        acc
+      end
     end)
   end
 
