@@ -805,7 +805,7 @@
         "avg_hp": 255,
         "hp_sigma": 0,
         "damage_base": 10,
-        "damage_sigma": 0,
+        "damage_sigma": 3.0,
         "is_boss": true,
         "floor": 1
     },
@@ -815,7 +815,7 @@
         "avg_hp": 1655,
         "hp_sigma": 0,
         "damage_base": 30,
-        "damage_sigma": 0,
+        "damage_sigma": 8.0,
         "is_boss": true,
         "floor": 2
     },
@@ -825,7 +825,7 @@
         "avg_hp": 5775,
         "hp_sigma": 0,
         "damage_base": 79,
-        "damage_sigma": 0,
+        "damage_sigma": 20.0,
         "is_boss": true,
         "floor": 3
     },
@@ -835,7 +835,7 @@
         "avg_hp": 20850,
         "hp_sigma": 0,
         "damage_base": 137,
-        "damage_sigma": 0,
+        "damage_sigma": 35.0,
         "is_boss": true,
         "floor": 4
     },
@@ -845,7 +845,7 @@
         "avg_hp": 53470,
         "hp_sigma": 0,
         "damage_base": 229,
-        "damage_sigma": 0,
+        "damage_sigma": 60.0,
         "is_boss": true,
         "floor": 5
     },
@@ -855,7 +855,7 @@
         "avg_hp": 182900,
         "hp_sigma": 0,
         "damage_base": 242,
-        "damage_sigma": 0,
+        "damage_sigma": 60.0,
         "is_boss": true,
         "floor": 6
     },
@@ -865,7 +865,7 @@
         "avg_hp": 359400,
         "hp_sigma": 0,
         "damage_base": 732,
-        "damage_sigma": 0,
+        "damage_sigma": 180.0,
         "is_boss": true,
         "floor": 7
     },
@@ -875,7 +875,7 @@
         "avg_hp": 770000,
         "hp_sigma": 0,
         "damage_base": 1312,
-        "damage_sigma": 0,
+        "damage_sigma": 330.0,
         "is_boss": true,
         "floor": 8
     },
@@ -885,7 +885,7 @@
         "avg_hp": 1440700,
         "hp_sigma": 0,
         "damage_base": 1787,
-        "damage_sigma": 0,
+        "damage_sigma": 450.0,
         "is_boss": true,
         "floor": 9
     },
@@ -895,7 +895,7 @@
         "avg_hp": 3850000,
         "hp_sigma": 0,
         "damage_base": 1750,
-        "damage_sigma": 0,
+        "damage_sigma": 440.0,
         "is_boss": true,
         "floor": 10
     }

@@ -498,5 +498,37 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       # Should have a new monster (different reference)
       refute updated_state.monster == initial_monster
     end
+
+    test "boss does not spawn again after being defeated" do
+      state = GameState.new("Hero")
+
+      # Set hero to level 10 and floor 0 (ready for first boss)
+      hero = %{state.hero | level: 10, current_floor: 0, damage_min: 100, damage_max: 150}
+
+      # Create boss for floor 1
+      boss = %{
+        name: "Test Boss",
+        display_name: "Test Boss",
+        hp: 1,
+        hp_max: 100,
+        damage_base: 20.0,
+        damage_sigma: 0.0,
+        is_boss: true,
+        floor: 1
+      }
+
+      state = %{state | hero: hero, monster: boss, pending_boss_reward: false}
+
+      # Defeat the boss
+      state = GameState.handle_fight(state)
+      assert state.pending_boss_reward == true
+      assert state.hero.current_floor == 1
+
+      # Claim reward, which spawns next monster
+      state = GameState.handle_claim_boss_reward(state, "healing")
+
+      # Next monster should NOT be the boss (we're still level 10 but floor 1)
+      refute state.monster.is_boss
+    end
   end
 end

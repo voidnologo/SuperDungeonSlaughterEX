@@ -187,14 +187,20 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
       true ->
         case MonsterRepo.get_boss_for_level(state.hero.level, state.difficulty) do
           {:ok, boss} ->
-            floor = boss.floor
+            # Only spawn boss if we haven't beaten this floor yet
+            if state.hero.current_floor < boss.floor do
+              floor = boss.floor
 
-            state
-            |> Map.put(:monster, boss)
-            |> add_separator(:boss_encounter)
-            |> add_to_history("=== ENTERING FLOOR #{floor} ===", :boss_encounter)
-            |> add_to_history("💀 #{boss.name} blocks your path! 💀", :boss_encounter)
-            |> add_separator(:boss_encounter)
+              state
+              |> Map.put(:monster, boss)
+              |> add_separator(:boss_encounter)
+              |> add_to_history("=== ENTERING FLOOR #{floor} ===", :boss_encounter)
+              |> add_to_history("💀 #{boss.name} blocks your path! 💀", :boss_encounter)
+              |> add_separator(:boss_encounter)
+            else
+              # Already beaten this boss, spawn regular monster
+              spawn_regular_monster(state)
+            end
 
           {:error, :no_boss_found} ->
             # Fallback to regular monster if boss not found
