@@ -37,7 +37,7 @@
         "avg_hp": 7.1,
         "hp_sigma": 2.1,
         "damage_base": 2.8,
-        "damage_sigma": 1.1
+        "damage_sigma": 1.0
     },
     "Skeletal Warrior": {
         "min_level": 2,
@@ -69,7 +69,7 @@
         "avg_hp": 23.6,
         "hp_sigma": 7.1,
         "damage_base": 2.9,
-        "damage_sigma": 1.2
+        "damage_sigma": 1.0
     },
     "Rabid Wombat": {
         "min_level": 3,
@@ -77,7 +77,7 @@
         "avg_hp": 17.9,
         "hp_sigma": 5.4,
         "damage_base": 2.4,
-        "damage_sigma": 1.0
+        "damage_sigma": 0.8
     },
     "Zombie": {
         "min_level": 4,
@@ -101,7 +101,7 @@
         "avg_hp": 17.4,
         "hp_sigma": 5.2,
         "damage_base": 4.3,
-        "damage_sigma": 1.7
+        "damage_sigma": 1.5
     },
     "Dire Wolf": {
         "min_level": 5,
@@ -109,7 +109,7 @@
         "avg_hp": 35.6,
         "hp_sigma": 10.7,
         "damage_base": 3.5,
-        "damage_sigma": 1.4
+        "damage_sigma": 1.2
     },
     "Hobgoblin": {
         "min_level": 6,
@@ -117,7 +117,7 @@
         "avg_hp": 43.6,
         "hp_sigma": 13.1,
         "damage_base": 3.9,
-        "damage_sigma": 1.6
+        "damage_sigma": 1.4
     },
     "Troll": {
         "min_level": 10,
@@ -125,7 +125,7 @@
         "avg_hp": 73.1,
         "hp_sigma": 21.9,
         "damage_base": 5.6,
-        "damage_sigma": 2.2
+        "damage_sigma": 2.0
     },
     "Ghoul": {
         "min_level": 10,
@@ -133,7 +133,7 @@
         "avg_hp": 73.1,
         "hp_sigma": 21.9,
         "damage_base": 5.6,
-        "damage_sigma": 2.2
+        "damage_sigma": 2.0
     },
     "Harpy": {
         "min_level": 11,
@@ -141,7 +141,7 @@
         "avg_hp": 53.8,
         "hp_sigma": 16.1,
         "damage_base": 8.8,
-        "damage_sigma": 3.5
+        "damage_sigma": 3.1
     },
     "Owlbear": {
         "min_level": 12,
@@ -149,7 +149,7 @@
         "avg_hp": 153.6,
         "hp_sigma": 46.1,
         "damage_base": 4.2,
-        "damage_sigma": 1.7
+        "damage_sigma": 1.5
     },
     "Basilisk": {
         "min_level": 13,
@@ -157,7 +157,7 @@
         "avg_hp": 134.4,
         "hp_sigma": 40.3,
         "damage_base": 7.8,
-        "damage_sigma": 3.1
+        "damage_sigma": 2.7
     },
     "Wraith": {
         "min_level": 13,
@@ -165,7 +165,7 @@
         "avg_hp": 157.1,
         "hp_sigma": 47.1,
         "damage_base": 8.4,
-        "damage_sigma": 3.4
+        "damage_sigma": 2.9
     },
     "Vampire Spawn": {
         "min_level": 14,
@@ -173,7 +173,7 @@
         "avg_hp": 183.8,
         "hp_sigma": 55.2,
         "damage_base": 9.3,
-        "damage_sigma": 3.7
+        "damage_sigma": 3.2
     },
     "Mind Flayer": {
         "min_level": 15,
@@ -181,7 +181,7 @@
         "avg_hp": 215.1,
         "hp_sigma": 64.5,
         "damage_base": 10.3,
-        "damage_sigma": 4.1
+        "damage_sigma": 3.5
     },
     "Lesser Dragon": {
         "min_level": 15,
@@ -189,7 +189,7 @@
         "avg_hp": 294.0,
         "hp_sigma": 88.2,
         "damage_base": 12.5,
-        "damage_sigma": 5.0
+        "damage_sigma": 4.2
     },
     "Mimic": {
         "min_level": 16,
@@ -197,7 +197,7 @@
         "avg_hp": 252.1,
         "hp_sigma": 75.6,
         "damage_base": 11.4,
-        "damage_sigma": 4.6
+        "damage_sigma": 3.8
     },
     "Manticore": {
         "min_level": 17,
@@ -205,7 +205,7 @@
         "avg_hp": 295.1,
         "hp_sigma": 88.5,
         "damage_base": 12.6,
-        "damage_sigma": 5.0
+        "damage_sigma": 4.2
     },
     "Medusa": {
         "min_level": 18,
@@ -213,7 +213,7 @@
         "avg_hp": 345.3,
         "hp_sigma": 103.6,
         "damage_base": 13.9,
-        "damage_sigma": 5.6
+        "damage_sigma": 4.6
     },
     "Chimera": {
         "min_level": 19,
@@ -221,7 +221,7 @@
         "avg_hp": 404.3,
         "hp_sigma": 121.3,
         "damage_base": 15.4,
-        "damage_sigma": 6.2
+        "damage_sigma": 5.0
     },
     "Wyvern": {
         "min_level": 20,
@@ -229,7 +229,7 @@
         "avg_hp": 473.2,
         "hp_sigma": 142.0,
         "damage_base": 17.0,
-        "damage_sigma": 6.8
+        "damage_sigma": 5.5
     },
     "Shadow Demon": {
         "min_level": 21,
@@ -237,7 +237,7 @@
         "avg_hp": 332.1,
         "hp_sigma": 99.6,
         "damage_base": 26.3,
-        "damage_sigma": 10.5
+        "damage_sigma": 8.4
     },
     "Fire Elemental": {
         "min_level": 25,
@@ -245,7 +245,7 @@
         "avg_hp": 902.8,
         "hp_sigma": 270.8,
         "damage_base": 25.6,
-        "damage_sigma": 10.2
+        "damage_sigma": 7.8
     },
     "Ice Elemental": {
         "min_level": 25,
@@ -253,7 +253,7 @@
         "avg_hp": 902.8,
         "hp_sigma": 270.8,
         "damage_base": 25.6,
-        "damage_sigma": 10.2
+        "damage_sigma": 7.8
     },
     "Earth Elemental": {
         "min_level": 26,
@@ -261,7 +261,7 @@
         "avg_hp": 1056.2,
         "hp_sigma": 316.9,
         "damage_base": 28.1,
-        "damage_sigma": 11.2
+        "damage_sigma": 8.5
     },
     "Air Elemental": {
         "min_level": 26,
@@ -269,7 +269,7 @@
         "avg_hp": 1056.2,
         "hp_sigma": 316.9,
         "damage_base": 28.1,
-        "damage_sigma": 11.2
+        "damage_sigma": 8.5
     },
     "Greater Dragon": {
         "min_level": 27,
@@ -277,7 +277,7 @@
         "avg_hp": 1652.6,
         "hp_sigma": 495.8,
         "damage_base": 35.5,
-        "damage_sigma": 14.2
+        "damage_sigma": 10.4
     },
     "Lich": {
         "min_level": 28,
@@ -285,7 +285,7 @@
         "avg_hp": 1463.6,
         "hp_sigma": 439.1,
         "damage_base": 33.4,
-        "damage_sigma": 13.4
+        "damage_sigma": 9.9
     },
     "Behemoth": {
         "min_level": 29,
@@ -293,7 +293,7 @@
         "avg_hp": 2395.7,
         "hp_sigma": 718.7,
         "damage_base": 22.0,
-        "damage_sigma": 8.8
+        "damage_sigma": 6.4
     },
     "Spectral Knight": {
         "min_level": 30,
@@ -301,7 +301,7 @@
         "avg_hp": 2001.3,
         "hp_sigma": 600.4,
         "damage_base": 40.1,
-        "damage_sigma": 16.0
+        "damage_sigma": 11.6
     },
     "Dark Sorcerer": {
         "min_level": 30,
@@ -309,7 +309,7 @@
         "avg_hp": 1328.7,
         "hp_sigma": 398.6,
         "damage_base": 59.5,
-        "damage_sigma": 23.8
+        "damage_sigma": 17.1
     },
     "Void Wraith": {
         "min_level": 31,
@@ -317,7 +317,7 @@
         "avg_hp": 2451.3,
         "hp_sigma": 735.4,
         "damage_base": 45.1,
-        "damage_sigma": 18.0
+        "damage_sigma": 12.8
     },
     "Crystal Golem": {
         "min_level": 32,
@@ -325,7 +325,7 @@
         "avg_hp": 2712.8,
         "hp_sigma": 813.8,
         "damage_base": 47.9,
-        "damage_sigma": 19.2
+        "damage_sigma": 13.4
     },
     "Storm Giant": {
         "min_level": 33,
@@ -333,7 +333,7 @@
         "avg_hp": 3001.0,
         "hp_sigma": 900.3,
         "damage_base": 50.9,
-        "damage_sigma": 20.4
+        "damage_sigma": 14.1
     },
     "Frost Giant": {
         "min_level": 34,
@@ -341,7 +341,7 @@
         "avg_hp": 3318.1,
         "hp_sigma": 995.4,
         "damage_base": 54.1,
-        "damage_sigma": 21.6
+        "damage_sigma": 14.8
     },
     "Fire Giant": {
         "min_level": 35,
@@ -349,7 +349,7 @@
         "avg_hp": 3666.1,
         "hp_sigma": 1099.8,
         "damage_base": 57.5,
-        "damage_sigma": 23.0
+        "damage_sigma": 15.5
     },
     "Bone Dragon": {
         "min_level": 36,
@@ -357,7 +357,7 @@
         "avg_hp": 4047.3,
         "hp_sigma": 1214.2,
         "damage_base": 61.1,
-        "damage_sigma": 24.4
+        "damage_sigma": 16.3
     },
     "Corrupted Angel": {
         "min_level": 37,
@@ -365,7 +365,7 @@
         "avg_hp": 4464.0,
         "hp_sigma": 1339.2,
         "damage_base": 64.9,
-        "damage_sigma": 26.0
+        "damage_sigma": 17.1
     },
     "Nightmare": {
         "min_level": 38,
@@ -373,7 +373,7 @@
         "avg_hp": 4919.4,
         "hp_sigma": 1475.8,
         "damage_base": 69.0,
-        "damage_sigma": 27.6
+        "damage_sigma": 17.9
     },
     "Arcane Aberration": {
         "min_level": 39,
@@ -381,7 +381,7 @@
         "avg_hp": 5416.0,
         "hp_sigma": 1624.8,
         "damage_base": 73.4,
-        "damage_sigma": 29.4
+        "damage_sigma": 18.8
     },
     "Dread Knight": {
         "min_level": 40,
@@ -389,7 +389,7 @@
         "avg_hp": 5957.6,
         "hp_sigma": 1787.3,
         "damage_base": 78.0,
-        "damage_sigma": 31.2
+        "damage_sigma": 19.8
     },
     "Ancient Vampire": {
         "min_level": 41,
@@ -397,7 +397,7 @@
         "avg_hp": 6547.9,
         "hp_sigma": 1964.4,
         "damage_base": 82.9,
-        "damage_sigma": 33.2
+        "damage_sigma": 20.7
     },
     "Elder Lich": {
         "min_level": 45,
@@ -405,7 +405,7 @@
         "avg_hp": 9570.6,
         "hp_sigma": 2871.2,
         "damage_base": 98.6,
-        "damage_sigma": 39.4
+        "damage_sigma": 23.3
     },
     "Titan": {
         "min_level": 46,
@@ -413,7 +413,7 @@
         "avg_hp": 10518.6,
         "hp_sigma": 3155.6,
         "damage_base": 104.4,
-        "damage_sigma": 41.8
+        "damage_sigma": 24.4
     },
     "Phoenix": {
         "min_level": 47,
@@ -421,7 +421,7 @@
         "avg_hp": 6933.2,
         "hp_sigma": 2080.0,
         "damage_base": 154.8,
-        "damage_sigma": 61.9
+        "damage_sigma": 35.6
     },
     "Obsidian Golem": {
         "min_level": 48,
@@ -429,7 +429,7 @@
         "avg_hp": 17763.6,
         "hp_sigma": 5329.1,
         "damage_base": 70.3,
-        "damage_sigma": 28.1
+        "damage_sigma": 15.9
     },
     "Void Dragon": {
         "min_level": 49,
@@ -437,7 +437,7 @@
         "avg_hp": 13926.1,
         "hp_sigma": 4177.8,
         "damage_base": 124.0,
-        "damage_sigma": 49.6
+        "damage_sigma": 27.7
     },
     "Demon Lord": {
         "min_level": 50,
@@ -445,7 +445,7 @@
         "avg_hp": 15277.1,
         "hp_sigma": 4583.1,
         "damage_base": 131.3,
-        "damage_sigma": 52.5
+        "damage_sigma": 28.9
     },
     "Ancient Hydra": {
         "min_level": 51,
@@ -453,7 +453,7 @@
         "avg_hp": 16750.2,
         "hp_sigma": 5025.1,
         "damage_base": 139.0,
-        "damage_sigma": 55.6
+        "damage_sigma": 30.1
     },
     "Celestial Guardian": {
         "min_level": 52,
@@ -461,7 +461,7 @@
         "avg_hp": 18355.2,
         "hp_sigma": 5506.6,
         "damage_base": 147.1,
-        "damage_sigma": 58.8
+        "damage_sigma": 31.4
     },
     "Primordial Beast": {
         "min_level": 53,
@@ -469,7 +469,7 @@
         "avg_hp": 20102.2,
         "hp_sigma": 6030.7,
         "damage_base": 155.6,
-        "damage_sigma": 62.2
+        "damage_sigma": 32.7
     },
     "Eldritch Horror": {
         "min_level": 54,
@@ -477,7 +477,7 @@
         "avg_hp": 22002.4,
         "hp_sigma": 6600.7,
         "damage_base": 164.6,
-        "damage_sigma": 65.8
+        "damage_sigma": 34.0
     },
     "Platinum Dragon": {
         "min_level": 55,
@@ -485,7 +485,7 @@
         "avg_hp": 24067.7,
         "hp_sigma": 7220.3,
         "damage_base": 174.0,
-        "damage_sigma": 69.6
+        "damage_sigma": 35.4
     },
     "Astral Dreadnought": {
         "min_level": 56,
@@ -493,7 +493,7 @@
         "avg_hp": 26310.4,
         "hp_sigma": 7893.1,
         "damage_base": 184.0,
-        "damage_sigma": 73.6
+        "damage_sigma": 36.8
     },
     "Death Knight": {
         "min_level": 57,
@@ -501,7 +501,7 @@
         "avg_hp": 28743.5,
         "hp_sigma": 8623.0,
         "damage_base": 194.5,
-        "damage_sigma": 77.8
+        "damage_sigma": 38.9
     },
     "Balor": {
         "min_level": 58,
@@ -509,7 +509,7 @@
         "avg_hp": 18828.5,
         "hp_sigma": 5648.5,
         "damage_base": 287.7,
-        "damage_sigma": 115.1
+        "damage_sigma": 57.5
     },
     "Kraken": {
         "min_level": 59,
@@ -517,7 +517,7 @@
         "avg_hp": 34237.0,
         "hp_sigma": 10271.1,
         "damage_base": 217.1,
-        "damage_sigma": 86.8
+        "damage_sigma": 43.4
     },
     "Tarrasque Spawn": {
         "min_level": 60,
@@ -525,7 +525,7 @@
         "avg_hp": 52258.8,
         "hp_sigma": 15677.6,
         "damage_base": 137.6,
-        "damage_sigma": 55.1
+        "damage_sigma": 27.5
     },
     "Pit Fiend": {
         "min_level": 61,
@@ -533,7 +533,7 @@
         "avg_hp": 40669.4,
         "hp_sigma": 12200.8,
         "damage_base": 242.3,
-        "damage_sigma": 96.9
+        "damage_sigma": 48.5
     },
     "Solar": {
         "min_level": 62,
@@ -541,7 +541,7 @@
         "avg_hp": 44279.3,
         "hp_sigma": 13283.8,
         "damage_base": 255.9,
-        "damage_sigma": 102.4
+        "damage_sigma": 51.2
     },
     "Ancient Sphinx": {
         "min_level": 63,
@@ -549,7 +549,7 @@
         "avg_hp": 48175.3,
         "hp_sigma": 14452.6,
         "damage_base": 270.1,
-        "damage_sigma": 108.0
+        "damage_sigma": 54.0
     },
     "Empyrean": {
         "min_level": 64,
@@ -557,7 +557,7 @@
         "avg_hp": 52376.8,
         "hp_sigma": 15713.0,
         "damage_base": 285.1,
-        "damage_sigma": 114.0
+        "damage_sigma": 57.0
     },
     "Elder Dragon": {
         "min_level": 65,
@@ -565,7 +565,7 @@
         "avg_hp": 69332.5,
         "hp_sigma": 20799.8,
         "damage_base": 320.0,
-        "damage_sigma": 128.0
+        "damage_sigma": 64.0
     },
     "Archdevil": {
         "min_level": 66,
@@ -573,7 +573,7 @@
         "avg_hp": 45108.5,
         "hp_sigma": 13532.6,
         "damage_base": 473.1,
-        "damage_sigma": 189.2
+        "damage_sigma": 94.6
     },
     "Archdemon": {
         "min_level": 67,
@@ -581,7 +581,7 @@
         "avg_hp": 81412.0,
         "hp_sigma": 24423.6,
         "damage_base": 356.6,
-        "damage_sigma": 142.6
+        "damage_sigma": 71.3
     },
     "Primordial Titan": {
         "min_level": 68,
@@ -589,7 +589,7 @@
         "avg_hp": 123273.2,
         "hp_sigma": 36982.0,
         "damage_base": 225.7,
-        "damage_sigma": 90.3
+        "damage_sigma": 45.1
     },
     "Void Leviathan": {
         "min_level": 69,
@@ -597,7 +597,7 @@
         "avg_hp": 95130.0,
         "hp_sigma": 28539.0,
         "damage_base": 396.6,
-        "damage_sigma": 158.6
+        "damage_sigma": 79.3
     },
     "Cosmic Horror": {
         "min_level": 70,
@@ -605,7 +605,7 @@
         "avg_hp": 102675.0,
         "hp_sigma": 30802.5,
         "damage_base": 418.0,
-        "damage_sigma": 167.2
+        "damage_sigma": 83.6
     },
     "Ancient Phoenix": {
         "min_level": 71,
@@ -613,7 +613,7 @@
         "avg_hp": 110718.7,
         "hp_sigma": 33215.6,
         "damage_base": 440.5,
-        "damage_sigma": 176.2
+        "damage_sigma": 88.1
     },
     "Reality Warper": {
         "min_level": 72,
@@ -621,7 +621,7 @@
         "avg_hp": 119294.6,
         "hp_sigma": 35788.4,
         "damage_base": 464.1,
-        "damage_sigma": 185.6
+        "damage_sigma": 92.8
     },
     "Time Elemental": {
         "min_level": 73,
@@ -629,7 +629,7 @@
         "avg_hp": 128438.0,
         "hp_sigma": 38531.4,
         "damage_base": 488.9,
-        "damage_sigma": 195.6
+        "damage_sigma": 97.8
     },
     "Astral Wyrm": {
         "min_level": 74,
@@ -637,7 +637,7 @@
         "avg_hp": 138186.2,
         "hp_sigma": 41455.9,
         "damage_base": 514.9,
-        "damage_sigma": 206.0
+        "damage_sigma": 103.0
     },
     "Nightmare King": {
         "min_level": 75,
@@ -645,7 +645,7 @@
         "avg_hp": 148578.8,
         "hp_sigma": 44573.6,
         "damage_base": 542.3,
-        "damage_sigma": 216.9
+        "damage_sigma": 108.5
     },
     "Entropy Beast": {
         "min_level": 76,
@@ -653,7 +653,7 @@
         "avg_hp": 159657.5,
         "hp_sigma": 47897.3,
         "damage_base": 571.0,
-        "damage_sigma": 228.4
+        "damage_sigma": 114.2
     },
     "Chaos Spawn": {
         "min_level": 77,
@@ -661,7 +661,7 @@
         "avg_hp": 171466.7,
         "hp_sigma": 51440.0,
         "damage_base": 601.1,
-        "damage_sigma": 240.4
+        "damage_sigma": 120.2
     },
     "Planar Dragon": {
         "min_level": 78,
@@ -669,7 +669,7 @@
         "avg_hp": 184052.9,
         "hp_sigma": 55215.9,
         "damage_base": 632.6,
-        "damage_sigma": 253.0
+        "damage_sigma": 126.5
     },
     "Divine Avatar": {
         "min_level": 79,
@@ -677,7 +677,7 @@
         "avg_hp": 197465.3,
         "hp_sigma": 59239.6,
         "damage_base": 665.6,
-        "damage_sigma": 266.2
+        "damage_sigma": 133.1
     },
     "Elder God": {
         "min_level": 85,
@@ -685,7 +685,7 @@
         "avg_hp": 294036.0,
         "hp_sigma": 88210.8,
         "damage_base": 798.0,
-        "damage_sigma": 319.2
+        "damage_sigma": 159.6
     },
     "Void Emperor": {
         "min_level": 86,
@@ -693,7 +693,7 @@
         "avg_hp": 315158.8,
         "hp_sigma": 94547.6,
         "damage_base": 838.9,
-        "damage_sigma": 335.6
+        "damage_sigma": 167.8
     },
     "Cosmic Dragon": {
         "min_level": 87,
@@ -701,7 +701,7 @@
         "avg_hp": 337370.4,
         "hp_sigma": 101211.1,
         "damage_base": 881.6,
-        "damage_sigma": 352.6
+        "damage_sigma": 176.3
     },
     "Primordial Chaos": {
         "min_level": 88,
@@ -709,7 +709,7 @@
         "avg_hp": 360777.9,
         "hp_sigma": 108233.4,
         "damage_base": 926.1,
-        "damage_sigma": 370.4
+        "damage_sigma": 185.2
     },
     "Ancient One": {
         "min_level": 89,
@@ -717,7 +717,7 @@
         "avg_hp": 385491.3,
         "hp_sigma": 115647.4,
         "damage_base": 972.6,
-        "damage_sigma": 389.0
+        "damage_sigma": 194.5
     },
     "Reality Eater": {
         "min_level": 90,
@@ -725,7 +725,7 @@
         "avg_hp": 411625.9,
         "hp_sigma": 123487.8,
         "damage_base": 1021.3,
-        "damage_sigma": 408.5
+        "damage_sigma": 204.3
     },
     "Dimensional Horror": {
         "min_level": 91,
@@ -733,7 +733,7 @@
         "avg_hp": 439301.5,
         "hp_sigma": 131790.5,
         "damage_base": 1072.1,
-        "damage_sigma": 428.8
+        "damage_sigma": 214.4
     },
     "Infinite Wyrm": {
         "min_level": 92,
@@ -741,7 +741,7 @@
         "avg_hp": 468642.6,
         "hp_sigma": 140592.8,
         "damage_base": 1125.3,
-        "damage_sigma": 450.1
+        "damage_sigma": 225.1
     },
     "Eternal Nightmare": {
         "min_level": 93,
@@ -749,7 +749,7 @@
         "avg_hp": 499779.5,
         "hp_sigma": 149933.9,
         "damage_base": 1180.9,
-        "damage_sigma": 472.4
+        "damage_sigma": 236.2
     },
     "Apocalypse Beast": {
         "min_level": 94,
@@ -757,7 +757,7 @@
         "avg_hp": 532848.9,
         "hp_sigma": 159854.7,
         "damage_base": 1239.0,
-        "damage_sigma": 495.6
+        "damage_sigma": 247.8
     },
     "Oblivion Incarnate": {
         "min_level": 95,
@@ -765,7 +765,7 @@
         "avg_hp": 567994.4,
         "hp_sigma": 170398.3,
         "damage_base": 1299.8,
-        "damage_sigma": 519.9
+        "damage_sigma": 260.0
     },
     "Timeless Horror": {
         "min_level": 96,
@@ -773,7 +773,7 @@
         "avg_hp": 605367.1,
         "hp_sigma": 181610.1,
         "damage_base": 1363.4,
-        "damage_sigma": 545.4
+        "damage_sigma": 272.7
     },
     "Cosmic Devourer": {
         "min_level": 97,
@@ -781,7 +781,7 @@
         "avg_hp": 645126.4,
         "hp_sigma": 193537.9,
         "damage_base": 1430.0,
-        "damage_sigma": 572.0
+        "damage_sigma": 286.0
     },
     "Existence Ender": {
         "min_level": 98,
@@ -789,7 +789,7 @@
         "avg_hp": 687439.0,
         "hp_sigma": 206231.7,
         "damage_base": 1499.8,
-        "damage_sigma": 599.9
+        "damage_sigma": 300.0
     },
     "The Undoing": {
         "min_level": 99,
@@ -797,6 +797,6 @@
         "avg_hp": 1045456.2,
         "hp_sigma": 313636.9,
         "damage_base": 945.3,
-        "damage_sigma": 378.1
+        "damage_sigma": 189.1
     }
 }
