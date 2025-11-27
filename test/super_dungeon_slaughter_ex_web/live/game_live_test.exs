@@ -5,16 +5,14 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
 
   alias SuperDungeonSlaughterEx.Repos.{MonsterRepo, ScoreRepo}
 
-  @test_monsters_path Path.join([
-                        System.tmp_dir!(),
-                        "test_monsters_live_#{:rand.uniform(999_999)}.json"
-                      ])
-  @test_scores_path Path.join([
-                      System.tmp_dir!(),
-                      "test_scores_live_#{:rand.uniform(999_999)}.json"
-                    ])
-
   setup do
+    # Create unique paths for each test (but use default repo names)
+    test_monsters_path =
+      Path.join([System.tmp_dir!(), "test_monsters_live_#{:rand.uniform(999_999_999)}.json"])
+
+    test_scores_path =
+      Path.join([System.tmp_dir!(), "test_scores_live_#{:rand.uniform(999_999_999)}.json"])
+
     # Create test data
     test_monsters = %{
       "TestMonster" => %{
@@ -27,10 +25,10 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       }
     }
 
-    File.write!(@test_monsters_path, Jason.encode!(test_monsters))
-    File.write!(@test_scores_path, "[]")
+    File.write!(test_monsters_path, Jason.encode!(test_monsters))
+    File.write!(test_scores_path, "[]")
 
-    # Stop existing repos and start test ones
+    # Stop existing repos and start test ones with default names
     try do
       Supervisor.terminate_child(SuperDungeonSlaughterEx.Supervisor, MonsterRepo)
       Supervisor.terminate_child(SuperDungeonSlaughterEx.Supervisor, ScoreRepo)
@@ -38,12 +36,12 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       _ -> :ok
     end
 
-    start_supervised!({MonsterRepo, json_path: @test_monsters_path})
-    start_supervised!({ScoreRepo, json_path: @test_scores_path})
+    start_supervised!({MonsterRepo, json_path: test_monsters_path})
+    start_supervised!({ScoreRepo, json_path: test_scores_path})
 
     on_exit(fn ->
-      File.rm(@test_monsters_path)
-      File.rm(@test_scores_path)
+      File.rm(test_monsters_path)
+      File.rm(test_scores_path)
     end)
 
     :ok

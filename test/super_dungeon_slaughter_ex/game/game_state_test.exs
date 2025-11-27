@@ -1,15 +1,16 @@
 defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   alias SuperDungeonSlaughterEx.Game.{GameState, Hero, Monster}
   alias SuperDungeonSlaughterEx.Repos.MonsterRepo
 
-  @test_json_path Path.join([
-                    System.tmp_dir!(),
-                    "test_monsters_gamestate_#{:rand.uniform(999_999)}.json"
-                  ])
-
   setup do
+    # Create unique paths and names for each test
+    test_path =
+      Path.join([System.tmp_dir!(), "test_monsters_gamestate_#{:rand.uniform(999_999_999)}.json"])
+
+    test_name = :"test_monster_repo_gamestate_#{:rand.uniform(999_999_999)}"
+
     # Create test monsters JSON
     test_data = %{
       "TestGoblin" => %{
@@ -22,11 +23,11 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
       }
     }
 
-    File.write!(@test_json_path, Jason.encode!(test_data))
-    start_supervised!({MonsterRepo, json_path: @test_json_path})
+    File.write!(test_path, Jason.encode!(test_data))
+    start_supervised!({MonsterRepo, json_path: test_path, name: test_name})
 
     on_exit(fn ->
-      File.rm(@test_json_path)
+      File.rm(test_path)
     end)
 
     :ok
