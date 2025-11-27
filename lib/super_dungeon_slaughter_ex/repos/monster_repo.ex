@@ -6,6 +6,7 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
 
   use GenServer
   alias SuperDungeonSlaughterEx.Game.Monster
+  alias SuperDungeonSlaughterEx.Types
 
   @type state :: %{
           templates: %{String.t() => Monster.template()},
@@ -27,9 +28,9 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   @doc """
   Get a random monster appropriate for the given level.
   """
-  @spec get_monster_for_level(integer()) :: Monster.t()
-  def get_monster_for_level(level) do
-    GenServer.call(__MODULE__, {:get_monster, level})
+  @spec get_monster_for_level(integer(), Types.difficulty()) :: Monster.t()
+  def get_monster_for_level(level, difficulty \\ :normal) do
+    GenServer.call(__MODULE__, {:get_monster, level, difficulty})
   end
 
   @doc """
@@ -51,7 +52,7 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
   end
 
   @impl true
-  def handle_call({:get_monster, level}, _from, state) do
+  def handle_call({:get_monster, level, difficulty}, _from, state) do
     available = find_monsters_for_level(level, state.level_index)
 
     if Enum.empty?(available) do
@@ -59,7 +60,7 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepo do
     else
       monster_name = Enum.random(available)
       template = Map.get(state.templates, monster_name)
-      monster = Monster.from_template(template)
+      monster = Monster.from_template(template, difficulty)
       {:reply, monster, state}
     end
   end

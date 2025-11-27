@@ -50,21 +50,21 @@ defmodule SuperDungeonSlaughterEx.Repos.MonsterRepoSimpleTest do
   end
 
   test "returns a monster for level 0", %{repo_name: repo_name} do
-    monster = GenServer.call(repo_name, {:get_monster, 0})
+    monster = GenServer.call(repo_name, {:get_monster, 0, :normal})
 
     assert %Monster{} = monster
     assert monster.name == "Kobold"
   end
 
   test "returns appropriate monster for level 1", %{repo_name: repo_name} do
-    monster = GenServer.call(repo_name, {:get_monster, 1})
+    monster = GenServer.call(repo_name, {:get_monster, 1, :normal})
 
     assert %Monster{} = monster
     assert monster.name in ["Kobold", "Goblin"]
   end
 
   test "returns monster with valid HP", %{repo_name: repo_name} do
-    monster = GenServer.call(repo_name, {:get_monster, 1})
+    monster = GenServer.call(repo_name, {:get_monster, 1, :normal})
 
     assert monster.hp > 0
     assert monster.hp_max > 0

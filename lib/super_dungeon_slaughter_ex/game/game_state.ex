@@ -5,6 +5,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
 
   alias SuperDungeonSlaughterEx.Game.{Hero, Monster, HistoryEntry, Potion, Inventory}
   alias SuperDungeonSlaughterEx.Repos.{MonsterRepo, PotionConfigRepo}
+  alias SuperDungeonSlaughterEx.Types
 
   @max_history 200
 
@@ -13,6 +14,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
           monster: Monster.t(),
           history: [HistoryEntry.t()],
           game_over: boolean(),
+          difficulty: Types.difficulty(),
           pending_potion_drop: Potion.t() | nil,
           show_potion_pickup_modal: boolean(),
           show_potion_use_modal: boolean(),
@@ -25,6 +27,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     :monster,
     history: [],
     game_over: false,
+    difficulty: :normal,
     pending_potion_drop: nil,
     show_potion_pickup_modal: false,
     show_potion_use_modal: false,
@@ -35,14 +38,15 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   @doc """
   Create a new game state with a hero and first monster.
   """
-  @spec new(String.t()) :: t()
-  def new(hero_name) do
+  @spec new(String.t(), Types.difficulty()) :: t()
+  def new(hero_name, difficulty \\ :normal) do
     hero = Hero.new(hero_name)
-    monster = MonsterRepo.get_monster_for_level(hero.level)
+    monster = MonsterRepo.get_monster_for_level(hero.level, difficulty)
 
     %__MODULE__{
       hero: hero,
       monster: monster,
+      difficulty: difficulty,
       history: [
         HistoryEntry.new("A wild #{monster.display_name} appears!", :system),
         HistoryEntry.new("Welcome, #{hero_name}!", :system)
@@ -151,7 +155,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     state = check_level_up(state)
 
     # Spawn new monster
-    new_monster = MonsterRepo.get_monster_for_level(state.hero.level)
+    new_monster = MonsterRepo.get_monster_for_level(state.hero.level, state.difficulty)
 
     state
     |> Map.put(:monster, new_monster)

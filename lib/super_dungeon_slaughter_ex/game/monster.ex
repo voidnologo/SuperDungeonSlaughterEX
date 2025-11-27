@@ -3,6 +3,8 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
   Monster entity with combat stats spawned from templates using Gaussian randomization.
   """
 
+  alias SuperDungeonSlaughterEx.Types
+
   @type template :: %{
           name: String.t(),
           min_level: non_neg_integer(),
@@ -26,15 +28,27 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
 
   @doc """
   Create a monster instance from a template with randomized HP.
+  Difficulty scaling: easy (90-95%), normal (100%), hard (105-110%).
   """
-  @spec from_template(template()) :: t()
-  def from_template(template) do
-    # Generate Gaussian-distributed HP
-    hp = :rand.normal(template.avg_hp, template.hp_sigma)
+  @spec from_template(template(), Types.difficulty()) :: t()
+  def from_template(template, difficulty \\ :normal) do
+    # Calculate difficulty multiplier
+    multiplier =
+      case difficulty do
+        :easy -> 0.90 + :rand.uniform() * 0.05
+        :hard -> 1.05 + :rand.uniform() * 0.05
+        _ -> 1.0
+      end
+
+    # Generate Gaussian-distributed HP with difficulty scaling
+    hp = :rand.normal(template.avg_hp, template.hp_sigma) * multiplier
     hp = max(1, round(hp))
 
-    # Calculate descriptors based on z-scores
-    hp_descriptor = get_hp_descriptor(hp, template.avg_hp, template.hp_sigma)
+    # Scale damage with difficulty
+    damage_base = template.damage_base * multiplier
+
+    # Calculate descriptors based on z-scores (using original unscaled values)
+    hp_descriptor = get_hp_descriptor(hp / multiplier, template.avg_hp, template.hp_sigma)
     damage_descriptor = get_damage_descriptor(template.damage_base, template.damage_sigma)
 
     # Build display name with descriptors
@@ -45,7 +59,7 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
       display_name: display_name,
       hp: hp,
       hp_max: hp,
-      damage_base: template.damage_base,
+      damage_base: damage_base,
       damage_sigma: template.damage_sigma
     }
   end

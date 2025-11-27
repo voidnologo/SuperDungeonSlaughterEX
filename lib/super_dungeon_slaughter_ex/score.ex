@@ -3,23 +3,27 @@ defmodule SuperDungeonSlaughterEx.Score do
   Immutable high score entry.
   """
 
+  alias SuperDungeonSlaughterEx.Types
+
   @type t :: %__MODULE__{
           name: String.t(),
           level: pos_integer(),
-          kills: non_neg_integer()
+          kills: non_neg_integer(),
+          difficulty: Types.difficulty()
         }
 
-  defstruct [:name, :level, :kills]
+  defstruct [:name, :level, :kills, difficulty: :normal]
 
   @doc """
   Create a new score.
   """
-  @spec new(String.t(), pos_integer(), non_neg_integer()) :: t()
-  def new(name, level, kills) do
+  @spec new(String.t(), pos_integer(), non_neg_integer(), Types.difficulty()) :: t()
+  def new(name, level, kills, difficulty \\ :normal) do
     %__MODULE__{
       name: name,
       level: level,
-      kills: kills
+      kills: kills,
+      difficulty: difficulty
     }
   end
 
@@ -31,7 +35,8 @@ defmodule SuperDungeonSlaughterEx.Score do
     %{
       "name" => score.name,
       "level" => score.level,
-      "kills" => score.kills
+      "kills" => score.kills,
+      "difficulty" => Atom.to_string(score.difficulty)
     }
   end
 
@@ -40,10 +45,18 @@ defmodule SuperDungeonSlaughterEx.Score do
   """
   @spec from_map(map()) :: t()
   def from_map(map) do
+    difficulty =
+      case map["difficulty"] do
+        "easy" -> :easy
+        "hard" -> :hard
+        _ -> :normal
+      end
+
     %__MODULE__{
       name: map["name"],
       level: map["level"],
-      kills: map["kills"]
+      kills: map["kills"],
+      difficulty: difficulty
     }
   end
 
