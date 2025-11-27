@@ -301,8 +301,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameStateTest do
     test "boss defeat heals hero to full HP" do
       state = GameState.new("Hero")
 
-      # Level up hero to 10 and damage them
-      hero = %{state.hero | level: 10, hp: 5, hp_max: 50}
+      # Level up hero to 10 and damage them - ensure hero can kill boss
+      hero = %{state.hero | level: 10, hp: 5, hp_max: 50, damage_min: 1, damage_max: 10}
 
       # Create a weak boss that can be defeated
       boss = %{
