@@ -6,7 +6,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    form = to_form(%{"name" => ""}, as: :hero)
+    form = to_form(%{"name" => "", "difficulty" => "normal"}, as: :hero)
 
     socket =
       socket
@@ -25,9 +25,20 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
   end
 
   @impl true
-  def handle_event("create_hero", %{"hero" => %{"name" => name}}, socket) do
-    name = if String.trim(name) == "", do: "Hero", else: String.trim(name)
-    game_state = GameState.new(name)
+  def handle_event("create_hero", %{"hero" => hero_params}, socket) do
+    name =
+      if String.trim(hero_params["name"]) == "",
+        do: "Hero",
+        else: String.trim(hero_params["name"])
+
+    difficulty =
+      case hero_params["difficulty"] do
+        "easy" -> :easy
+        "hard" -> :hard
+        _ -> :normal
+      end
+
+    game_state = GameState.new(name, difficulty)
 
     socket =
       socket
@@ -47,7 +58,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       # Auto-save score if game over
       socket =
         if game_state.game_over do
-          save_score(game_state.hero)
+          save_score(game_state.hero, game_state.difficulty)
           assign(socket, :game_state, game_state)
         else
           assign(socket, :game_state, game_state)
@@ -67,7 +78,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       # Auto-save score if game over
       socket =
         if game_state.game_over do
-          save_score(game_state.hero)
+          save_score(game_state.hero, game_state.difficulty)
           assign(socket, :game_state, game_state)
         else
           assign(socket, :game_state, game_state)
@@ -80,7 +91,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
   @impl true
   def handle_event("new_game", _params, socket) do
     hero_name = socket.assigns.game_state.hero.name
-    game_state = GameState.new(hero_name)
+    difficulty = socket.assigns.game_state.difficulty
+    game_state = GameState.new(hero_name, difficulty)
 
     socket =
       socket
@@ -117,7 +129,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       # Auto-save score if game over
       socket =
         if game_state.game_over do
-          save_score(game_state.hero)
+          save_score(game_state.hero, game_state.difficulty)
           assign(socket, :game_state, game_state)
         else
           assign(socket, :game_state, game_state)
@@ -150,8 +162,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     {:noreply, assign(socket, :game_state, game_state)}
   end
 
-  defp save_score(hero) do
-    score = Score.new(hero.name, hero.level, hero.total_kills)
+  defp save_score(hero, difficulty) do
+    score = Score.new(hero.name, hero.level, hero.total_kills, difficulty)
     ScoreRepo.add_score(score)
   end
 
@@ -179,6 +191,62 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
                     class="w-full px-4 py-2 bg-black border-2 border-green-500 text-green-400 rounded focus:outline-none focus:border-green-300"
                   />
                 </div>
+                <div>
+                  <label class="block text-green-400 mb-2">Select Difficulty:</label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <label class={[
+                      "relative cursor-pointer rounded-lg border-2 p-3 text-center transition-all",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) == "easy" &&
+                        "border-blue-500 bg-blue-900/30",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) != "easy" &&
+                        "border-gray-600 bg-gray-800 hover:border-blue-500"
+                    ]}>
+                      <input
+                        type="radio"
+                        name="hero[difficulty]"
+                        value="easy"
+                        checked={Phoenix.HTML.Form.input_value(@form, :difficulty) == "easy"}
+                        class="sr-only"
+                      />
+                      <div class="text-blue-400 font-bold">Easy</div>
+                      <div class="text-xs text-gray-400">-5-10%</div>
+                    </label>
+                    <label class={[
+                      "relative cursor-pointer rounded-lg border-2 p-3 text-center transition-all",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) == "normal" &&
+                        "border-green-500 bg-green-900/30",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) != "normal" &&
+                        "border-gray-600 bg-gray-800 hover:border-green-500"
+                    ]}>
+                      <input
+                        type="radio"
+                        name="hero[difficulty]"
+                        value="normal"
+                        checked={Phoenix.HTML.Form.input_value(@form, :difficulty) == "normal"}
+                        class="sr-only"
+                      />
+                      <div class="text-green-400 font-bold">Normal</div>
+                      <div class="text-xs text-gray-400">Standard</div>
+                    </label>
+                    <label class={[
+                      "relative cursor-pointer rounded-lg border-2 p-3 text-center transition-all",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) == "hard" &&
+                        "border-red-500 bg-red-900/30",
+                      Phoenix.HTML.Form.input_value(@form, :difficulty) != "hard" &&
+                        "border-gray-600 bg-gray-800 hover:border-red-500"
+                    ]}>
+                      <input
+                        type="radio"
+                        name="hero[difficulty]"
+                        value="hard"
+                        checked={Phoenix.HTML.Form.input_value(@form, :difficulty) == "hard"}
+                        class="sr-only"
+                      />
+                      <div class="text-red-400 font-bold">Hard</div>
+                      <div class="text-xs text-gray-400">+5-10%</div>
+                    </label>
+                  </div>
+                </div>
                 <button
                   type="submit"
                   class="w-full py-3 bg-green-600 hover:bg-green-700 text-white text-xl font-bold rounded transition-colors"
@@ -199,7 +267,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
         
     <!-- High Scores Modal from Start Page -->
         <%= if @show_high_scores do %>
-          <.start_page_high_scores all_scores={ScoreRepo.get_all_scores()} />
+          <.start_page_high_scores_all_difficulties all_scores={ScoreRepo.get_all_scores()} />
         <% end %>
       <% else %>
         <!-- Game UI -->
@@ -265,10 +333,11 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
         <%= if @game_state.game_over do %>
           <%= if @show_high_scores do %>
             <.high_scores_display
-              all_scores={ScoreRepo.get_all_scores()}
+              all_scores={ScoreRepo.get_scores_by_difficulty(@game_state.difficulty)}
               player_name={@game_state.hero.name}
               player_level={@game_state.hero.level}
               player_kills={@game_state.hero.total_kills}
+              difficulty={@game_state.difficulty}
             />
           <% else %>
             <.game_over_stats hero={@game_state.hero} show_high_scores={@show_high_scores} />

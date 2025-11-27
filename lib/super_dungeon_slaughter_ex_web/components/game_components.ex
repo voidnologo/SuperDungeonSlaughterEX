@@ -360,39 +360,93 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   end
 
   @doc """
-  Start page high scores display component.
-  Shows top 10 scores without player highlighting.
+  Start page high scores display component showing all difficulties.
+  Shows top 10 scores for each difficulty without player highlighting.
   """
   attr :all_scores, :list, required: true
 
-  def start_page_high_scores(assigns) do
-    top_10 = Enum.take(assigns.all_scores, 10)
-    assigns = assign(assigns, :top_10, top_10)
+  def start_page_high_scores_all_difficulties(assigns) do
+    easy_scores = Enum.filter(assigns.all_scores, &(&1.difficulty == :easy)) |> Enum.take(10)
+    normal_scores = Enum.filter(assigns.all_scores, &(&1.difficulty == :normal)) |> Enum.take(10)
+    hard_scores = Enum.filter(assigns.all_scores, &(&1.difficulty == :hard)) |> Enum.take(10)
+
+    assigns =
+      assigns
+      |> assign(:easy_scores, easy_scores)
+      |> assign(:normal_scores, normal_scores)
+      |> assign(:hard_scores, hard_scores)
 
     ~H"""
-    <div class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
-      <div class="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-2xl w-full mx-4">
+    <div class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 overflow-y-auto">
+      <div class="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-4xl w-full mx-4 my-8">
         <h2 class="text-4xl font-bold text-yellow-400 text-center mb-6">High Scores</h2>
 
-        <div class="bg-black p-6 rounded mb-6 space-y-2 font-mono max-h-[500px] overflow-y-auto">
-          <%= if @top_10 == [] do %>
-            <div class="text-center text-gray-400 py-8">
-              No high scores yet. Be the first to play!
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="bg-black p-4 rounded border-2 border-blue-500">
+            <h3 class="text-2xl font-bold text-blue-400 text-center mb-3">Easy</h3>
+            <div class="space-y-1 font-mono text-sm max-h-[300px] overflow-y-auto">
+              <%= if @easy_scores == [] do %>
+                <div class="text-center text-gray-400 py-4 text-xs">No scores yet</div>
+              <% else %>
+                <%= for {score, index} <- Enum.with_index(@easy_scores, 1) do %>
+                  <div class="flex justify-between p-1 text-xs">
+                    <div class="flex gap-2">
+                      <span class={["w-4 text-right", rank_color(index)]}>{index}.</span>
+                      <span class="truncate max-w-[80px]">{score.name}</span>
+                    </div>
+                    <div class="flex gap-2">
+                      <span class="text-yellow-400">L{score.level}</span>
+                      <span class="text-purple-400">{score.kills}</span>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
             </div>
-          <% else %>
-            <%= for {score, index} <- Enum.with_index(@top_10, 1) do %>
-              <div class="flex justify-between p-2 rounded hover:bg-gray-700 transition-colors">
-                <div class="flex gap-4 flex-1">
-                  <span class={["w-8 text-right font-bold", rank_color(index)]}>{index}.</span>
-                  <span class="flex-1">{score.name}</span>
-                </div>
-                <div class="flex gap-6">
-                  <span class="text-yellow-400">Lvl {score.level}</span>
-                  <span class="text-purple-400 w-16 text-right">{score.kills} kills</span>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
+          </div>
+
+          <div class="bg-black p-4 rounded border-2 border-green-500">
+            <h3 class="text-2xl font-bold text-green-400 text-center mb-3">Normal</h3>
+            <div class="space-y-1 font-mono text-sm max-h-[300px] overflow-y-auto">
+              <%= if @normal_scores == [] do %>
+                <div class="text-center text-gray-400 py-4 text-xs">No scores yet</div>
+              <% else %>
+                <%= for {score, index} <- Enum.with_index(@normal_scores, 1) do %>
+                  <div class="flex justify-between p-1 text-xs">
+                    <div class="flex gap-2">
+                      <span class={["w-4 text-right", rank_color(index)]}>{index}.</span>
+                      <span class="truncate max-w-[80px]">{score.name}</span>
+                    </div>
+                    <div class="flex gap-2">
+                      <span class="text-yellow-400">L{score.level}</span>
+                      <span class="text-purple-400">{score.kills}</span>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="bg-black p-4 rounded border-2 border-red-500">
+            <h3 class="text-2xl font-bold text-red-400 text-center mb-3">Hard</h3>
+            <div class="space-y-1 font-mono text-sm max-h-[300px] overflow-y-auto">
+              <%= if @hard_scores == [] do %>
+                <div class="text-center text-gray-400 py-4 text-xs">No scores yet</div>
+              <% else %>
+                <%= for {score, index} <- Enum.with_index(@hard_scores, 1) do %>
+                  <div class="flex justify-between p-1 text-xs">
+                    <div class="flex gap-2">
+                      <span class={["w-4 text-right", rank_color(index)]}>{index}.</span>
+                      <span class="truncate max-w-[80px]">{score.name}</span>
+                    </div>
+                    <div class="flex gap-2">
+                      <span class="text-yellow-400">L{score.level}</span>
+                      <span class="text-purple-400">{score.kills}</span>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
 
         <button
@@ -408,13 +462,17 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   @doc """
   High scores display component.
-  Shows top 10 scores, highlights player's score if in top 10,
+  Shows top 10 scores for the specified difficulty, highlights player's score if in top 10,
   or shows player's placement if outside top 10.
   """
   attr :all_scores, :list, required: true
   attr :player_name, :string, required: true
   attr :player_level, :integer, required: true
   attr :player_kills, :integer, required: true
+
+  attr :difficulty, :atom,
+    required: true,
+    doc: "Game difficulty (SuperDungeonSlaughterEx.Types.difficulty())"
 
   def high_scores_display(assigns) do
     top_10 = Enum.take(assigns.all_scores, 10)
@@ -438,7 +496,13 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
     ~H"""
     <div class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50">
       <div class="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-2xl w-full mx-4">
-        <h2 class="text-4xl font-bold text-yellow-400 text-center mb-6">High Scores</h2>
+        <h2 class="text-4xl font-bold text-yellow-400 text-center mb-2">High Scores</h2>
+        <div class={[
+          "text-2xl font-bold text-center mb-4",
+          difficulty_color(@difficulty)
+        ]}>
+          {difficulty_label(@difficulty)}
+        </div>
 
         <div class="bg-black p-6 rounded mb-6 space-y-2 font-mono max-h-[500px] overflow-y-auto">
           <%= for {score, index} <- Enum.with_index(@top_10, 1) do %>
@@ -559,4 +623,14 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   defp get_percentage_text(:minor), do: "25%"
   defp get_percentage_text(:normal), do: "50%"
   defp get_percentage_text(:major), do: "100%"
+
+  # Difficulty label helpers (SuperDungeonSlaughterEx.Types.difficulty())
+  defp difficulty_label(:easy), do: "Easy Mode"
+  defp difficulty_label(:hard), do: "Hard Mode"
+  defp difficulty_label(_), do: "Normal Mode"
+
+  # Difficulty color helpers (SuperDungeonSlaughterEx.Types.difficulty())
+  defp difficulty_color(:easy), do: "text-blue-400"
+  defp difficulty_color(:hard), do: "text-red-400"
+  defp difficulty_color(_), do: "text-green-400"
 end

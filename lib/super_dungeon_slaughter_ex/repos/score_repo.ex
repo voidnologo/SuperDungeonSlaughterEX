@@ -6,6 +6,7 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepo do
 
   use GenServer
   alias SuperDungeonSlaughterEx.Score
+  alias SuperDungeonSlaughterEx.Types
 
   @type state :: %{
           scores: [Score.t()],
@@ -48,6 +49,14 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepo do
     GenServer.call(__MODULE__, :get_all)
   end
 
+  @doc """
+  Get all scores for a specific difficulty.
+  """
+  @spec get_scores_by_difficulty(Types.difficulty()) :: [Score.t()]
+  def get_scores_by_difficulty(difficulty) do
+    GenServer.call(__MODULE__, {:get_by_difficulty, difficulty})
+  end
+
   # Server Callbacks
 
   @impl true
@@ -72,6 +81,12 @@ defmodule SuperDungeonSlaughterEx.Repos.ScoreRepo do
   @impl true
   def handle_call(:get_all, _from, state) do
     {:reply, state.scores, state}
+  end
+
+  @impl true
+  def handle_call({:get_by_difficulty, difficulty}, _from, state) do
+    filtered_scores = Enum.filter(state.scores, fn score -> score.difficulty == difficulty end)
+    {:reply, filtered_scores, state}
   end
 
   # Private Functions
