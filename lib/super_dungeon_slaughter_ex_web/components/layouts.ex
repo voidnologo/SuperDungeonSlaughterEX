@@ -116,38 +116,118 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
   end
 
   @doc """
-  Provides dark vs light theme toggle based on themes defined in app.css.
+  Provides theme selector for multiple visual themes defined in app.css.
 
   See <head> in root.html.heex which applies the theme before page load.
   """
   def theme_toggle(assigns) do
     ~H"""
-    <div class="card relative flex flex-row items-center border-2 border-base-300 bg-base-300 rounded-full">
-      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=light]_&]:left-1/3 [[data-theme=dark]_&]:left-2/3 transition-[left]" />
-
-      <button
-        class="flex p-2 cursor-pointer w-1/3"
-        phx-click={JS.dispatch("phx:set-theme")}
-        data-phx-theme="system"
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-ghost btn-sm">
+        <.icon name="hero-swatch" class="size-5" />
+        <span class="hidden sm:inline">Theme</span>
+      </label>
+      <ul
+        tabindex="0"
+        class="dropdown-content z-[1] menu p-2 shadow-lg bg-base-200 rounded-box w-52 border-2 border-base-300"
       >
-        <.icon name="hero-computer-desktop-micro" class="size-4 opacity-75 hover:opacity-100" />
-      </button>
-
-      <button
-        class="flex p-2 cursor-pointer w-1/3"
-        phx-click={JS.dispatch("phx:set-theme")}
-        data-phx-theme="light"
-      >
-        <.icon name="hero-sun-micro" class="size-4 opacity-75 hover:opacity-100" />
-      </button>
-
-      <button
-        class="flex p-2 cursor-pointer w-1/3"
-        phx-click={JS.dispatch("phx:set-theme")}
-        data-phx-theme="dark"
-      >
-        <.icon name="hero-moon-micro" class="size-4 opacity-75 hover:opacity-100" />
-      </button>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="system"
+            class="[[data-theme=system]_&]:bg-base-300 [[data-theme=system]_&]:font-bold"
+          >
+            <.icon name="hero-computer-desktop-micro" class="size-4" />
+            System Default
+          </button>
+        </li>
+        <li class="menu-title">
+          <span>Light Themes</span>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="light"
+            class="[[data-theme=light]_&]:bg-base-300 [[data-theme=light]_&]:font-bold"
+          >
+            <.icon name="hero-sun-micro" class="size-4" />
+            Light
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="ink"
+            class="[[data-theme=ink]_&]:bg-base-300 [[data-theme=ink]_&]:font-bold"
+          >
+            <.icon name="hero-pencil-square-micro" class="size-4" />
+            Ink & Brush
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="parchment"
+            class="[[data-theme=parchment]_&]:bg-base-300 [[data-theme=parchment]_&]:font-bold"
+          >
+            <.icon name="hero-document-text-micro" class="size-4" />
+            Parchment
+          </button>
+        </li>
+        <li class="menu-title">
+          <span>Dark Themes</span>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="dark"
+            class="[[data-theme=dark]_&]:bg-base-300 [[data-theme=dark]_&]:font-bold"
+          >
+            <.icon name="hero-moon-micro" class="size-4" />
+            Dark
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="arcade"
+            class="[[data-theme=arcade]_&]:bg-base-300 [[data-theme=arcade]_&]:font-bold"
+          >
+            <.icon name="hero-play-micro" class="size-4" />
+            Arcade
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="fantasy"
+            class="[[data-theme=fantasy]_&]:bg-base-300 [[data-theme=fantasy]_&]:font-bold"
+          >
+            <.icon name="hero-sparkles-micro" class="size-4" />
+            High Fantasy
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="terminal"
+            class="[[data-theme=terminal]_&]:bg-base-300 [[data-theme=terminal]_&]:font-bold"
+          >
+            <.icon name="hero-command-line-micro" class="size-4" />
+            Terminal
+          </button>
+        </li>
+        <li>
+          <button
+            phx-click={JS.dispatch("phx:set-theme")}
+            data-phx-theme="cyberpunk"
+            class="[[data-theme=cyberpunk]_&]:bg-base-300 [[data-theme=cyberpunk]_&]:font-bold"
+          >
+            <.icon name="hero-bolt-micro" class="size-4" />
+            Cyberpunk
+          </button>
+        </li>
+      </ul>
     </div>
     """
   end
