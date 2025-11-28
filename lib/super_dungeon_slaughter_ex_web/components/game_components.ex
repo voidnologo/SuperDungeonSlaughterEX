@@ -4,6 +4,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   """
 
   use Phoenix.Component
+  alias Phoenix.LiveView.JS
   alias SuperDungeonSlaughterEx.Game.{Hero, Monster, Potion}
   alias SuperDungeonSlaughterEx.Score
 
@@ -703,4 +704,125 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   defp difficulty_color(:easy), do: "text-blue-400"
   defp difficulty_color(:hard), do: "text-red-400"
   defp difficulty_color(_), do: "text-green-400"
+
+  @doc """
+  Settings modal component with theme selector and other future settings.
+  """
+  def settings_modal(assigns) do
+    ~H"""
+    <div class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+      <div class="bg-gray-800 border-4 border-orange-500 rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <h2 class="text-3xl font-bold text-orange-400 mb-6 text-center">Settings</h2>
+
+        <div class="space-y-6">
+          <!-- Theme Selector -->
+          <div>
+            <h3 class="text-xl font-bold text-green-400 mb-4">Visual Theme</h3>
+            <p class="text-gray-400 text-sm mb-4">
+              Select a visual theme to customize the game's appearance
+            </p>
+
+            <!-- Light Themes -->
+            <div class="mb-4">
+              <h4 class="text-md font-semibold text-gray-300 mb-2">Light Themes</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="light"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=light]_&]:bg-green-900/30 [[data-theme=light]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Light</div>
+                  <div class="text-xs text-gray-400">Clean & modern</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="ink"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=ink]_&]:bg-green-900/30 [[data-theme=ink]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Ink & Brush</div>
+                  <div class="text-xs text-gray-400">Hand-drawn style</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="parchment"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=parchment]_&]:bg-green-900/30 [[data-theme=parchment]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Parchment</div>
+                  <div class="text-xs text-gray-400">Aged manuscript</div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Dark Themes -->
+            <div>
+              <h4 class="text-md font-semibold text-gray-300 mb-2">Dark Themes</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="dark"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=dark]_&]:bg-green-900/30 [[data-theme=dark]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Dark</div>
+                  <div class="text-xs text-gray-400">Modern dark theme</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="arcade"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=arcade]_&]:bg-green-900/30 [[data-theme=arcade]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Arcade</div>
+                  <div class="text-xs text-gray-400">Retro arcade cabinet</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="fantasy"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=fantasy]_&]:bg-green-900/30 [[data-theme=fantasy]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">High Fantasy</div>
+                  <div class="text-xs text-gray-400">Mystical & magical</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="terminal"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=terminal]_&]:bg-green-900/30 [[data-theme=terminal]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Terminal</div>
+                  <div class="text-xs text-gray-400">Classic CRT monitor</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme")}
+                  data-phx-theme="cyberpunk"
+                  class="p-3 bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 hover:border-green-500 rounded text-left transition-all [[data-theme=cyberpunk]_&]:bg-green-900/30 [[data-theme=cyberpunk]_&]:border-green-500"
+                >
+                  <div class="font-bold text-green-400">Cyberpunk</div>
+                  <div class="text-xs text-gray-400">Neon & electric</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Future settings can be added here -->
+          <div class="border-t-2 border-gray-600 pt-4">
+            <p class="text-gray-500 text-sm italic">More settings coming soon...</p>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button
+            phx-click="toggle_settings"
+            class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white text-xl font-bold rounded transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    """
+  end
 end

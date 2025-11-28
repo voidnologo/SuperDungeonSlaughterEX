@@ -13,6 +13,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       |> assign(:game_state, nil)
       |> assign(:show_name_prompt, true)
       |> assign(:show_high_scores, false)
+      |> assign(:show_settings, false)
       |> assign(:form, form)
 
     {:ok, socket}
@@ -105,6 +106,11 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
   @impl true
   def handle_event("toggle_high_scores", _params, socket) do
     {:noreply, assign(socket, :show_high_scores, !socket.assigns.show_high_scores)}
+  end
+
+  @impl true
+  def handle_event("toggle_settings", _params, socket) do
+    {:noreply, assign(socket, :show_settings, !socket.assigns.show_settings)}
   end
 
   @impl true
@@ -272,9 +278,21 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
                 </button>
               </div>
             </.form>
+            <button
+              type="button"
+              phx-click="toggle_settings"
+              class="absolute bottom-4 right-4 text-orange-500 hover:text-orange-400 font-bold transition-colors"
+            >
+              Settings
+            </button>
           </div>
         </div>
-        
+
+    <!-- Settings Modal from Start Page -->
+        <%= if @show_settings do %>
+          <.settings_modal />
+        <% end %>
+
     <!-- High Scores Modal from Start Page -->
         <%= if @show_high_scores do %>
           <.start_page_high_scores_all_difficulties all_scores={ScoreRepo.get_all_scores()} />
