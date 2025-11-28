@@ -133,7 +133,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
       >
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "system"})}
             data-phx-theme="system"
             class="[[data-theme=system]_&]:bg-base-300 [[data-theme=system]_&]:font-bold"
           >
@@ -145,7 +145,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "light"})}
             data-phx-theme="light"
             class="[[data-theme=light]_&]:bg-base-300 [[data-theme=light]_&]:font-bold"
           >
@@ -154,7 +154,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "ink"})}
             data-phx-theme="ink"
             class="[[data-theme=ink]_&]:bg-base-300 [[data-theme=ink]_&]:font-bold"
           >
@@ -163,7 +163,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "parchment"})}
             data-phx-theme="parchment"
             class="[[data-theme=parchment]_&]:bg-base-300 [[data-theme=parchment]_&]:font-bold"
           >
@@ -175,7 +175,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "dark"})}
             data-phx-theme="dark"
             class="[[data-theme=dark]_&]:bg-base-300 [[data-theme=dark]_&]:font-bold"
           >
@@ -184,7 +184,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "arcade"})}
             data-phx-theme="arcade"
             class="[[data-theme=arcade]_&]:bg-base-300 [[data-theme=arcade]_&]:font-bold"
           >
@@ -193,7 +193,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "fantasy"})}
             data-phx-theme="fantasy"
             class="[[data-theme=fantasy]_&]:bg-base-300 [[data-theme=fantasy]_&]:font-bold"
           >
@@ -202,7 +202,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "terminal"})}
             data-phx-theme="terminal"
             class="[[data-theme=terminal]_&]:bg-base-300 [[data-theme=terminal]_&]:font-bold"
           >
@@ -211,7 +211,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
         </li>
         <li>
           <button
-            phx-click={JS.dispatch("phx:set-theme")}
+            phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "cyberpunk"})}
             data-phx-theme="cyberpunk"
             class="[[data-theme=cyberpunk]_&]:bg-base-300 [[data-theme=cyberpunk]_&]:font-bold"
           >
