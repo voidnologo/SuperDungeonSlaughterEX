@@ -91,6 +91,216 @@
   --noise: 0;
 }
 
+@plugin "../vendor/daisyui-theme" {
+  name: "arcade";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(15% 0.02 280);
+  --color-base-200: oklch(12% 0.02 280);
+  --color-base-300: oklch(8% 0.02 280);
+  --color-base-content: oklch(100% 0 0);
+  --color-primary: oklch(75% 0.32 330);
+  --color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(70% 0.30 180);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(75% 0.35 60);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(20% 0.02 280);
+  --color-neutral-content: oklch(100% 0 0);
+  --color-info: oklch(70% 0.25 240);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(75% 0.30 150);
+  --color-success-content: oklch(10% 0 0);
+  --color-warning: oklch(80% 0.35 90);
+  --color-warning-content: oklch(10% 0 0);
+  --color-error: oklch(65% 0.35 25);
+  --color-error-content: oklch(100% 0 0);
+  --radius-selector: 0.125rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 3px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "fantasy";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(18% 0.04 285);
+  --color-base-200: oklch(14% 0.04 285);
+  --color-base-300: oklch(10% 0.04 285);
+  --color-base-content: oklch(95% 0.02 60);
+  --color-primary: oklch(65% 0.25 310);
+  --color-primary-content: oklch(98% 0.02 60);
+  --color-secondary: oklch(55% 0.20 50);
+  --color-secondary-content: oklch(98% 0.02 60);
+  --color-accent: oklch(70% 0.22 250);
+  --color-accent-content: oklch(98% 0.02 60);
+  --color-neutral: oklch(25% 0.04 285);
+  --color-neutral-content: oklch(95% 0.02 60);
+  --color-info: oklch(60% 0.18 260);
+  --color-info-content: oklch(98% 0.02 60);
+  --color-success: oklch(55% 0.15 145);
+  --color-success-content: oklch(98% 0.02 60);
+  --color-warning: oklch(65% 0.20 70);
+  --color-warning-content: oklch(98% 0.02 60);
+  --color-error: oklch(55% 0.25 20);
+  --color-error-content: oklch(98% 0.02 60);
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 2px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "ink";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(98% 0 0);
+  --color-base-200: oklch(95% 0 0);
+  --color-base-300: oklch(90% 0 0);
+  --color-base-content: oklch(15% 0 0);
+  --color-primary: oklch(30% 0 0);
+  --color-primary-content: oklch(98% 0 0);
+  --color-secondary: oklch(45% 0 0);
+  --color-secondary-content: oklch(98% 0 0);
+  --color-accent: oklch(20% 0 0);
+  --color-accent-content: oklch(98% 0 0);
+  --color-neutral: oklch(50% 0 0);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(35% 0 0);
+  --color-info-content: oklch(98% 0 0);
+  --color-success: oklch(40% 0 0);
+  --color-success-content: oklch(98% 0 0);
+  --color-warning: oklch(25% 0 0);
+  --color-warning-content: oklch(98% 0 0);
+  --color-error: oklch(20% 0 0);
+  --color-error-content: oklch(98% 0 0);
+  --radius-selector: 0.125rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 2.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "terminal";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(12% 0.01 180);
+  --color-base-200: oklch(10% 0.01 180);
+  --color-base-300: oklch(8% 0.01 180);
+  --color-base-content: oklch(75% 0.20 145);
+  --color-primary: oklch(70% 0.22 145);
+  --color-primary-content: oklch(12% 0.01 180);
+  --color-secondary: oklch(65% 0.18 145);
+  --color-secondary-content: oklch(12% 0.01 180);
+  --color-accent: oklch(80% 0.25 145);
+  --color-accent-content: oklch(12% 0.01 180);
+  --color-neutral: oklch(15% 0.01 180);
+  --color-neutral-content: oklch(75% 0.20 145);
+  --color-info: oklch(75% 0.20 145);
+  --color-info-content: oklch(12% 0.01 180);
+  --color-success: oklch(70% 0.22 145);
+  --color-success-content: oklch(12% 0.01 180);
+  --color-warning: oklch(75% 0.20 145);
+  --color-warning-content: oklch(12% 0.01 180);
+  --color-error: oklch(70% 0.22 145);
+  --color-error-content: oklch(12% 0.01 180);
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "cyberpunk";
+  default: false;
+  prefersdark: false;
+  color-scheme: "dark";
+  --color-base-100: oklch(10% 0.02 300);
+  --color-base-200: oklch(8% 0.02 300);
+  --color-base-300: oklch(6% 0.02 300);
+  --color-base-content: oklch(95% 0.05 180);
+  --color-primary: oklch(70% 0.35 330);
+  --color-primary-content: oklch(10% 0.02 300);
+  --color-secondary: oklch(75% 0.30 180);
+  --color-secondary-content: oklch(10% 0.02 300);
+  --color-accent: oklch(80% 0.35 290);
+  --color-accent-content: oklch(10% 0.02 300);
+  --color-neutral: oklch(12% 0.02 300);
+  --color-neutral-content: oklch(95% 0.05 180);
+  --color-info: oklch(75% 0.30 200);
+  --color-info-content: oklch(10% 0.02 300);
+  --color-success: oklch(70% 0.30 150);
+  --color-success-content: oklch(10% 0.02 300);
+  --color-warning: oklch(75% 0.35 80);
+  --color-warning-content: oklch(10% 0.02 300);
+  --color-error: oklch(65% 0.35 10);
+  --color-error-content: oklch(10% 0.02 300);
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0.125rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 2px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "parchment";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(92% 0.03 60);
+  --color-base-200: oklch(88% 0.03 60);
+  --color-base-300: oklch(82% 0.03 60);
+  --color-base-content: oklch(25% 0.02 40);
+  --color-primary: oklch(45% 0.08 40);
+  --color-primary-content: oklch(92% 0.03 60);
+  --color-secondary: oklch(50% 0.06 30);
+  --color-secondary-content: oklch(92% 0.03 60);
+  --color-accent: oklch(40% 0.10 50);
+  --color-accent-content: oklch(92% 0.03 60);
+  --color-neutral: oklch(35% 0.02 40);
+  --color-neutral-content: oklch(92% 0.03 60);
+  --color-info: oklch(45% 0.05 240);
+  --color-info-content: oklch(92% 0.03 60);
+  --color-success: oklch(50% 0.08 140);
+  --color-success-content: oklch(92% 0.03 60);
+  --color-warning: oklch(55% 0.10 70);
+  --color-warning-content: oklch(92% 0.03 60);
+  --color-error: oklch(45% 0.12 25);
+  --color-error-content: oklch(92% 0.03 60);
+  --radius-selector: 0.125rem;
+  --radius-field: 0.125rem;
+  --radius-box: 0.25rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
 /* Add variants based on LiveView classes */
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
@@ -101,5 +311,274 @@
 
 /* Make LiveView wrapper divs transparent for layout */
 [data-phx-session], [data-phx-teleported-src] { display: contents }
+
+/* Theme-specific game styling overrides */
+
+/* Create CSS custom properties for consistent game theming */
+:root, [data-theme] {
+  --game-bg-primary: var(--color-base-100);
+  --game-bg-secondary: var(--color-base-200);
+  --game-bg-tertiary: var(--color-base-300);
+  --game-text-primary: var(--color-base-content);
+  --game-text-highlight: var(--color-primary);
+  --game-text-danger: var(--color-error);
+  --game-text-warning: var(--color-warning);
+  --game-text-accent: var(--color-accent);
+  --game-text-info: var(--color-info);
+  --game-text-secondary: var(--color-secondary);
+  --game-border-primary: var(--color-base-300);
+  --game-border-highlight: var(--color-primary);
+  --game-border-danger: var(--color-error);
+  --game-border-warning: var(--color-warning);
+  --game-border-accent: var(--color-accent);
+}
+
+/* Force theme colors on all game elements with higher specificity */
+html[data-theme] .min-h-screen,
+html[data-theme] body .min-h-screen {
+  background-color: oklch(var(--game-bg-primary)) !important;
+  color: oklch(var(--game-text-primary)) !important;
+}
+
+/* Game container backgrounds with higher specificity */
+html[data-theme] .bg-gray-800,
+html[data-theme] body .bg-gray-800 {
+  background-color: oklch(var(--color-base-200)) !important;
+}
+
+html[data-theme] .bg-gray-900,
+html[data-theme] body .bg-gray-900 {
+  background-color: oklch(var(--color-base-100)) !important;
+}
+
+.bg-gray-700 {
+  background-color: oklch(var(--color-base-200) / 0.8) !important;
+}
+
+.bg-gray-600 {
+  background-color: oklch(var(--color-base-200) / 0.6) !important;
+}
+
+.bg-black {
+  background-color: oklch(var(--color-base-300)) !important;
+}
+
+/* White text should use base content */
+.text-white {
+  color: oklch(var(--color-base-content)) !important;
+}
+
+/* Primary green colors */
+.text-green-400, .text-green-300 {
+  color: oklch(var(--color-primary)) !important;
+}
+
+/* Error/danger red colors */
+.text-red-500, .text-red-400, .text-red-300 {
+  color: oklch(var(--color-error)) !important;
+}
+
+/* Warning orange colors */
+.text-orange-400, .text-orange-500 {
+  color: oklch(var(--color-warning)) !important;
+}
+
+/* Accent yellow colors */
+.text-yellow-400, .text-yellow-300 {
+  color: oklch(var(--color-accent)) !important;
+}
+
+/* Info cyan/blue colors */
+.text-cyan-400 {
+  color: oklch(var(--color-info)) !important;
+}
+
+.text-blue-400, .text-blue-300, .text-blue-200 {
+  color: oklch(var(--color-info)) !important;
+}
+
+/* Secondary purple colors */
+.text-purple-400, .text-purple-600 {
+  color: oklch(var(--color-secondary)) !important;
+}
+
+/* Gray text variations */
+.text-gray-400, .text-gray-500 {
+  color: oklch(var(--color-base-content) / 0.6) !important;
+}
+
+.text-gray-300 {
+  color: oklch(var(--color-base-content) / 0.8) !important;
+}
+
+/* Additional yellow text variations */
+.text-yellow-300 {
+  color: oklch(var(--color-accent) / 0.9) !important;
+}
+
+/* Additional green text variations */
+.text-green-300 {
+  color: oklch(var(--color-primary) / 0.9) !important;
+}
+
+/* Border colors */
+.border-orange-500 {
+  border-color: oklch(var(--color-warning)) !important;
+}
+
+.border-gray-700, .border-gray-600, .border-gray-800 {
+  border-color: oklch(var(--color-base-300)) !important;
+}
+
+.border-green-500, .border-green-300 {
+  border-color: oklch(var(--color-primary)) !important;
+}
+
+.border-green-400 {
+  border-color: oklch(var(--color-success)) !important;
+}
+
+.border-red-500, .border-red-300 {
+  border-color: oklch(var(--color-error)) !important;
+}
+
+.border-blue-400, .border-blue-500 {
+  border-color: oklch(var(--color-info)) !important;
+}
+
+.border-purple-500, .border-purple-600 {
+  border-color: oklch(var(--color-secondary)) !important;
+}
+
+/* Border colors for difficulty selection */
+.border-blue-900, .border-green-900, .border-red-900 {
+  border-color: oklch(var(--color-base-300)) !important;
+}
+
+.border-yellow-500, .border-yellow-400 {
+  border-color: oklch(var(--color-accent)) !important;
+}
+
+/* Modal overlay backgrounds - use darker base with opacity */
+.bg-black\/80 {
+  background-color: oklch(var(--color-base-300) / 0.8) !important;
+}
+
+.bg-opacity-75, .bg-opacity-90 {
+  --tw-bg-opacity: 1 !important;
+}
+
+/* Button backgrounds */
+.bg-green-600:not(:disabled) {
+  background-color: oklch(var(--color-success)) !important;
+}
+
+.bg-green-700:not(:disabled) {
+  background-color: oklch(var(--color-success) / 0.8) !important;
+}
+
+.bg-red-600:not(:disabled) {
+  background-color: oklch(var(--color-error)) !important;
+}
+
+.bg-red-700:not(:disabled) {
+  background-color: oklch(var(--color-error) / 0.8) !important;
+}
+
+.bg-purple-600:not(:disabled) {
+  background-color: oklch(var(--color-secondary)) !important;
+}
+
+.bg-purple-700:not(:disabled) {
+  background-color: oklch(var(--color-secondary) / 0.8) !important;
+}
+
+.bg-orange-600:not(:disabled) {
+  background-color: oklch(var(--color-warning)) !important;
+}
+
+.bg-orange-700:not(:disabled) {
+  background-color: oklch(var(--color-warning) / 0.8) !important;
+}
+
+.bg-blue-900, .bg-blue-900\/30 {
+  background-color: oklch(var(--color-info) / 0.3) !important;
+}
+
+.bg-green-900, .bg-green-900\/30 {
+  background-color: oklch(var(--color-success) / 0.3) !important;
+}
+
+.bg-red-900, .bg-red-900\/30 {
+  background-color: oklch(var(--color-error) / 0.3) !important;
+}
+
+/* HP bar colors */
+.bg-green-500 {
+  background-color: oklch(var(--color-success)) !important;
+}
+
+.bg-yellow-500 {
+  background-color: oklch(var(--color-warning)) !important;
+}
+
+.bg-red-500 {
+  background-color: oklch(var(--color-error)) !important;
+}
+
+/* Hover states for backgrounds */
+.hover\:bg-gray-600:hover {
+  background-color: oklch(var(--color-base-200) / 0.6) !important;
+}
+
+.hover\:bg-gray-700:hover {
+  background-color: oklch(var(--color-base-200) / 0.8) !important;
+}
+
+.hover\:bg-green-700:hover:not(:disabled) {
+  background-color: oklch(var(--color-success) / 0.8) !important;
+}
+
+.hover\:bg-red-700:hover:not(:disabled) {
+  background-color: oklch(var(--color-error) / 0.8) !important;
+}
+
+.hover\:bg-purple-700:hover:not(:disabled) {
+  background-color: oklch(var(--color-secondary) / 0.8) !important;
+}
+
+.hover\:bg-orange-700:hover:not(:disabled) {
+  background-color: oklch(var(--color-warning) / 0.8) !important;
+}
+
+/* Hover states for borders */
+.hover\:border-green-500:hover {
+  border-color: oklch(var(--color-primary)) !important;
+}
+
+.hover\:border-green-300:hover {
+  border-color: oklch(var(--color-primary) / 0.9) !important;
+}
+
+.hover\:border-blue-500:hover {
+  border-color: oklch(var(--color-info)) !important;
+}
+
+.hover\:border-red-500:hover {
+  border-color: oklch(var(--color-error)) !important;
+}
+
+.hover\:border-red-300:hover {
+  border-color: oklch(var(--color-error) / 0.9) !important;
+}
+
+.hover\:border-yellow-400:hover {
+  border-color: oklch(var(--color-accent)) !important;
+}
+
+/* Hover states for text */
+.hover\:text-orange-400:hover {
+  color: oklch(var(--color-warning)) !important;
+}
 
 /* This file is for your main application CSS */

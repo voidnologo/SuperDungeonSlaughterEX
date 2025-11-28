@@ -4,6 +4,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   """
 
   use Phoenix.Component
+  alias Phoenix.LiveView.JS
   alias SuperDungeonSlaughterEx.Game.{Hero, Monster, Potion}
   alias SuperDungeonSlaughterEx.Score
 
@@ -17,7 +18,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
     <div
       id="game-history"
       phx-hook="ScrollToBottom"
-      class="border-2 border-gray-700 rounded bg-black h-[600px] overflow-y-auto p-4"
+      class="border-2 border-base-300 rounded bg-base-300 h-[600px] overflow-y-auto p-4"
     >
       <div class="space-y-1 font-mono text-sm">
         <%= for entry <- Enum.reverse(@history) do %>
@@ -42,24 +43,24 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def hero_stats(assigns) do
     ~H"""
-    <div class="border-2 border-orange-500 p-4 rounded bg-gray-800">
-      <h2 class="text-xl font-bold text-orange-400 mb-3">Player Stats</h2>
+    <div class="border-2 border-warning p-4 rounded bg-base-200">
+      <h2 class="text-xl font-bold text-warning mb-3">Player Stats</h2>
       <div class="space-y-2">
         <div class="flex justify-between">
           <span>Name:</span>
-          <span class="text-yellow-400 font-bold">{@hero.name}</span>
+          <span class="text-accent font-bold">{@hero.name}</span>
         </div>
         <div class="flex justify-between">
           <span>Floor:</span>
-          <span class="text-cyan-400">{@hero.current_floor}</span>
+          <span class="text-info">{@hero.current_floor}</span>
         </div>
         <div class="flex justify-between">
           <span>Kill Count:</span>
-          <span class="text-yellow-400">{@hero.total_kills}</span>
+          <span class="text-accent">{@hero.total_kills}</span>
         </div>
         <div class="flex justify-between">
           <span>Level:</span>
-          <span class="text-yellow-400">{@hero.level}</span>
+          <span class="text-accent">{@hero.level}</span>
         </div>
         <div>
           <div class="flex justify-between mb-1">
@@ -70,11 +71,11 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
         </div>
         <div class="flex justify-between text-sm">
           <span>Damage:</span>
-          <span class="text-gray-400">{@hero.damage_min}-{@hero.damage_max}</span>
+          <span class="text-base-content/60">{@hero.damage_min}-{@hero.damage_max}</span>
         </div>
         <div class="flex justify-between text-sm">
           <span>Heal:</span>
-          <span class="text-gray-400">{@hero.heal_min}-{@hero.heal_max}</span>
+          <span class="text-base-content/60">{@hero.heal_min}-{@hero.heal_max}</span>
         </div>
       </div>
       <.inventory_display inventory={@hero.inventory} />
@@ -90,14 +91,14 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   def monster_stats(assigns) do
     ~H"""
     <div class={[
-      "border-2 p-4 rounded bg-gray-800",
-      @monster.is_boss && "border-red-500 animate-pulse",
-      !@monster.is_boss && "border-orange-500"
+      "border-2 p-4 rounded bg-base-200",
+      @monster.is_boss && "border-error animate-pulse",
+      !@monster.is_boss && "border-warning"
     ]}>
       <h2 class={[
         "text-xl font-bold mb-3",
-        @monster.is_boss && "text-red-400 text-2xl",
-        !@monster.is_boss && "text-orange-400"
+        @monster.is_boss && "text-error text-2xl",
+        !@monster.is_boss && "text-warning"
       ]}>
         <%= if @monster.is_boss do %>
           ⚔️ BOSS FIGHT ⚔️
@@ -108,8 +109,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       <div class="space-y-2">
         <div class={[
           "text-lg font-semibold",
-          @monster.is_boss && "text-red-300 text-xl",
-          !@monster.is_boss && "text-purple-400"
+          @monster.is_boss && "text-error/80 text-xl",
+          !@monster.is_boss && "text-secondary"
         ]}>
           {@monster.display_name}
         </div>
@@ -132,7 +133,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def hp_bar(assigns) do
     ~H"""
-    <div class="w-full bg-gray-700 rounded h-4">
+    <div class="w-full bg-base-300 rounded h-4">
       <div
         class={"h-full rounded transition-all duration-300 #{hp_bar_color(@percentage)}"}
         style={"width: #{@percentage * 100}%"}
@@ -149,8 +150,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def inventory_display(assigns) do
     ~H"""
-    <div class="mt-4 pt-4 border-t-2 border-gray-700">
-      <h3 class="text-lg font-bold text-orange-400 mb-2">Inventory</h3>
+    <div class="mt-4 pt-4 border-t-2 border-base-300">
+      <h3 class="text-lg font-bold text-warning mb-2">Inventory</h3>
       <div class="grid grid-cols-5 gap-2">
         <%= for {slot, index} <- Enum.with_index(@inventory.slots) do %>
           <%= if slot do %>
@@ -170,8 +171,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               </span>
             </button>
           <% else %>
-            <div class="aspect-square rounded border-2 border-gray-600 bg-gray-700 flex items-center justify-center opacity-50">
-              <span class="text-gray-500 text-sm">Empty</span>
+            <div class="aspect-square rounded border-2 border-base-300 bg-base-300 flex items-center justify-center opacity-50">
+              <span class="text-base-content/40 text-sm">Empty</span>
             </div>
           <% end %>
         <% end %>
@@ -703,4 +704,127 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   defp difficulty_color(:easy), do: "text-blue-400"
   defp difficulty_color(:hard), do: "text-red-400"
   defp difficulty_color(_), do: "text-green-400"
+
+  @doc """
+  Settings modal component with theme selector and other future settings.
+  """
+  def settings_modal(assigns) do
+    ~H"""
+    <div class="fixed inset-0 bg-base-300/80 flex items-center justify-center z-50 p-4">
+      <div
+        class="bg-base-200 border-4 border-warning rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+      >
+        <h2 class="text-3xl font-bold text-warning mb-6 text-center">Settings</h2>
+
+        <div class="space-y-6">
+          <!-- Theme Selector -->
+          <div>
+            <h3 class="text-xl font-bold text-primary mb-4">Visual Theme</h3>
+            <p class="text-base-content/60 text-sm mb-4">
+              Select a visual theme to customize the game's appearance
+            </p>
+            
+    <!-- Light Themes -->
+            <div class="mb-4">
+              <h4 class="text-md font-semibold text-base-content/80 mb-2">Light Themes</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "light"})}
+                  data-phx-theme="light"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=light]_&]:bg-success/30 [[data-theme=light]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Light</div>
+                  <div class="text-xs text-base-content/60">Clean & modern</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "ink"})}
+                  data-phx-theme="ink"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=ink]_&]:bg-success/30 [[data-theme=ink]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Ink & Brush</div>
+                  <div class="text-xs text-base-content/60">Hand-drawn style</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "parchment"})}
+                  data-phx-theme="parchment"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=parchment]_&]:bg-success/30 [[data-theme=parchment]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Parchment</div>
+                  <div class="text-xs text-base-content/60">Aged manuscript</div>
+                </button>
+              </div>
+            </div>
+            
+    <!-- Dark Themes -->
+            <div>
+              <h4 class="text-md font-semibold text-base-content/80 mb-2">Dark Themes</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "dark"})}
+                  data-phx-theme="dark"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=dark]_&]:bg-success/30 [[data-theme=dark]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Dark</div>
+                  <div class="text-xs text-base-content/60">Modern dark theme</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "arcade"})}
+                  data-phx-theme="arcade"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=arcade]_&]:bg-success/30 [[data-theme=arcade]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Arcade</div>
+                  <div class="text-xs text-base-content/60">Retro arcade cabinet</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "fantasy"})}
+                  data-phx-theme="fantasy"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=fantasy]_&]:bg-success/30 [[data-theme=fantasy]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">High Fantasy</div>
+                  <div class="text-xs text-base-content/60">Mystical & magical</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "terminal"})}
+                  data-phx-theme="terminal"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=terminal]_&]:bg-success/30 [[data-theme=terminal]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Terminal</div>
+                  <div class="text-xs text-base-content/60">Classic CRT monitor</div>
+                </button>
+
+                <button
+                  phx-click={JS.dispatch("phx:set-theme", detail: %{theme: "cyberpunk"})}
+                  data-phx-theme="cyberpunk"
+                  class="p-3 bg-base-300 hover:bg-base-300/80 border-2 border-base-300 hover:border-primary rounded text-left transition-all [[data-theme=cyberpunk]_&]:bg-success/30 [[data-theme=cyberpunk]_&]:border-success"
+                >
+                  <div class="font-bold text-primary">Cyberpunk</div>
+                  <div class="text-xs text-base-content/60">Neon & electric</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+    <!-- Future settings can be added here -->
+          <div class="border-t-2 border-base-300 pt-4">
+            <p class="text-base-content/40 text-sm italic">More settings coming soon...</p>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <button
+            phx-click="toggle_settings"
+            class="w-full py-3 bg-warning hover:bg-warning/80 text-warning-content text-xl font-bold rounded transition-colors"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+    """
+  end
 end
