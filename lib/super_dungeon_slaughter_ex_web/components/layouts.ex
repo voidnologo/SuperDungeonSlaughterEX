@@ -137,8 +137,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="system"
             class="[[data-theme=system]_&]:bg-base-300 [[data-theme=system]_&]:font-bold"
           >
-            <.icon name="hero-computer-desktop-micro" class="size-4" />
-            System Default
+            <.icon name="hero-computer-desktop-micro" class="size-4" /> System Default
           </button>
         </li>
         <li class="menu-title">
@@ -150,8 +149,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="light"
             class="[[data-theme=light]_&]:bg-base-300 [[data-theme=light]_&]:font-bold"
           >
-            <.icon name="hero-sun-micro" class="size-4" />
-            Light
+            <.icon name="hero-sun-micro" class="size-4" /> Light
           </button>
         </li>
         <li>
@@ -160,8 +158,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="ink"
             class="[[data-theme=ink]_&]:bg-base-300 [[data-theme=ink]_&]:font-bold"
           >
-            <.icon name="hero-pencil-square-micro" class="size-4" />
-            Ink & Brush
+            <.icon name="hero-pencil-square-micro" class="size-4" /> Ink & Brush
           </button>
         </li>
         <li>
@@ -170,8 +167,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="parchment"
             class="[[data-theme=parchment]_&]:bg-base-300 [[data-theme=parchment]_&]:font-bold"
           >
-            <.icon name="hero-document-text-micro" class="size-4" />
-            Parchment
+            <.icon name="hero-document-text-micro" class="size-4" /> Parchment
           </button>
         </li>
         <li class="menu-title">
@@ -183,8 +179,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="dark"
             class="[[data-theme=dark]_&]:bg-base-300 [[data-theme=dark]_&]:font-bold"
           >
-            <.icon name="hero-moon-micro" class="size-4" />
-            Dark
+            <.icon name="hero-moon-micro" class="size-4" /> Dark
           </button>
         </li>
         <li>
@@ -193,8 +188,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="arcade"
             class="[[data-theme=arcade]_&]:bg-base-300 [[data-theme=arcade]_&]:font-bold"
           >
-            <.icon name="hero-play-micro" class="size-4" />
-            Arcade
+            <.icon name="hero-play-micro" class="size-4" /> Arcade
           </button>
         </li>
         <li>
@@ -203,8 +197,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="fantasy"
             class="[[data-theme=fantasy]_&]:bg-base-300 [[data-theme=fantasy]_&]:font-bold"
           >
-            <.icon name="hero-sparkles-micro" class="size-4" />
-            High Fantasy
+            <.icon name="hero-sparkles-micro" class="size-4" /> High Fantasy
           </button>
         </li>
         <li>
@@ -213,8 +206,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="terminal"
             class="[[data-theme=terminal]_&]:bg-base-300 [[data-theme=terminal]_&]:font-bold"
           >
-            <.icon name="hero-command-line-micro" class="size-4" />
-            Terminal
+            <.icon name="hero-command-line-micro" class="size-4" /> Terminal
           </button>
         </li>
         <li>
@@ -223,8 +215,7 @@ defmodule SuperDungeonSlaughterExWeb.Layouts do
             data-phx-theme="cyberpunk"
             class="[[data-theme=cyberpunk]_&]:bg-base-300 [[data-theme=cyberpunk]_&]:font-bold"
           >
-            <.icon name="hero-bolt-micro" class="size-4" />
-            Cyberpunk
+            <.icon name="hero-bolt-micro" class="size-4" /> Cyberpunk
           </button>
         </li>
       </ul>

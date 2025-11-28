@@ -287,12 +287,12 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             </button>
           </div>
         </div>
-
+        
     <!-- Settings Modal from Start Page -->
         <%= if @show_settings do %>
           <.settings_modal />
         <% end %>
-
+        
     <!-- High Scores Modal from Start Page -->
         <%= if @show_high_scores do %>
           <.start_page_high_scores_all_difficulties all_scores={ScoreRepo.get_all_scores()} />

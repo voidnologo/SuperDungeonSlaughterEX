@@ -721,8 +721,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
             <p class="text-gray-400 text-sm mb-4">
               Select a visual theme to customize the game's appearance
             </p>
-
-            <!-- Light Themes -->
+            
+    <!-- Light Themes -->
             <div class="mb-4">
               <h4 class="text-md font-semibold text-gray-300 mb-2">Light Themes</h4>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -754,8 +754,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
                 </button>
               </div>
             </div>
-
-            <!-- Dark Themes -->
+            
+    <!-- Dark Themes -->
             <div>
               <h4 class="text-md font-semibold text-gray-300 mb-2">Dark Themes</h4>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -806,8 +806,8 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               </div>
             </div>
           </div>
-
-          <!-- Future settings can be added here -->
+          
+    <!-- Future settings can be added here -->
           <div class="border-t-2 border-gray-600 pt-4">
             <p class="text-gray-500 text-sm italic">More settings coming soon...</p>
           </div>
