@@ -35,8 +35,8 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
             level_kills: 0,
             damage_min: 0,
             damage_max: 3,
-            heal_min: 1,
-            heal_max: 4,
+            heal_min: 3,
+            heal_max: 6,
             total_damage_dealt: 0,
             total_health_healed: 0,
             monsters_killed_by_type: %{},
@@ -136,6 +136,15 @@ defmodule SuperDungeonSlaughterEx.Game.Hero do
   @spec should_level_up?(t()) :: boolean()
   def should_level_up?(hero) do
     hero.level_kills > 0 and rem(hero.level_kills, hero.level) == 0
+  end
+
+  @doc """
+  Get kills needed to reach next level and current progress.
+  Returns {current_kills, kills_needed_for_level}.
+  """
+  @spec level_progress(t()) :: {non_neg_integer(), pos_integer()}
+  def level_progress(hero) do
+    {rem(hero.level_kills, hero.level), hero.level}
   end
 
   @doc """
