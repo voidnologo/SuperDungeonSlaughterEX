@@ -48,16 +48,16 @@ defmodule SuperDungeonSlaughterEx.Game.Potion do
   def calculate_healing(%{category: :damage}, _max_hp), do: 0
 
   @doc """
-  Calculate the damage amount for a damage potion based on target's current HP.
-  Returns the amount of damage (percentage of current HP, rounded down).
+  Calculate the damage amount for a damage potion based on target's max HP.
+  Returns the amount of damage (percentage of max HP, rounded down).
   """
   @spec calculate_damage(t(), non_neg_integer()) :: non_neg_integer()
-  def calculate_damage(%{category: :damage, quality: quality}, current_hp) do
+  def calculate_damage(%{category: :damage, quality: quality}, max_hp) do
     percentage = get_percentage(quality)
-    floor(current_hp * percentage)
+    floor(max_hp * percentage)
   end
 
-  def calculate_damage(%{category: :healing}, _current_hp), do: 0
+  def calculate_damage(%{category: :healing}, _max_hp), do: 0
 
   @doc """
   Get the icon character for a potion based on quality.

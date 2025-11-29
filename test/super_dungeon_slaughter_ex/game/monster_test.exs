@@ -21,8 +21,10 @@ defmodule SuperDungeonSlaughterEx.Game.MonsterTest do
 
     test "creates monster with damage stats from template" do
       monster = Monster.from_template(@sample_template)
-      assert monster.damage_base == 5.0
-      assert monster.damage_sigma == 1.0
+      # damage_base is scaled by damage_multiplier (1.5x for level 1)
+      assert monster.damage_base == 7.5
+      # damage_sigma is also scaled by damage_multiplier
+      assert monster.damage_sigma == 1.5
     end
 
     test "creates monster with HP at least 1" do

@@ -409,8 +409,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
         # It's a damage potion
         case Hero.use_damage_potion(state.hero, slot_index) do
           {:ok, updated_hero, potion} ->
-            # Calculate damage and apply to monster
-            damage = Potion.calculate_damage(potion, state.monster.hp)
+            # Calculate damage and apply to monster (based on max HP)
+            damage = Potion.calculate_damage(potion, state.monster.hp_max)
             updated_monster = Monster.take_damage(state.monster, damage)
 
             state =

@@ -172,6 +172,18 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     end
   end
 
+  @impl true
+  def handle_event("quit_game", _params, socket) do
+    if socket.assigns.game_state.game_over do
+      {:noreply, socket}
+    else
+      # Save score and mark game as over
+      save_score(socket.assigns.game_state.hero, socket.assigns.game_state.difficulty)
+      game_state = %{socket.assigns.game_state | game_over: true}
+      {:noreply, assign(socket, :game_state, game_state)}
+    end
+  end
+
   defp save_score(hero, difficulty) do
     score = Score.new(hero.name, hero.level, hero.total_kills, difficulty)
     ScoreRepo.add_score(score)
@@ -281,10 +293,17 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
         <% end %>
       <% else %>
         <!-- Game UI -->
-        <header class="text-center py-6">
+        <header class="text-center py-6 relative">
           <h1 class="text-4xl font-bold text-red-500 drop-shadow-lg">
             Super Dungeon Slaughter EX
           </h1>
+          <button
+            phx-click="quit_game"
+            disabled={@game_state.game_over}
+            class="absolute top-6 right-4 px-4 py-2 bg-gray-600 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold rounded transition-colors"
+          >
+            Quit
+          </button>
         </header>
 
         <div class="container mx-auto px-4 pb-8">

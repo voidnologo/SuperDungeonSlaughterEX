@@ -15,8 +15,8 @@ defmodule SuperDungeonSlaughterEx.Game.HeroTest do
       assert hero.level_kills == 0
       assert hero.damage_min == 0
       assert hero.damage_max == 3
-      assert hero.heal_min == 1
-      assert hero.heal_max == 4
+      assert hero.heal_min == 3
+      assert hero.heal_max == 6
       assert hero.total_damage_dealt == 0
       assert hero.total_health_healed == 0
       assert hero.monsters_killed_by_type == %{}

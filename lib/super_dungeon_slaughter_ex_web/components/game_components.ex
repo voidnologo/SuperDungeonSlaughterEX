@@ -62,6 +62,15 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
           <span class="text-yellow-400">{@hero.level}</span>
         </div>
         <div>
+          <div class="flex justify-between mb-1 text-sm">
+            <span class="text-gray-400">Next Level:</span>
+            <span class="text-cyan-400">
+              {elem(Hero.level_progress(@hero), 0)}/{elem(Hero.level_progress(@hero), 1)} kills
+            </span>
+          </div>
+          <.level_progress_bar hero={@hero} />
+        </div>
+        <div>
           <div class="flex justify-between mb-1">
             <span>HP:</span>
             <span class={hp_color(@hero)}>{@hero.hp}/{@hero.hp_max}</span>
@@ -142,6 +151,26 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
   end
 
   @doc """
+  Level progress bar component showing kills until next level.
+  """
+  attr :hero, :map, required: true
+
+  def level_progress_bar(assigns) do
+    {current_kills, kills_needed} = Hero.level_progress(assigns.hero)
+    percentage = if kills_needed > 0, do: current_kills / kills_needed, else: 0.0
+    assigns = assign(assigns, :percentage, percentage)
+
+    ~H"""
+    <div class="w-full bg-gray-700 rounded h-3">
+      <div
+        class="h-full rounded transition-all duration-300 bg-cyan-500"
+        style={"width: #{@percentage * 100}%"}
+      />
+    </div>
+    """
+  end
+
+  @doc """
   Inventory display component showing 5 potion slots.
   Empty slots are grayed out, filled slots are clickable with hover effects.
   """
@@ -196,7 +225,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
           "Restore #{heal_amount} HP (#{get_percentage_text(assigns.potion.quality)} of max HP)"
 
         :damage ->
-          "Throw at monster (deals #{get_percentage_text(assigns.potion.quality)} of monster's current HP)"
+          "Throw at monster (deals #{get_percentage_text(assigns.potion.quality)} of monster's max HP)"
       end
 
     assigns = assign(assigns, :effect_description, effect_description)
@@ -372,7 +401,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
       <div class="bg-gray-800 border-4 border-red-500 rounded-lg p-8 max-w-2xl w-full mx-4">
         <h2 class="text-4xl font-bold text-red-500 text-center mb-6">Game Over!</h2>
 
-        <div class="bg-black p-6 rounded mb-6 space-y-3 font-mono">
+        <div class="bg-black p-6 rounded mb-6 space-y-3 font-mono max-h-[500px] overflow-y-auto">
           <h3 class="text-2xl text-yellow-400 mb-4">Final Statistics</h3>
 
           <div class="flex justify-between text-green-400">

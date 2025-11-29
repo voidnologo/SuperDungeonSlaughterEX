@@ -49,6 +49,11 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
     is_boss = Map.get(template, :is_boss, false)
     floor = Map.get(template, :floor)
 
+    # Sliding damage multiplier based on monster level
+    # Early game: lower multiplier to avoid one-shotting new players
+    # Late game: higher multiplier to keep up with player healing
+    damage_multiplier = calculate_damage_multiplier(template.min_level)
+
     if is_boss do
       # Boss monsters have fixed stats (no randomization or scaling)
       %__MODULE__{
@@ -56,8 +61,8 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
         display_name: template.name,
         hp: round(template.avg_hp),
         hp_max: round(template.avg_hp),
-        damage_base: template.damage_base,
-        damage_sigma: template.damage_sigma,
+        damage_base: template.damage_base * damage_multiplier,
+        damage_sigma: template.damage_sigma * damage_multiplier,
         is_boss: true,
         floor: floor
       }
@@ -75,8 +80,8 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
       hp = :rand.normal(template.avg_hp, template.hp_sigma) * multiplier
       hp = max(1, round(hp))
 
-      # Scale damage with difficulty
-      damage_base = template.damage_base * multiplier
+      # Scale damage with difficulty and global damage multiplier
+      damage_base = template.damage_base * multiplier * damage_multiplier
 
       # Calculate descriptors based on z-scores (using original unscaled values)
       hp_descriptor = get_hp_descriptor(hp / multiplier, template.avg_hp, template.hp_sigma)
@@ -91,7 +96,7 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
         hp: hp,
         hp_max: hp,
         damage_base: damage_base,
-        damage_sigma: template.damage_sigma,
+        damage_sigma: template.damage_sigma * damage_multiplier,
         is_boss: false,
         floor: nil
       }
@@ -190,4 +195,13 @@ defmodule SuperDungeonSlaughterEx.Game.Monster do
       true -> Enum.random(mid_list)
     end
   end
+
+  # Calculate damage multiplier based on monster level
+  # Scales from 1.5x at low levels to 4.5x at high levels
+  @spec calculate_damage_multiplier(non_neg_integer()) :: float()
+  defp calculate_damage_multiplier(min_level) when min_level <= 5, do: 1.5
+  defp calculate_damage_multiplier(min_level) when min_level <= 10, do: 2.0
+  defp calculate_damage_multiplier(min_level) when min_level <= 15, do: 2.75
+  defp calculate_damage_multiplier(min_level) when min_level <= 25, do: 3.5
+  defp calculate_damage_multiplier(_min_level), do: 4.5
 end
