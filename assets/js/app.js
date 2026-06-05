@@ -40,6 +40,48 @@ Hooks.ScrollToBottom = {
   }
 }
 
+// Arcade combat feedback on the game board:
+//   * screen-shake — client-side off any [data-shake-trigger] click (no round-trip)
+//   * damage/heal popups — driven by the server's "combat_popups" push event
+Hooks.CombatShake = {
+  mounted() {
+    this.el.addEventListener("animationend", () => this.el.classList.remove("screen-shake"))
+    this.onClick = (e) => {
+      if (!e.target.closest("[data-shake-trigger]")) return
+      this.el.classList.remove("screen-shake")
+      void this.el.offsetWidth // force reflow so the animation restarts on rapid hits
+      this.el.classList.add("screen-shake")
+    }
+    document.addEventListener("click", this.onClick)
+
+    // Float each turn's numbers over the hero / enemy panels, staggered in order.
+    this.handleEvent("combat_popups", ({events}) => {
+      events.forEach((ev, i) => setTimeout(() => this.spawnPopup(ev), i * 280))
+    })
+  },
+
+  spawnPopup(ev) {
+    const anchor = document.getElementById(ev.target === "monster" ? "enemy-panel" : "hero-panel")
+    if (!anchor) return
+
+    const rect = anchor.getBoundingClientRect()
+    const isHeal = ev.kind === "heal"
+    const el = document.createElement("div")
+    el.textContent = (isHeal ? "+" : "-") + ev.amount
+    el.className =
+      "dmg-popup " +
+      (isHeal ? "dmg-popup-heal" : ev.target === "monster" ? "dmg-popup-out" : "dmg-popup-in")
+    el.style.left = rect.left + rect.width / 2 + (Math.random() * 44 - 22) + "px"
+    el.style.top = rect.top + rect.height * 0.28 + "px"
+    el.addEventListener("animationend", () => el.remove())
+    document.body.appendChild(el)
+  },
+
+  destroyed() {
+    document.removeEventListener("click", this.onClick)
+  }
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,

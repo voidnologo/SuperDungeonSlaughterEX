@@ -5,88 +5,53 @@
 @source "../css";
 @source "../js";
 @source "../../lib/super_dungeon_slaughter_ex_web";
+/* Game-logic modules (Potion, HistoryEntry, Monster) emit Tailwind color/icon
+   classes dynamically — scan them so those utilities are always generated. */
+@source "../../lib/super_dungeon_slaughter_ex";
 
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
 @plugin "../vendor/heroicons";
 
-/* daisyUI Tailwind Plugin. You can update this file by fetching the latest version with:
-   curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
-   Make sure to look at the daisyUI changelog: https://daisyui.com/docs/changelog/ */
+/* daisyUI Tailwind Plugin. Powers the flash/toast + form inputs in core_components.
+   We ship a single bespoke "dungeon" theme so those built-ins inherit the game palette. */
 @plugin "../vendor/daisyui" {
   themes: false;
 }
 
-/* daisyUI theme plugin. You can update this file by fetching the latest version with:
-  curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui-theme.js
-  We ship with two themes, a light one inspired on Phoenix colors and a dark one inspired
-  on Elixir colors. Build your own at: https://daisyui.com/theme-generator/ */
+/* Single dungeon theme — torchlit obsidian stone with gold, blood, and arcane accents.
+   Inherited by daisyUI components (flash toasts, inputs) so they match the arcade UI. */
 @plugin "../vendor/daisyui-theme" {
-  name: "dark";
-  default: false;
+  name: "dungeon";
+  default: true;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: oklch(30.33% 0.016 252.42);
-  --color-base-200: oklch(25.26% 0.014 253.1);
-  --color-base-300: oklch(20.15% 0.012 254.09);
-  --color-base-content: oklch(97.807% 0.029 256.847);
-  --color-primary: oklch(58% 0.233 277.117);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(58% 0.233 277.117);
-  --color-secondary-content: oklch(96% 0.018 272.314);
-  --color-accent: oklch(60% 0.25 292.717);
-  --color-accent-content: oklch(96% 0.016 293.756);
-  --color-neutral: oklch(37% 0.044 257.287);
-  --color-neutral-content: oklch(98% 0.003 247.858);
-  --color-info: oklch(58% 0.158 241.966);
-  --color-info-content: oklch(97% 0.013 236.62);
-  --color-success: oklch(60% 0.118 184.704);
-  --color-success-content: oklch(98% 0.014 180.72);
-  --color-warning: oklch(66% 0.179 58.318);
-  --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(58% 0.253 17.585);
-  --color-error-content: oklch(96% 0.015 12.422);
-  --radius-selector: 0.25rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.21875rem;
-  --border: 1.5px;
-  --depth: 1;
-  --noise: 0;
-}
-
-@plugin "../vendor/daisyui-theme" {
-  name: "light";
-  default: true;
-  prefersdark: false;
-  color-scheme: "light";
-  --color-base-100: oklch(98% 0 0);
-  --color-base-200: oklch(96% 0.001 286.375);
-  --color-base-300: oklch(92% 0.004 286.32);
-  --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: oklch(70% 0.213 47.604);
-  --color-primary-content: oklch(98% 0.016 73.684);
-  --color-secondary: oklch(55% 0.027 264.364);
-  --color-secondary-content: oklch(98% 0.002 247.839);
-  --color-accent: oklch(0% 0 0);
-  --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(44% 0.017 285.786);
-  --color-neutral-content: oklch(98% 0 0);
-  --color-info: oklch(62% 0.214 259.815);
-  --color-info-content: oklch(97% 0.014 254.604);
-  --color-success: oklch(70% 0.14 182.503);
-  --color-success-content: oklch(98% 0.014 180.72);
-  --color-warning: oklch(66% 0.179 58.318);
-  --color-warning-content: oklch(98% 0.022 95.277);
-  --color-error: oklch(58% 0.253 17.585);
-  --color-error-content: oklch(96% 0.015 12.422);
-  --radius-selector: 0.25rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.21875rem;
-  --size-field: 0.21875rem;
-  --border: 1.5px;
+  --color-base-100: oklch(18% 0.02 285);
+  --color-base-200: oklch(15% 0.02 285);
+  --color-base-300: oklch(11% 0.018 285);
+  --color-base-content: oklch(92% 0.03 90);
+  --color-primary: oklch(80% 0.16 86);
+  --color-primary-content: oklch(20% 0.05 60);
+  --color-secondary: oklch(62% 0.2 300);
+  --color-secondary-content: oklch(96% 0.02 300);
+  --color-accent: oklch(70% 0.17 200);
+  --color-accent-content: oklch(15% 0.03 240);
+  --color-neutral: oklch(28% 0.02 285);
+  --color-neutral-content: oklch(92% 0.02 90);
+  --color-info: oklch(70% 0.15 235);
+  --color-info-content: oklch(15% 0.03 240);
+  --color-success: oklch(72% 0.18 145);
+  --color-success-content: oklch(15% 0.04 150);
+  --color-warning: oklch(80% 0.16 86);
+  --color-warning-content: oklch(20% 0.05 60);
+  --color-error: oklch(60% 0.23 22);
+  --color-error-content: oklch(96% 0.02 20);
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
   --depth: 1;
   --noise: 0;
 }
@@ -96,10 +61,352 @@
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
 @custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
 
-/* Use the data attribute for dark mode  */
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
 /* Make LiveView wrapper divs transparent for layout */
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
-/* This file is for your main application CSS */
+/* ==========================================================================
+   SUPER DUNGEON SLAUGHTER EX — 16-bit Pixel Arcade Design System
+   ========================================================================== */
+
+@theme {
+  /* Dungeon palette — exposed as Tailwind colors (text-dungeon-gold, bg-dungeon-blood, …) */
+  --color-dungeon-void: #07060d;
+  --color-dungeon-stone: #14121f;
+  --color-dungeon-panel: #1d1a2e;
+  --color-dungeon-panel-light: #27233d;
+  --color-dungeon-bevel: #4a4470;
+  --color-dungeon-gold: #f4c430;
+  --color-dungeon-gold-bright: #ffe066;
+  --color-dungeon-blood: #e23a4e;
+  --color-dungeon-blood-dark: #8c1f2c;
+  --color-dungeon-heal: #57c95f;
+  --color-dungeon-heal-bright: #8cf08c;
+  --color-dungeon-mana: #4aa8ff;
+  --color-dungeon-xp: #38d0e0;
+  --color-dungeon-magic: #a86cff;
+  --color-dungeon-parchment: #efe6cf;
+  --color-dungeon-muted: #8b86a8;
+
+  --font-pixel: "Press Start 2P", ui-monospace, monospace;
+  --font-term: "VT323", ui-monospace, monospace;
+}
+
+:root {
+  --sds-void: #07060d;
+  --sds-stone: #14121f;
+  --sds-panel: #1d1a2e;
+  --sds-panel-light: #27233d;
+  --sds-panel-dark: #100e1c;
+  --sds-frame: #07060d;
+  --sds-bevel-hi: rgba(120, 110, 170, 0.45);
+  --sds-bevel-lo: rgba(0, 0, 0, 0.55);
+  --sds-gold: #f4c430;
+}
+
+/* ---- Base canvas: torchlit dungeon stone ---- */
+html {
+  background: #07060d;
+}
+
+body {
+  font-family: var(--font-term);
+  color: var(--color-dungeon-parchment);
+  background-color: #0a0912;
+  /* Torch glow from above + arcane glow from below, over a tiled stone-block wall */
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(244, 196, 48, 0.12), transparent 55%),
+    radial-gradient(120% 90% at 50% 115%, rgba(168, 108, 255, 0.10), transparent 60%),
+    radial-gradient(circle at 50% 40%, rgba(20, 18, 31, 0) 55%, rgba(0, 0, 0, 0.65) 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 2px, transparent 2px 64px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 2px, transparent 2px 96px),
+    linear-gradient(180deg, #16131f 0%, #0b0a12 100%);
+  background-attachment: fixed;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  -webkit-font-smoothing: none;
+}
+
+/* Crisp pixel rendering for icon imagery */
+img, svg, .pixelated { image-rendering: pixelated; }
+
+/* ---- CRT scanline + vignette overlay (rendered once in root layout) ---- */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 120% at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+  mix-blend-mode: multiply;
+  animation: crt-flicker 7s steps(60) infinite;
+}
+
+@keyframes crt-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.82; }
+  98% { opacity: 0.95; }
+  99% { opacity: 0.86; }
+}
+
+/* ==========================================================================
+   Beveled stone panels
+   ========================================================================== */
+.panel {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--sds-panel-light) 0%, var(--sds-panel) 14%, var(--sds-panel) 86%, var(--sds-panel-dark) 100%);
+  border: 4px solid var(--sds-frame);
+  box-shadow:
+    inset 3px 3px 0 0 var(--sds-bevel-hi),
+    inset -3px -3px 0 0 var(--sds-bevel-lo),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.35),
+    0 6px 0 0 rgba(0, 0, 0, 0.6),
+    0 0 22px rgba(0, 0, 0, 0.5);
+}
+
+/* Gold rivet studs in all four corners (single pseudo-element, four background layers) */
+.panel-studs::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--sds-gold), var(--sds-gold)),
+    linear-gradient(var(--sds-gold), var(--sds-gold)),
+    linear-gradient(var(--sds-gold), var(--sds-gold)),
+    linear-gradient(var(--sds-gold), var(--sds-gold));
+  background-repeat: no-repeat;
+  background-size: 6px 6px;
+  background-position: top left, top right, bottom left, bottom right;
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+/* Accent-colored frames (overrides border + adds a colored inner glow) */
+.frame-gold   { border-color: #2a2208; box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 18px rgba(244,196,48,.35), inset 0 0 0 2px rgba(244,196,48,.5); }
+.frame-blood  { border-color: #2a0a10; box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 18px rgba(226,58,78,.4),  inset 0 0 0 2px rgba(226,58,78,.55); }
+.frame-magic  { border-color: #1a0f2e; box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 18px rgba(168,108,255,.4), inset 0 0 0 2px rgba(168,108,255,.55); }
+.frame-heal   { border-color: #0a2410; box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 18px rgba(87,201,95,.4),   inset 0 0 0 2px rgba(87,201,95,.55); }
+
+/* ==========================================================================
+   Arcade buttons — chunky 3D pixel keys
+   ========================================================================== */
+.arcade-btn {
+  --btn-bg: #3a3556;
+  --btn-bg-hi: #4a4470;
+  --btn-dark: #1a1730;
+  font-family: var(--font-pixel);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.5px;
+  background: linear-gradient(180deg, var(--btn-bg-hi) 0%, var(--btn-bg) 55%, var(--btn-dark) 100%);
+  border: 3px solid #000;
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.28),
+    inset -2px -3px 0 rgba(0, 0, 0, 0.45),
+    0 5px 0 0 var(--btn-dark),
+    0 6px 0 3px #000;
+  transition: transform 0.05s linear, box-shadow 0.05s linear, filter 0.1s;
+  cursor: pointer;
+}
+
+.arcade-btn:hover:not(:disabled) { filter: brightness(1.12); }
+
+.arcade-btn:active:not(:disabled) {
+  transform: translateY(5px);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.2),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.45),
+    0 0 0 0 var(--btn-dark),
+    0 1px 0 3px #000;
+}
+
+.arcade-btn:disabled {
+  filter: grayscale(0.7) brightness(0.6);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-fight { --btn-bg: #c22e40; --btn-bg-hi: #e23a4e; --btn-dark: #6c1622; }
+.btn-rest  { --btn-bg: #2f9e57; --btn-bg-hi: #57c95f; --btn-dark: #14502a; }
+.btn-magic { --btn-bg: #7a48c4; --btn-bg-hi: #a86cff; --btn-dark: #3a2168; }
+.btn-gold  { --btn-bg: #d6a420; --btn-bg-hi: #f4c430; --btn-dark: #6e5410; color: #2a2208; text-shadow: 1px 1px 0 rgba(255,255,255,.3); }
+.btn-stone { --btn-bg: #3a3556; --btn-bg-hi: #4a4470; --btn-dark: #1a1730; }
+
+/* ==========================================================================
+   Gauges — segmented LED bars (HP / XP / Mana)
+   ========================================================================== */
+.gauge {
+  position: relative;
+  width: 100%;
+  background: #0a0912;
+  border: 2px solid #000;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+
+.gauge-fill {
+  height: 100%;
+  background-color: var(--g-color, #57c95f);
+  /* LED segmentation + glossy top highlight */
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(0, 0, 0, 0.25) 100%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.35) 0 2px, transparent 2px 9px);
+  box-shadow: 0 0 8px var(--g-color, #57c95f), inset 0 0 4px rgba(255, 255, 255, 0.3);
+  transition: width 0.35s ease-out;
+}
+
+.gauge-hp-high { --g-color: #57c95f; }
+.gauge-hp-mid  { --g-color: #f4c430; }
+.gauge-hp-low  { --g-color: #e23a4e; }
+.gauge-xp      { --g-color: #38d0e0; }
+
+/* ==========================================================================
+   Inventory slots
+   ========================================================================== */
+.inv-slot {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #211d33 0%, #14111f 100%);
+  border: 3px solid #000;
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.08), inset -2px -2px 0 rgba(0, 0, 0, 0.5);
+  transition: transform 0.08s, filter 0.1s, box-shadow 0.1s;
+}
+
+.inv-slot-filled { cursor: pointer; }
+.inv-slot-filled:hover {
+  transform: translateY(-2px) scale(1.04);
+  filter: brightness(1.2);
+  box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.12), 0 0 12px rgba(244, 196, 48, 0.5);
+}
+
+.inv-slot-empty {
+  background: repeating-linear-gradient(45deg, #16131f 0 6px, #110f1a 6px 12px);
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   Headings & text helpers
+   ========================================================================== */
+.title-pixel {
+  font-family: var(--font-pixel);
+  line-height: 1.4;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.7), 0 0 18px currentColor;
+}
+
+.label-pixel {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.5px;
+}
+
+/* Combat log entries lean on the terminal font at a comfortable size */
+.combat-log { font-family: var(--font-term); font-size: 1.15rem; line-height: 1.3; }
+
+/* ==========================================================================
+   Modal scrim
+   ========================================================================== */
+.modal-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(10, 8, 18, 0.82), rgba(0, 0, 0, 0.92));
+  backdrop-filter: blur(2px);
+  animation: modal-in 0.18s ease-out;
+}
+
+@keyframes modal-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-pop { animation: modal-pop 0.22s cubic-bezier(0.2, 1.4, 0.5, 1); }
+@keyframes modal-pop {
+  0% { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   Effects & animations
+   ========================================================================== */
+/* Torch-glow flicker for headers / boss banners */
+.flicker { animation: flicker 2.6s ease-in-out infinite; }
+@keyframes flicker {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px currentColor, 0 0 18px currentColor; }
+  48% { opacity: 0.92; text-shadow: 0 0 6px currentColor, 0 0 12px currentColor; }
+  50% { opacity: 0.78; text-shadow: 0 0 4px currentColor; }
+  52% { opacity: 0.95; text-shadow: 0 0 7px currentColor, 0 0 14px currentColor; }
+}
+
+/* Boss panel danger pulse */
+.boss-pulse { animation: boss-pulse 1.1s ease-in-out infinite; }
+@keyframes boss-pulse {
+  0%, 100% { box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 16px rgba(226,58,78,.45), inset 0 0 0 2px rgba(226,58,78,.55); }
+  50% { box-shadow: inset 3px 3px 0 0 var(--sds-bevel-hi), inset -3px -3px 0 0 var(--sds-bevel-lo), 0 6px 0 0 rgba(0,0,0,.6), 0 0 34px rgba(226,58,78,.85), inset 0 0 0 2px rgba(255,80,100,.9); }
+}
+
+.blink { animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.float { animation: float 2.4s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+/* Screen shake — applied to the game board on combat (toggled from app.js) */
+.screen-shake { animation: screen-shake 0.32s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+@keyframes screen-shake {
+  10%, 90% { transform: translate(-1px, 0); }
+  20%, 80% { transform: translate(2px, -1px); }
+  30%, 50%, 70% { transform: translate(-3px, 1px); }
+  40%, 60% { transform: translate(3px, 1px); }
+}
+
+/* Floating damage / heal numbers spawned over the hero & enemy panels */
+.dmg-popup {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translateX(-50%);
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 700;
+  text-shadow: 2px 2px 0 #000, 0 0 8px currentColor;
+  animation: dmg-float 0.95s ease-out forwards;
+}
+
+.dmg-popup-out { color: #ffe066; }  /* damage you deal */
+.dmg-popup-in { color: #ff5d6e; }   /* damage you take */
+.dmg-popup-heal { color: #8cf08c; } /* healing */
+
+@keyframes dmg-float {
+  0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+  18% { transform: translate(-50%, -10px) scale(1.25); opacity: 1; }
+  35% { transform: translate(-50%, -20px) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -64px) scale(0.95); opacity: 0; }
+}
+
+/* Pixel scrollbar for the combat log */
+.pixel-scroll::-webkit-scrollbar { width: 12px; }
+.pixel-scroll::-webkit-scrollbar-track { background: #0a0912; border-left: 2px solid #000; }
+.pixel-scroll::-webkit-scrollbar-thumb { background: #4a4470; border: 2px solid #000; }
+.pixel-scroll::-webkit-scrollbar-thumb:hover { background: var(--sds-gold); }
+.pixel-scroll { scrollbar-color: #4a4470 #0a0912; }
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .crt-overlay, .flicker, .boss-pulse, .blink, .float, .screen-shake, .modal-pop, .modal-scrim {
+    animation: none !important;
+  }
+}
