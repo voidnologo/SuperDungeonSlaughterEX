@@ -40,6 +40,24 @@ Hooks.ScrollToBottom = {
   }
 }
 
+// Arcade screen-shake: jolt the game board whenever a combat action fires.
+// Driven purely client-side off any [data-shake-trigger] click — no server round-trip.
+Hooks.CombatShake = {
+  mounted() {
+    this.el.addEventListener("animationend", () => this.el.classList.remove("screen-shake"))
+    this.onClick = (e) => {
+      if (!e.target.closest("[data-shake-trigger]")) return
+      this.el.classList.remove("screen-shake")
+      void this.el.offsetWidth // force reflow so the animation restarts on rapid hits
+      this.el.classList.add("screen-shake")
+    }
+    document.addEventListener("click", this.onClick)
+  },
+  destroyed() {
+    document.removeEventListener("click", this.onClick)
+  }
+}
+
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
