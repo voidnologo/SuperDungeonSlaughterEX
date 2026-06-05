@@ -50,7 +50,7 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def hero_stats(assigns) do
     ~H"""
-    <div class="panel panel-studs frame-gold p-5">
+    <div id="hero-panel" class="panel panel-studs frame-gold p-5">
       <h2 class="label-pixel text-dungeon-gold text-sm mb-4 flex items-center gap-2">
         <span>🛡</span> HERO
       </h2>
@@ -108,10 +108,13 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
 
   def monster_stats(assigns) do
     ~H"""
-    <div class={[
-      "panel panel-studs p-5",
-      (@monster.is_boss && "frame-blood boss-pulse") || "frame-magic"
-    ]}>
+    <div
+      id="enemy-panel"
+      class={[
+        "panel panel-studs p-5",
+        (@monster.is_boss && "frame-blood boss-pulse") || "frame-magic"
+      ]}
+    >
       <h2 class={[
         "label-pixel mb-4 flex items-center gap-2",
         (@monster.is_boss && "text-dungeon-blood text-sm flicker") || "text-dungeon-magic text-xs"
@@ -341,16 +344,14 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
               phx-value-type="healing"
               class="arcade-btn btn-rest flex-1 px-4 py-4 flex-col gap-2 text-[10px]"
             >
-              <span class="text-4xl">🏺</span>
-              MAJOR<br />HEALING
+              <span class="text-4xl">🏺</span> MAJOR<br />HEALING
             </button>
             <button
               phx-click="claim_boss_reward"
               phx-value-type="damage"
               class="arcade-btn btn-fight flex-1 px-4 py-4 flex-col gap-2 text-[10px]"
             >
-              <span class="text-4xl">🏺</span>
-              MAJOR<br />DAMAGE
+              <span class="text-4xl">🏺</span> MAJOR<br />DAMAGE
             </button>
           </div>
         </div>
@@ -451,7 +452,9 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
     ~H"""
     <div class="modal-scrim overflow-y-auto">
       <div class="panel panel-studs frame-gold modal-pop p-8 max-w-4xl w-full mx-4 my-8">
-        <h2 class="title-pixel text-dungeon-gold text-2xl text-center mb-6 flicker">HALL OF HEROES</h2>
+        <h2 class="title-pixel text-dungeon-gold text-2xl text-center mb-6 flicker">
+          HALL OF HEROES
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <.score_column title="EASY" accent="text-dungeon-mana" scores={@easy_scores} />
@@ -534,7 +537,9 @@ defmodule SuperDungeonSlaughterExWeb.GameComponents do
     ~H"""
     <div class="modal-scrim">
       <div class="panel panel-studs frame-gold modal-pop p-8 max-w-2xl w-full mx-4">
-        <h2 class="title-pixel text-dungeon-gold text-2xl text-center mb-2 flicker">HALL OF HEROES</h2>
+        <h2 class="title-pixel text-dungeon-gold text-2xl text-center mb-2 flicker">
+          HALL OF HEROES
+        </h2>
         <div class={["label-pixel text-sm text-center mb-5", difficulty_color(@difficulty)]}>
           {difficulty_label(@difficulty)}
         </div>

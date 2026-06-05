@@ -20,7 +20,19 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
           show_potion_use_modal: boolean(),
           selected_potion_slot: non_neg_integer() | nil,
           selected_potion: Potion.t() | nil,
-          pending_boss_reward: boolean()
+          pending_boss_reward: boolean(),
+          turn_events: [combat_event()]
+        }
+
+  @typedoc """
+  A single damage/heal event produced during a turn. Transient: reset at the
+  start of each player action and consumed by the UI to render floating
+  damage-number popups. `target` is the entity the number floats over.
+  """
+  @type combat_event :: %{
+          target: :hero | :monster,
+          kind: :damage | :heal,
+          amount: non_neg_integer()
         }
 
   defstruct [
@@ -34,7 +46,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     show_potion_use_modal: false,
     selected_potion_slot: nil,
     selected_potion: nil,
-    pending_boss_reward: false
+    pending_boss_reward: false,
+    turn_events: []
   ]
 
   @doc """
@@ -62,6 +75,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   @spec handle_fight(t()) :: t()
   def handle_fight(state) do
     # Hero attacks
+    state = reset_turn_events(state)
     {updated_hero, damage} = Hero.attack(state.hero)
     updated_monster = Monster.take_damage(state.monster, damage)
 
@@ -69,6 +83,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
       state
       |> Map.put(:hero, updated_hero)
       |> Map.put(:monster, updated_monster)
+      |> record_turn_event(:monster, :damage, damage)
       |> add_to_history(
         "#{updated_hero.name} deals #{damage} damage to the #{updated_monster.display_name}!",
         :combat
@@ -89,11 +104,13 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   @spec handle_rest(t()) :: t()
   def handle_rest(state) do
     # Hero rests
+    state = reset_turn_events(state)
     {updated_hero, heal} = Hero.rest(state.hero)
 
     state =
       state
       |> Map.put(:hero, updated_hero)
+      |> record_turn_event(:hero, :heal, heal)
       |> add_to_history("#{updated_hero.name} heals #{heal} HP!", :healing)
 
     # Monster attacks
@@ -112,6 +129,15 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
 
   # Private Functions
 
+  # Clear the per-turn damage/heal events at the start of a player action.
+  defp reset_turn_events(state), do: %{state | turn_events: []}
+
+  # Append a damage/heal event (chronological order) for the UI to animate.
+  defp record_turn_event(state, target, kind, amount) do
+    event = %{target: target, kind: kind, amount: amount}
+    %{state | turn_events: state.turn_events ++ [event]}
+  end
+
   defp handle_monster_attack(state) do
     damage = Monster.attack(state.monster)
     updated_hero = Hero.take_damage(state.hero, damage)
@@ -119,6 +145,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
     state =
       state
       |> Map.put(:hero, updated_hero)
+      |> record_turn_event(:hero, :damage, damage)
       |> add_to_history(
         "#{state.monster.display_name} deals #{damage} damage to #{updated_hero.name}!",
         :combat
@@ -396,6 +423,8 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
   """
   @spec handle_use_potion(t(), non_neg_integer()) :: t()
   def handle_use_potion(state, slot_index) do
+    state = reset_turn_events(state)
+
     case Hero.use_healing_potion(state.hero, slot_index) do
       {:ok, updated_hero, heal_amount} ->
         state
@@ -403,6 +432,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
         |> Map.put(:show_potion_use_modal, false)
         |> Map.put(:selected_potion_slot, nil)
         |> Map.put(:selected_potion, nil)
+        |> record_turn_event(:hero, :heal, heal_amount)
         |> add_to_history("Used potion and healed #{heal_amount} HP!", :healing)
 
       {:error, :not_healing_potion} ->
@@ -420,6 +450,7 @@ defmodule SuperDungeonSlaughterEx.Game.GameState do
               |> Map.put(:show_potion_use_modal, false)
               |> Map.put(:selected_potion_slot, nil)
               |> Map.put(:selected_potion, nil)
+              |> record_turn_event(:monster, :damage, damage)
               |> add_to_history(
                 "Threw #{potion.display_name} dealing #{damage} damage!",
                 :combat

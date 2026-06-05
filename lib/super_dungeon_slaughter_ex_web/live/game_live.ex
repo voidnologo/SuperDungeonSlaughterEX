@@ -54,17 +54,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       {:noreply, socket}
     else
       game_state = GameState.handle_fight(socket.assigns.game_state)
-
-      # Auto-save score if game over
-      socket =
-        if game_state.game_over do
-          save_score(game_state.hero, game_state.difficulty)
-          assign(socket, :game_state, game_state)
-        else
-          assign(socket, :game_state, game_state)
-        end
-
-      {:noreply, socket}
+      {:noreply, apply_combat_turn(socket, game_state)}
     end
   end
 
@@ -74,17 +64,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       {:noreply, socket}
     else
       game_state = GameState.handle_rest(socket.assigns.game_state)
-
-      # Auto-save score if game over
-      socket =
-        if game_state.game_over do
-          save_score(game_state.hero, game_state.difficulty)
-          assign(socket, :game_state, game_state)
-        else
-          assign(socket, :game_state, game_state)
-        end
-
-      {:noreply, socket}
+      {:noreply, apply_combat_turn(socket, game_state)}
     end
   end
 
@@ -125,17 +105,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
     else
       slot_index = String.to_integer(slot_str)
       game_state = GameState.handle_use_potion(socket.assigns.game_state, slot_index)
-
-      # Auto-save score if game over
-      socket =
-        if game_state.game_over do
-          save_score(game_state.hero, game_state.difficulty)
-          assign(socket, :game_state, game_state)
-        else
-          assign(socket, :game_state, game_state)
-        end
-
-      {:noreply, socket}
+      {:noreply, apply_combat_turn(socket, game_state)}
     end
   end
 
@@ -183,6 +153,24 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
       {:noreply, assign(socket, :game_state, game_state)}
     end
   end
+
+  # Assign the post-action state, persist the score on game over, and push any
+  # damage/heal numbers to the client so they can float over the hero/enemy.
+  defp apply_combat_turn(socket, game_state) do
+    if game_state.game_over do
+      save_score(game_state.hero, game_state.difficulty)
+    end
+
+    socket
+    |> assign(:game_state, game_state)
+    |> push_combat_popups(game_state.turn_events)
+  end
+
+  defp push_combat_popups(socket, [_ | _] = events) do
+    push_event(socket, "combat_popups", %{events: events})
+  end
+
+  defp push_combat_popups(socket, _events), do: socket
 
   defp save_score(hero, difficulty) do
     score = Score.new(hero.name, hero.level, hero.total_kills, difficulty)
@@ -290,7 +278,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             </.form>
           </div>
         </div>
-
+        
     <!-- High Scores Modal from Start Page -->
         <%= if @show_high_scores do %>
           <.start_page_high_scores_all_difficulties all_scores={ScoreRepo.get_all_scores()} />
@@ -317,7 +305,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
             <div class="lg:col-span-2">
               <.game_history history={@game_state.history} />
             </div>
-
+            
     <!-- Right sidebar -->
             <div class="space-y-5">
               <!-- Player Stats -->
@@ -326,7 +314,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLive do
               <.monster_stats monster={@game_state.monster} />
             </div>
           </div>
-
+          
     <!-- Action Buttons -->
           <div class="flex gap-5 justify-center mt-8">
             <button

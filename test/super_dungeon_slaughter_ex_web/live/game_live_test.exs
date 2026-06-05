@@ -51,8 +51,8 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
     test "shows name prompt on initial load", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/")
 
-      assert html =~ "What is your hero&#39;s name?"
-      assert html =~ "Begin Adventure"
+      assert html =~ "NAME THY HERO"
+      assert html =~ "BEGIN ADVENTURE"
     end
 
     test "does not show game UI initially", %{conn: conn} do
@@ -225,7 +225,7 @@ defmodule SuperDungeonSlaughterExWeb.GameLiveTest do
       html = render(view)
 
       assert html =~ "Player Stats"
-      assert html =~ "Kill Count"
+      assert html =~ "Kills"
       assert html =~ "Level"
       assert html =~ "HP"
     end
